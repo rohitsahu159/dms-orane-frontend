@@ -22,7 +22,6 @@ export const authReducer = createReducer(
             state.loading = true;
         },
         registerSuccess: (state, action) => {
-            console.log(action.payload)
             state.loading = false;
             state.isAuthenticated = true;
             state.isVerified = action.payload.user.verified;

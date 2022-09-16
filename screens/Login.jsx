@@ -1,9 +1,12 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native-paper'
+import { Checkbox } from 'react-native-paper'
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../redux/action';
+import { login } from '../redux/userAction/action';
+import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -12,10 +15,15 @@ const Login = () => {
 
     const navigation = useNavigation()
     const [email, setEmail] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("")
+    const [checked, setChecked] = React.useState(false);
 
     const loginHandler = () => {
-        dispatch(login(email, password))
+        let bodyData ={
+            'userId': userName, 'password': password 
+        }
+        dispatch(login(bodyData))
     }
 
     useEffect(() => {
@@ -26,70 +34,55 @@ const Login = () => {
     }, [alert, dispatch, error])
 
     return (
-        <View style={{ flex: 1 }}>
-            <ImageBackground source={require('../assets/img/login-bg.jpg')} style={{ flex: 1, alignItems: 'center' }}>
-                <View style={{
-                    flex: 1,
-                    // backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '80%'
-                }}>
-                    <Text style={{ fontSize: 20, margin: 20 }}>WELCOME</Text>
-                    <View style={{ width: '70%' }}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={setPassword}
-                        />
-                    </View>
-                    <Button
-                        disabled={!email || !password}
-                        style={styles.btn}
-                        onPress={loginHandler}
-                    >
-                        <Text style={{ color: '#fff' }}>Login</Text>
-                    </Button>
-                    <Text style={{ marginTop: 20 }}>Or</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("register")}>
-                        <Text style={{
-                            color: "#900",
-                            height: 30,
-                            margin: 20
-                        }}>Sign Up</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("forgotPassword")}>
-                        <Text>Forgot Password</Text>
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
+        <View style={styles.container}>
+            <View style={{ justifyContent: 'center', width: '100%' }}>
+                <Image style={styles.icon} source={require("../assets/img/h.png")} />
+            </View>
+            <View style={{ paddingRight: '50%',marginVertical:50 }}>
+                <Text style={{ fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
+            </View>
+            <View style={{ width: '80%' }}>
+                <TextInput
+                    variant="standard" label="User Name"
+                    placeholder="Enter User Name"
+                    color='#00a7e5'
+                    value={userName}
+                    onChangeText={setUserName}
+                    trailing={props => (
+                        <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="account" {...props} />} {...props} />
+                    )}
+                />
+                <View style={{margin:20}}></View>
+                <TextInput
+                    variant="standard" label="Password"
+                    color='#00a7e5'
+                    placeholder="Enter User Password"
+                    value={password}
+                    onChangeText={setPassword}
+                    trailing={props => (
+                        <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="lock" {...props} />} {...props} />
+                    )}
+                />
+            </View>
+            <View style={{margin:50}}>
+                <Button onPress={loginHandler} title="Log In" color='#00a7e5' />
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    input: {
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#b5b5b5',
-        padding: 10,
-        paddingLeft: 15,
-        borderRadius: 5,
-        marginVertical: 15,
-        fontSize: 15,
+    container: {
+        // flex: 1,
+        // backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop:100
     },
-    btn: {
-        backgroundColor: '#900',
-        padding: 5,
-        width: '70%'
-    }
+    icon: {
+        height: 150,
+        width: "100%",
+    },
 })
 
 export default Login

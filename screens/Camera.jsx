@@ -25,7 +25,7 @@ const CameraComponent = ({ navigation, route }) => {
         }
 
         const data = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true, aspect: [1, 1], quality: 1
+            allowsEditing: true, aspect: [4, 3], quality: 1
         });
         if (route.params.updateProfile) return navigation.navigate("profile", { image: data.uri })
         else return navigation.navigate("register", { image: data.uri })

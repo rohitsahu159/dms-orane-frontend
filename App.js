@@ -1,3 +1,5 @@
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 import Main from './Main';
 import { Provider } from 'react-redux';
 import store from './redux/store';

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authReducer, messageReducer } from './reducer';
+import { poDetailReducer, poReducer } from './purchaseReducer/reducer';
+import { authReducer, messageReducer } from './userReducer/reducer';
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
-        message: messageReducer
+        poList: poReducer,
+        poDetail:poDetailReducer
     }
 })
 
