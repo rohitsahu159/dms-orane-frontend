@@ -10,8 +10,8 @@ import Loader from '../Loader';
 const Tab = createMaterialTopTabNavigator();
 
 const ApprovedPO = ({ navigation }) => {
-    const { loading } = useSelector(state => state.auth)
-    const { poList } = useSelector(state => state.poList)
+    // const { loading } = useSelector(state => state.auth)
+    const { poList, loading } = useSelector(state => state.poList)
 
     let approvedPO = []
     if (poList) {
@@ -48,8 +48,8 @@ const ApprovedPO = ({ navigation }) => {
 }
 
 const PendingPO = ({ navigation }) => {
-    const { loading } = useSelector(state => state.auth)
-    const { poList } = useSelector(state => state.poList)
+    // const { loading } = useSelector(state => state.auth)
+    const { poList, loading } = useSelector(state => state.poList)
 
     let pendingPO = []
     if (poList) {
@@ -87,8 +87,8 @@ const PendingPO = ({ navigation }) => {
 }
 
 const RejectedPO = ({ navigation }) => {
-    const { loading } = useSelector(state => state.auth)
-    const { poList } = useSelector(state => state.poList)
+    // const { loading } = useSelector(state => state.auth)
+    const { poList, loading } = useSelector(state => state.poList)
 
     let rejectedPO = []
 
@@ -146,13 +146,13 @@ const MyPurchaseOrder = ({ navigation }) => {
                 "pageSize": 99999,
                 "sortArray": [],
                 "searchCriteria": [
-                    { "key": "buyerUserId", "value": "1100072", "operation": "EQUAL" }
+                    { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
                 ]
             }
             dispatch(getPOList(bodyData))
         }
 
-    }, [dispatch])
+    }, [dispatch, loading])
 
     const { loading, user } = useSelector(state => state.auth)
 

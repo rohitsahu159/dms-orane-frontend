@@ -15,7 +15,7 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import ForgotPassword from './screens/ForgotPassword';
 import CustomDrawer from './components/CustomDrawer';
-// import Loader from './components/Loader';
+import Loader from './components/Loader';
 import CameraComponent from './screens/Camera';
 import Verify from './screens/Verify';
 import ResetPassword from './screens/ResetPassword';
@@ -39,9 +39,9 @@ export default function Main() {
     // }, [dispatch])
 
 
-    const { isAuthenticated } = useSelector(state => state.auth)
+    const { isAuthenticated, loading } = useSelector(state => state.auth)
     return (
-       <NavigationContainer>
+        loading ? <Loader /> : <NavigationContainer>
             {!isAuthenticated ?
 
                 <Stack.Navigator initialRouteName='login'>

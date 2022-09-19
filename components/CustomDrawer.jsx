@@ -16,7 +16,6 @@ const CustomDrawer = (props) => {
 
     const logoutHandler = async () => {
         await dispatch(logout())
-        console.log("Logout successfully")
     }
 
     return (
@@ -34,8 +33,8 @@ const CustomDrawer = (props) => {
                         source={{ uri: imageUrl }}
                         style={{ height: 80, width: 80, borderRadius: 40, marginBottom: 10 }}
                     /> */}
-                    <Text style={{ color: '#fff', fontSize: 12,paddingTop:10 }}>{user.userName}</Text>
-                    <Text style={{ color: '#fff', fontSize: 10,paddingTop:10 }}>Email: <Text style={{color:'#00a7e5'}}>{user.email}</Text></Text>
+                    <Text style={{ color: 'black', fontSize: 12, paddingTop: 10, paddingLeft: 10 }}>{user.userName}</Text>
+                    <Text style={{ color: 'black', fontSize: 10, paddingTop: 10, paddingLeft: 10 }}>Email: <Text style={{ color: '#00a7e5' }}>{user.email}</Text></Text>
                 </ImageBackground>
                 <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 10 }}>
                     <DrawerItemList {...props} />

@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         // shadowOpacity: 0.26,
         elevation: 8,
         backgroundColor: 'white',
-        margin: 10,
+        // margin: 10,
         padding: 8,
         borderRadius: 10,
     },

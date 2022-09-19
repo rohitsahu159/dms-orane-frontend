@@ -51,3 +51,29 @@ export const poDetailReducer = createReducer(
         },
     }
 );
+
+export const poMasterDataReducer = createReducer(
+    {},
+    {
+        poMasterDataRequest: (state) => {
+            state.loading = true;
+            state.masterData = null;
+        },
+        poMasterDataSuccess: (state, action) => {
+            state.loading = false;
+            state.masterData = action.payload.data;
+        },
+        poMasterDataFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
