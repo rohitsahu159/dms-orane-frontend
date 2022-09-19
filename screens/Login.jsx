@@ -14,7 +14,6 @@ const Login = () => {
     const { isAuthenticated, loading, message, error } = useSelector(state => state.auth)
 
     const navigation = useNavigation()
-    const [email, setEmail] = useState("");
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("")
     const [checked, setChecked] = React.useState(false);
@@ -38,14 +37,14 @@ const Login = () => {
             <View style={{ justifyContent: 'center', width: '100%' }}>
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>
-            <View style={{ paddingRight: '50%', marginVertical: 50 }}>
+            <View style={{ paddingRight: '50%', marginVertical: 50, justifyContent: 'center' }}>
                 <Text style={{ fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
             </View>
             <View style={{ width: '80%' }}>
                 <TextInput
                     variant="standard" label="User Name"
                     placeholder="Enter User Name"
-                    color='#00ae57'
+                    color='#00a7e5'
                     value={userName}
                     onChangeText={setUserName}
                     trailing={props => (
@@ -64,26 +63,24 @@ const Login = () => {
                     )}
                 />
             </View>
-
-            <View>
-                <Text style={{ marginRight: 200, top: 5, }}>Remember me</Text>
-            </View>
-            <View style={{ top: -20, marginRight: 70 }}>
-                <Checkbox
-                    status={checked ? 'checked' : 'unchecked'}
-                    onPress={() => {
-                        setChecked(!checked);
-                    }}
-                />
-            </View>
-
-
-            <TouchableOpacity onPress={() => navigation.navigate("forgotPassword")}>
-                <View>
-                    <Text style={{ marginLeft: 180, top: -48, }}>Forgot Password ?</Text>
+            <View style={{ flexDirection: 'row', margin: 10, marginLeft: 45 }}>
+                <View style={{ width: '30%', flexDirection: 'row' }}>
+                    <Text style={{ marginTop: 10 }}>Remember me</Text>
+                    <Checkbox
+                        color='#00a7e5'
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
+                    />
                 </View>
-            </TouchableOpacity>
-            <View style={{ margin: 10 }}>
+                <View style={{ width: '70%', marginTop: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("forgotPassword")}>
+                        <Text style={{ textAlign: 'right', color: 'red', marginRight: 30 }}>Forgot Password ?</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={{ margin: 10, width: '80%' }}>
                 <Button onPress={loginHandler} title="Log In" color='#00a7e5' />
             </View>
         </View>

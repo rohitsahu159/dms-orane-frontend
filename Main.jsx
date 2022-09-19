@@ -68,53 +68,53 @@ export default function Main() {
                         drawerLabel: 'Dashboard',
                         title: 'Dashboard',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="home-outline" size={22} color={color} />
+                            <Ionicons name="home-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="myPurchaseOrder" component={MyPurchaseOrder} options={{
                         drawerLabel: 'My Purchase Order',
                         title: 'My Purchase Order',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="mySalesOrder" component={MySalesOrder} options={{
                         drawerLabel: 'My Sales Order',
                         title: 'My Sales Order',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="setting" component={Setting} options={{
                         drawerLabel: 'Setting',
                         title: 'Setting',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="settings-outline" size={22} color={color} />
+                            <Ionicons name="settings-outline" size={22} color='blue' />
                         )
                     }} />
                     {/* <Drawer.Screen name="profile" component={Profile} options={{
                         drawerLabel: 'Profile',
                         title: 'Profile',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} /> */}
                     <Drawer.Screen name="changePassword" component={ChangePassword} options={{
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="verify" component={Verify} options={{
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="camera" component={CameraComponent} options={{
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color={color} />
+                            <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="purchaseDetail" component={PurchaseDetail} options={{

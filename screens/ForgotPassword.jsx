@@ -17,24 +17,26 @@ const ForgotPassword = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#00a7e5' }}>Forgot Password</Text>
-            <Text style={{ fontWeight: '100', margin: 50 }}>Enter your username here and we will send you instruction on your
+            <Text style={{ fontWeight: 'bold', fontSize: 50, color: '#00a7e5' }}>Forgot Password</Text>
+            <Text style={{ fontWeight: '300', margin: 30, fontSize: 15 }}>Enter your username here and we will send you instruction on your
                 email address to reset your Password.</Text>
-            <View style={{ width: '80%' }}>
+            <View style={{ width: '80%',marginTop:30 }}>
                 <TextInput
                     variant="standard" label="User Name"
                     placeholder="Enter Username"
-                    color='#00ae57'
+                    color='#00a7e5'
                     value={email}
                     onChangeText={setEmail}
                 />
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('login')}>
-                <View style={{ width: '80%' }}>
+
+            <View style={{ width: '80%', marginTop: 10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate('login')}>
                     <Text style={{ fontSize: 15, color: '#FF0000', right: 0, position: 'absolute' }}>Return Login?</Text>
-                </View>
-            </TouchableOpacity>
-            <View style={{ marginTop: 50, alignItems: 'center' }}>
+                </TouchableOpacity>
+            </View>
+
+            <View style={{ marginTop: 50, alignItems: 'center', width: '80%' }}>
                 <Button title="Continue" color='#00a7e5' />
             </View>
         </View>

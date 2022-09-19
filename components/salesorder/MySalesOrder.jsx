@@ -5,8 +5,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import { round, inr } from 'lodash';
-import {getSOList} from '../../redux/salesAction/action'
+import { getSOList } from '../../redux/salesAction/action'
 import Loader from '../Loader';
+import { inrFormat } from '../../redux/constants';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -26,21 +27,21 @@ const PendingSO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-            {pendingSOList && pendingSOList.map((list, i) => (
+                {pendingSOList && pendingSOList.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                             </View>
-                </View>
-                  </TouchableOpacity>
-                  ))}
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                ))}
             </ScrollView>
         </SafeAreaView>
     )
@@ -59,24 +60,24 @@ const DeliveredSO = ({ navigation }) => {
         new Date(date).toLocaleString("en-IN");
     return (
         loading ? <Loader /> : <SafeAreaView>
-        <ScrollView>
-        {deliveredSOList && deliveredSOList.map((list, i) => (
-                <TouchableOpacity key={i} onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
-            <View style={styles.container}>
-                <View style={styles.item}>
-                    <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                    <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                    <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                            <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+            <ScrollView>
+                {deliveredSOList && deliveredSOList.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
                         </View>
-            </View>
-              </TouchableOpacity>
-              ))}
-        </ScrollView>
-    </SafeAreaView>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -94,24 +95,24 @@ const PartialSO = ({ navigation }) => {
         new Date(date).toLocaleString("en-IN");
     return (
         loading ? <Loader /> : <SafeAreaView>
-        <ScrollView>
-        {partialSOList && partialSOList.map((list, i) => (
-                <TouchableOpacity key={i} onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
-            <View style={styles.container}>
-                <View style={styles.item}>
-                    <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                    <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                    <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                            <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+            <ScrollView>
+                {partialSOList && partialSOList.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
+                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
                         </View>
-            </View>
-              </TouchableOpacity>
-              ))}
-        </ScrollView>
-    </SafeAreaView>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -130,48 +131,45 @@ const MySalesOrder = ({ navigation }) => {
 
     useEffect(() => {
         if (user) {
-            console.log("this is useEffect sales order",user)
             let bodyData = {
                 "pageNumber": 0,
                 "pageSize": 10,
                 "sortArray": [
-                  
+
                 ],
                 "searchCriteria": [
-                  {
-                    "key": "sellerUserId",
-                    "value": "1100072",
-                    "operation": "EQUAL"
-                  }
+                    {
+                        "key": "sellerUserId",
+                        "value": "1100072",
+                        "operation": "EQUAL"
+                    }
                 ]
-              }
-              console.log(bodyData)
+            }
             dispatch(getSOList(bodyData))
         }
 
-    }, [dispatch,user])
+    }, [dispatch, loading])
     const { user } = useSelector(state => state.auth)
     const { loading, soList } = useSelector(state => state.soList)
-    console.log("sales order list",soList)
 
 
     return (
         loading ? <Loader /> : <Tab.Navigator
-        initialRouteName='pendingSO'
-        screenOptions={({ route }) => ({
-            tabBarActiveTintColor: "blue",
-            tabBarInactiveTintColor: "#555",
-            tabBarLabelStyle: {
-                fontSize: 12,
-            },
-        })}
-    >
+            initialRouteName='pendingSO'
+            screenOptions={({ route }) => ({
+                tabBarActiveTintColor: "blue",
+                tabBarInactiveTintColor: "#555",
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+            })}
+        >
             <Tab.Screen
-               name='pendingSO'
-               component={PendingSO}
-               options={{
-                   title: "Pending"
-               }}
+                name='pendingSO'
+                component={PendingSO}
+                options={{
+                    title: "Pending"
+                }}
             />
             <Tab.Screen
                 name='deliveredSO'

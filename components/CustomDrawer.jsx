@@ -23,7 +23,7 @@ const CustomDrawer = (props) => {
 
 
             <DrawerContentScrollView {...props}
-                contentContainerStyle={{ backgroundColor: '#BDEDFF', paddingTop: 0 }}
+                contentContainerStyle={{ backgroundColor: '#fff', paddingTop: 0 }}
             >
                 <ImageBackground
                     source={require('../assets/img/h.png')}
@@ -33,8 +33,8 @@ const CustomDrawer = (props) => {
                         source={{ uri: imageUrl }}
                         style={{ height: 80, width: 80, borderRadius: 40, marginBottom: 10 }}
                     /> */}
-                    <Text style={{ color: 'black', fontSize: 12, paddingTop: 10, paddingLeft: 10 }}>{user.userName}</Text>
-                    <Text style={{ color: 'black', fontSize: 10, paddingTop: 10, paddingLeft: 10 }}>Email: <Text style={{ color: '#00a7e5' }}>{user.email}</Text></Text>
+                    <Text style={{ color: 'black', fontSize: 12, paddingTop: 10, paddingLeft: 10,fontWeight:'500' }}>{user.userName}</Text>
+                    <Text style={{ color: 'black', fontSize: 10, paddingTop: 10, paddingLeft: 10,fontWeight:'500' }}>Email: <Text style={{ color: 'blue' }}>{user.email}</Text></Text>
                 </ImageBackground>
                 <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 10 }}>
                     <DrawerItemList {...props} />

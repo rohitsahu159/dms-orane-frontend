@@ -83,7 +83,6 @@ export class ProductModal extends Component {
 
         selectedProductList = _.filter(productList, obj => obj.checked === true);
         this.setState({ productList, selectedProductList })
-        console.log(selectedProductList)
     }
 
     renderOutsideTouchable(onTouch) {

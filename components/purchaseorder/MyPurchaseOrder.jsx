@@ -6,6 +6,7 @@ import { round } from 'lodash';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../Loader';
+import { inrFormat } from '../../redux/constants';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -35,8 +36,8 @@ const ApprovedPO = ({ navigation }) => {
                                 <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                             </View>
                             <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                             </View>
                         </View>
 
@@ -74,8 +75,8 @@ const PendingPO = ({ navigation }) => {
                                 <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                             </View>
                             <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                             </View>
                         </View>
 
@@ -113,8 +114,8 @@ const RejectedPO = ({ navigation }) => {
                                 <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                             </View>
                             <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center' }}>{round(list.totalValue)}</Text>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                             </View>
                         </View>
 
