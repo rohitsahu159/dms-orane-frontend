@@ -1,5 +1,6 @@
 import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import React, { useEffect } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     LineChart,
     BarChart,
@@ -39,6 +40,21 @@ const chartConfig = {
     barPercentage: 0.5,
     useShadowColorFromDataset: false // optional
 };
+
+// OverView graph 
+const commitsData = [
+    { date: "2017-01-02", count: 1 },
+    { date: "2017-01-03", count: 2 },
+    { date: "2017-01-04", count: 3 },
+    { date: "2017-01-05", count: 4 },
+    { date: "2017-01-06", count: 5 },
+    { date: "2017-01-30", count: 2 },
+    { date: "2017-01-31", count: 3 },
+    { date: "2017-03-01", count: 2 },
+    { date: "2017-04-02", count: 4 },
+    { date: "2017-03-05", count: 2 },
+    { date: "2017-02-30", count: 4 }
+  ];
 
 const pieChartData = [
     {
@@ -91,7 +107,7 @@ const KpiAnalysis = () => {
                     <Text>KPI Analysis</Text>
                     <ProgressChart
                         data={progressData}
-                        width={390}
+                        width={320}
                         height={200}
                         // strokeWidth={16}
                         // radius={32}
@@ -99,23 +115,41 @@ const KpiAnalysis = () => {
                         hideLegend={false}
                     />
                 </View>
-                <View style={styles.chartView}>
-                    <Text>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>32278.27</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="dot-circle-o" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
                 </View>
-                <View style={styles.chartView}>
-                    <Text>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>28306.35</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="file-o" size={18} color="#900"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20000</Text>
                 </View>
-                <View style={styles.chartView}>
-                    <Text>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>3682.22</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="copy" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}} >All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>76876</Text>
                 </View>
-                <View style={styles.chartView}>
-                    <Text>Pending Orders for Invoicing </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>28596.05</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="th-list" size={18} color="#900"/> 
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Pending Orders for Invoicing </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>1313</Text>
                 </View>
-                <View style={styles.chartView}>
-                    <Text>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>169.93</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="comments" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>12398</Text>
                 </View>
-                <View style={styles.chartView}>
-                    <Text>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>3512.29</Text>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="money" size={18} color="#900"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2137</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -124,33 +158,228 @@ const KpiAnalysis = () => {
 
 const OverView = () => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>HI, This is Over View</Text>
+        <SafeAreaView>
+            <ScrollView>
+
+        <View style={styles.chartView}>
+            <Text>OverView</Text>
+            {/* Overview graph */}
+            <ContributionGraph
+                values={commitsData}
+                endDate={new Date("2017-04-01")}
+                numDays={105}
+                width={330}
+                height={220}
+                chartConfig={chartConfig}
+                  />
+            {/* <LineChart
+                data={data}
+                width={screenWidth}
+                height={256}
+                verticalLabelRotation={30}
+                chartConfig={chartConfig}
+                bezier
+                /> */}
         </View>
+        <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="dot-circle-o" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Total Customer </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>123</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="file-o" size={18} color="#900"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Total PO Value </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>239871</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="copy" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}} >Total SI Count </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21312798</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="th-list" size={18} color="#900"/> 
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Total SI Value </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>29183</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="comments" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Total PO Counts </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>9823</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="money" size={18} color="#900"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Total SKUs </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>298137</Text>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+        
     )
 }
 
 const Inventory = () => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>HI, This is Kpi Analysis Page</Text>
-        </View>
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.chartView}>
+                   <Text>HI, This is Kpi Analysis Page</Text>
+                   <LineChart
+                    data={data}
+                    width={323}
+                    height={235}
+                    verticalLabelRotation={30}
+                    chartConfig={chartConfig}
+                    bezier
+                  />
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="dot-circle-o" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Current Stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>10%</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                    <Icon name="file-o" size={18} color="#900"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Delivery Pending </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>12%</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="copy" size={18} color="#090fd6"/>
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}} >Damage Stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>29%</Text>
+                </View>
+                <View style={styles.chartView1}>
+                    <View>
+                       <Icon name="th-list" size={18} color="#900"/> 
+                    </View>
+                    <Text style={{top:-19,marginLeft:25}}>Expired stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>45%</Text>
+                </View>
+                
+             
+
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const FillRate = () => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>HI, This is Over View</Text>
-        </View>
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.chartView}>
+                   <Text>HI, This is KPI Analysis</Text>
+                    <LineChart
+                    data={data}
+                    width={325}
+                    height={220}
+                    chartConfig={chartConfig}
+                />
+                
+            </View>
+            <View style={styles.chartView}>
+                
+                    <Text> January </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> February  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> March </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> April </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text>May </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> June </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> July </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> August </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> September </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> October </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> November </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> December </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                </View>
+
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const PurchaseValue = () => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>HI, This is Kpi Analysis Page</Text>
+        <SafeAreaView>
+        <ScrollView>
+            <View style={styles.chartView}>
+               <Text>HI, This is KPI Analysis</Text>
+                <LineChart
+                data={data}
+                width={325}
+                height={220}
+                chartConfig={chartConfig}
+            />
+            
         </View>
+        <View style={styles.chartView}>
+                <Text>2011 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>3500000</Text>
+            </View>
+            <View style={styles.chartView}>
+                <Text>2012 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20000</Text>
+            </View>
+            <View style={styles.chartView}>
+                <Text>2013 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>4500</Text>
+            </View>
+            <View style={styles.chartView}>
+                <Text>2014 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>212123</Text>
+            </View>
+            <View style={styles.chartView}>
+                <Text>2015 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21312</Text>
+            </View>
+            <View style={styles.chartView}>
+                <Text>2016 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21213</Text>
+            </View>
+            <View style={styles.chartView}>
+                    <Text> 2017 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> 2018 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2323234</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> 2019 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21434324</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> 2020 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>243324</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> 2021 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2421</Text>
+                </View>
+                <View style={styles.chartView}>
+                    <Text> 2022 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>213</Text>
+                </View>
+
+        </ScrollView>
+    </SafeAreaView>
     )
 }
 
@@ -224,18 +453,24 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 8,
         borderRadius: 10,
+        
     },
     chartView1: {
-        flex: 0.3,
-        flexDirection: 'row',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 6,
-        shadowOpacity: 0.26,
+        flex: 1,
+        // flexDirection: 'row',
+        // shadowColor: 'black',
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowRadius: 6,
+        // shadowOpacity: 0.26,
         elevation: 8,
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 10,
+        margin:10,
+        width:340,
+        height:40
+        
+        
     },
 });
 
