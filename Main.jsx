@@ -25,6 +25,7 @@ import Dashboard from './components/Dashboard';
 import MySalesOrder from './components/salesorder/MySalesOrder';
 import MyPurchaseOrder from './components/purchaseorder/MyPurchaseOrder';
 import PurchaseDetail from './components/purchaseorder/PurchaseDetail';
+import SalesOrderDetail from './components/salesorder/salesOrderDetails';
 import CreatePO from './components/purchaseorder/CreatePO';
 import CreateSO from './components/salesorder/createSO';
 
@@ -127,6 +128,10 @@ export default function Main() {
                     <Drawer.Screen name="createSO" component={CreateSO} options={{
                         drawerItemStyle: { display: 'none' },
                         title: "Create SO"
+                    }} />
+                     <Drawer.Screen name="salesOrderDetail" component={SalesOrderDetail} options={{
+                        drawerItemStyle: { display: 'none' },
+                        title: "Sales Order Detail"
                     }} />
                 </Drawer.Navigator>
 

@@ -25,4 +25,29 @@ export const soReducer = createReducer(
         },
     }
 );
+export const soDetailReducer = createReducer(
+    {},
+    {
+        soDetailRequest: (state) => {
+            state.loading = true;
+            state.soDetail = null;
+        },
+        soDetailSuccess: (state, action) => {
+            state.loading = false;
+            state.soDetail = action.payload.data;
+        },
+        soDetailFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
 
