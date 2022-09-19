@@ -69,8 +69,8 @@ const MySalesOrder = ({ navigation }) => {
     }, [navigation]);
 
     useEffect(() => {
-        if ("use effectt user: ",user) {
-            console.log(user)
+        if (user) {
+            console.log("this is useEffect sales order",user)
             let bodyData = {
                 "pageNumber": 0,
                 "pageSize": 10,
@@ -92,7 +92,7 @@ const MySalesOrder = ({ navigation }) => {
     }, [dispatch,user])
     const { user } = useSelector(state => state.auth)
     const { loading, soList } = useSelector(state => state.soList)
-    console.log("ggjhgjgjg",soList)
+    console.log("sales order list",soList)
 
 
     return (
