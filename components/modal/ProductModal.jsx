@@ -53,7 +53,10 @@ export class ProductModal extends Component {
             }
         })
 
-        let productList = data.data.productPrice
+        let productList = await data.data.productPrice
+        // productList.forEach(function (element, index) {
+        //     element.checked = true
+        // });
         this.setState({ productList })
     }
 
@@ -70,11 +73,11 @@ export class ProductModal extends Component {
         let selectedProductList = [];
         for (let i = 0; i < productList.length; i++) {
             if (data.productCode == productList[i].productCode) {
-                // if (productList[i].checked == undefined || productList[i].checked == false) {
-                //     productList[i].checked = true
-                // } else {
-                    productList[i].checked = false
-                // }
+                if (productList[i].checked == undefined || productList[i].checked == false) {
+                    productList[i].checked = true
+                } else {
+                productList[i].checked = false
+                }
             }
         }
 
@@ -118,10 +121,10 @@ export class ProductModal extends Component {
 
                                 <View style={{ flexDirection: 'row', marginTop: -15 }}>
                                     <Checkbox
-                                        status={list.checked}
+                                        status={list.checked ? 'checked': 'unchecked'}
                                         onPress={() => this.selectPO(list)}
                                     />
-                                    <Title style={{ color: '#00a7e5', fontSize: 17 }}>{i + 1}{list.productName}</Title>
+                                    <Title style={{ color: '#00a7e5', fontSize: 17 }}>{list.productName}</Title>
                                 </View>
                                 <View style={{ marginLeft: 40 }}>
                                     <View style={{ flexDirection: 'row' }}>
