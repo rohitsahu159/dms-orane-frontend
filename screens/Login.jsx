@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Checkbox } from 'react-native-paper'
+import { Checkbox } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../redux/userAction/action';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
@@ -39,7 +39,7 @@ const Login = () => {
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>
             <View style={{ paddingRight: '50%',marginVertical:50 }}>
-                <Text style={{ fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
+                <Text style={{  fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
             </View>
             <View style={{ width: '80%' }}>
                 <TextInput
@@ -64,7 +64,25 @@ const Login = () => {
                     )}
                 />
             </View>
-            <View style={{margin:50}}>
+            
+              <View>
+                <Text style={{marginRight:200,top:5,}}>Remember me</Text>
+              </View>
+                 <View style={{top:-20,marginRight:70}}>
+                   <Checkbox 
+                            status={checked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                              setChecked(!checked);
+                            }}
+                    />
+                 </View>
+                 
+
+                 
+              <View>
+                <Text style={{marginLeft:180,top:-48,}}>Forgot Password ?</Text>
+              </View>
+            <View style={{margin:10}}>
                 <Button onPress={loginHandler} title="Log In" color='#00a7e5' />
             </View>
         </View>
