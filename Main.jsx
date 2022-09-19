@@ -26,6 +26,8 @@ import MySalesOrder from './components/salesorder/MySalesOrder';
 import MyPurchaseOrder from './components/purchaseorder/MyPurchaseOrder';
 import PurchaseDetail from './components/purchaseorder/PurchaseDetail';
 import CreatePO from './components/purchaseorder/CreatePO';
+import CreateSO from './components/salesorder/createSO';
+
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
@@ -121,6 +123,10 @@ export default function Main() {
                     <Drawer.Screen name="createPO" component={CreatePO} options={{
                         drawerItemStyle: { display: 'none' },
                         title: "Create PO"
+                    }} />
+                    <Drawer.Screen name="createSO" component={CreateSO} options={{
+                        drawerItemStyle: { display: 'none' },
+                        title: "Create SO"
                     }} />
                 </Drawer.Navigator>
 
