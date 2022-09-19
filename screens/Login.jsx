@@ -20,8 +20,8 @@ const Login = () => {
     const [checked, setChecked] = React.useState(false);
 
     const loginHandler = () => {
-        let bodyData ={
-            'userId': userName, 'password': password 
+        let bodyData = {
+            'userId': userName, 'password': password
         }
         dispatch(login(bodyData))
     }
@@ -38,21 +38,21 @@ const Login = () => {
             <View style={{ justifyContent: 'center', width: '100%' }}>
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>
-            <View style={{ paddingRight: '50%',marginVertical:50 }}>
-                <Text style={{  fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
+            <View style={{ paddingRight: '50%', marginVertical: 50 }}>
+                <Text style={{ fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
             </View>
             <View style={{ width: '80%' }}>
                 <TextInput
                     variant="standard" label="User Name"
                     placeholder="Enter User Name"
-                    color='#00a7e5'
+                    color='#00ae57'
                     value={userName}
                     onChangeText={setUserName}
                     trailing={props => (
                         <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="account" {...props} />} {...props} />
                     )}
                 />
-                <View style={{margin:20}}></View>
+                <View style={{ margin: 20 }}></View>
                 <TextInput
                     variant="standard" label="Password"
                     color='#00a7e5'
@@ -64,25 +64,26 @@ const Login = () => {
                     )}
                 />
             </View>
-            
-              <View>
-                <Text style={{marginRight:200,top:5,}}>Remember me</Text>
-              </View>
-                 <View style={{top:-20,marginRight:70}}>
-                   <Checkbox 
-                            status={checked ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                              setChecked(!checked);
-                            }}
-                    />
-                 </View>
-                 
 
-                 
-              <View>
-                <Text style={{marginLeft:180,top:-48,}}>Forgot Password ?</Text>
-              </View>
-            <View style={{margin:10}}>
+            <View>
+                <Text style={{ marginRight: 200, top: 5, }}>Remember me</Text>
+            </View>
+            <View style={{ top: -20, marginRight: 70 }}>
+                <Checkbox
+                    status={checked ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                        setChecked(!checked);
+                    }}
+                />
+            </View>
+
+
+            <TouchableOpacity onPress={() => navigation.navigate("forgotPassword")}>
+                <View>
+                    <Text style={{ marginLeft: 180, top: -48, }}>Forgot Password ?</Text>
+                </View>
+            </TouchableOpacity>
+            <View style={{ margin: 10 }}>
                 <Button onPress={loginHandler} title="Log In" color='#00a7e5' />
             </View>
         </View>
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop:100
+        marginTop: 100
     },
     icon: {
         height: 150,
