@@ -102,12 +102,12 @@ const progressData = {
 const KpiAnalysis = () => {
     return (
         <SafeAreaView>
-            <ScrollView>
+            
                 <View style={styles.chartView} >
                     <Text>KPI Analysis</Text>
                     <ProgressChart
                         data={progressData}
-                        width={325}
+                        width={350}
                         height={200}
                         // strokeWidth={16}
                         // radius={32}
@@ -115,43 +115,48 @@ const KpiAnalysis = () => {
                         hideLegend={false}
                     />
                 </View>
-                <View style={{flex: 1,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                
+                <View style={{maxHeight:400, paddingBottom:30,}}>
+                <ScrollView>
+                
+                <View style={{ flex: 1, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="dot-circle-o" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
                 </View>
-                <View style={{flex: 1,top:-10,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -10, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="file-o" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20000</Text>
                 </View>
-                <View style={{flex: 1, top:-20,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -20, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="copy" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }} >All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>76876</Text>
                 </View>
-                <View style={{flex: 1, top:-30,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -30, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="th-list" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Pending Orders for Invoicing </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>1313</Text>
                 </View>
-                <View style={{flex: 1, top:-40,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -40, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="comments" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>12398</Text>
                 </View>
-                <View style={{flex: 1, top:-50,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -50, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="money" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2137</Text>
                 </View>
             </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -159,7 +164,7 @@ const KpiAnalysis = () => {
 const OverView = () => {
     return (
         <SafeAreaView>
-            <ScrollView>
+            
 
                 <View style={styles.chartView}>
                     <Text>OverView</Text>
@@ -168,7 +173,7 @@ const OverView = () => {
                         values={commitsData}
                         endDate={new Date("2017-04-01")}
                         numDays={105}
-                        width={325}
+                        width={350}
                         height={220}
                         chartConfig={chartConfig}
                     />
@@ -181,43 +186,46 @@ const OverView = () => {
                 bezier
                 /> */}
                 </View>
-                <View style={{flex: 1,top:-10,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{maxHeight:400, paddingBottom:30,}}>
+                <ScrollView>
+                <View style={{ flex: 1, top: -10, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="dot-circle-o" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Total Customer </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>123</Text>
                 </View>
-                <View style={{flex: 1,top:-20,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -20, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="file-o" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Total PO Value </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>239871</Text>
                 </View>
-                <View style={{flex: 1,top:-30,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -30, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="copy" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }} >Total SI Count </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21312798</Text>
                 </View>
-                <View style={{flex: 1,top:-40,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -40, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="th-list" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Total SI Value </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>29183</Text>
                 </View>
-                <View style={{flex: 1,top:-50,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -50, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="comments" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Total PO Counts </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>9823</Text>
                 </View>
-                <View style={{flex: 1,top:-60,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -60, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="money" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Total SKUs </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>298137</Text>
                 </View>
             </ScrollView>
+            </View>
         </SafeAreaView>
 
     )
@@ -226,37 +234,39 @@ const OverView = () => {
 const Inventory = () => {
     return (
         <SafeAreaView>
-            <ScrollView>
+        
                 <View style={styles.chartView}>
-                    <Text>HI, This is Kpi Analysis Page</Text>
+                    <Text> Inventory Page</Text>
                     <LineChart
                         data={data}
-                        width={323}
+                        width={350}
                         height={235}
                         verticalLabelRotation={30}
                         chartConfig={chartConfig}
                         bezier
                     />
                 </View>
-                <View style={{flex: 1,top:-10,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{maxHeight:400, paddingBottom:30,}}>
+                <ScrollView>
+                <View style={{ flex: 1, top: -10, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="dot-circle-o" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Current Stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>10%</Text>
                 </View>
-                <View style={{flex: 1,top:-20,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -20, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="file-o" size={18} color="#900" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }}>Delivery Pending </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>12%</Text>
                 </View>
-                <View style={{flex: 1,top:-30,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -30, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="copy" size={18} color="#090fd6" />
                     </View>
                     <Text style={{ top: -19, marginLeft: 25 }} >Damage Stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>29%</Text>
                 </View>
-                <View style={{flex: 1,top:-40,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
+                <View style={{ flex: 1, top: -40, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
                         <Icon name="th-list" size={18} color="#900" />
                     </View>
@@ -266,6 +276,7 @@ const Inventory = () => {
 
 
             </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -273,91 +284,154 @@ const Inventory = () => {
 const FillRate = () => {
     return (
         <SafeAreaView>
-            <ScrollView>
+           
                 <View style={styles.chartView}>
-                    <Text>HI, This is KPI Analysis</Text>
+                    <Text> Fill Rate</Text>
                     <LineChart
                         data={data}
-                        width={325}
+                        width={350}
                         height={220}
                         chartConfig={chartConfig}
                     />
 
                 </View>
-                <View style={{flex: 1,top:-10,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
+                <View style={{maxHeight:400, paddingBottom:30,}}>
+                <ScrollView>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>January </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100%</Text>
                     </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> January </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
                 </View>
-                <View style={{flex: 1,top:-20,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>February </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
                     </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> February  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-30,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
                     </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> March </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-40,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> April </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-50,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}>May </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-60,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> June </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-70,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> July </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-80,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> August </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-90,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> September </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-100,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> October </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-110,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> November </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
-                </View>
-                <View style={{flex: 1,top:-120,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}> December </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
                 </View>
 
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>March </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>May </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>10%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>June </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>30%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>July </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>August</Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>40%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>September </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>50%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>October</Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>November </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>40%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
+                <View style={styles.chartView1}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}>
+                            <Icon name="calendar" size={18} color="#00A3E4" />
+                        </Text>
+                        <Text style={{ width: '90%' }}>December </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>60%</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ width: '10%' }}></Text>
+                        <Text style={{ width: '90%' }}> 19 %</Text>
+                    </View>
+                </View>
             </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -365,91 +439,165 @@ const FillRate = () => {
 const PurchaseValue = () => {
     return (
         <SafeAreaView>
-            <ScrollView>
-                <View style={styles.chartView}>
-                    <Text>HI, This is KPI Analysis</Text>
-                    <LineChart
-                        data={data}
-                        width={325}
-                        height={220}
-                        chartConfig={chartConfig}
-                    />
 
-                </View>
-                <View style={{flex: 1,top:-10,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text style={{ top: -19, marginLeft: 22 }}>2011 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>3500000</Text>
-                </View>
-                <View style={{flex: 1,top:-20,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}>2012 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20000</Text>
-                </View>
-                <View style={{flex: 1,top:-30,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}>2013 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>4500</Text>
-                </View>
-                <View style={{flex: 1,top:-40,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}>2014 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>212123</Text>
-                </View>
-                <View style={{flex: 1,top:-50,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}>2015 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21312</Text>
-                </View>
-                <View style={{flex: 1,top:-60,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}>2016 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21213</Text>
-                </View>
-                <View style={{flex: 1,top:-70,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2017 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21</Text>
-                </View>
-                <View style={{flex: 1,top:-80,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2018 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2323234</Text>
-                </View>
-                <View style={{flex: 1,top:-90,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2019 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21434324</Text>
-                </View>
-                <View style={{flex: 1,top:-100,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2020 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>243324</Text>
-                </View>
-                <View style={{flex: 1,top:-110,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2021 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2421</Text>
-                </View>
-                <View style={{flex: 1,top:-120,elevation: 8,backgroundColor: 'white',padding: 10,borderRadius: 10,margin: 10,width: '96%',height: 40,}}>
-                    <View>
-                        <Icon name="calendar" size={18} color="#090fd6" />
-                    </View>
-                    <Text  style={{ top: -19, marginLeft: 22 }}> 2022 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>213</Text>
-                </View>
+            <View style={styles.chartView}>
+                <Text> Purchase Value</Text>
+                <LineChart
+                    data={data}
+                    width={350}
+                    height={220}
+                    chartConfig={chartConfig}
+                />
 
-            </ScrollView>
+            </View>
+            <View style={{maxHeight:400, paddingBottom:30,}}>
+                <ScrollView>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2011 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>3500000</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2012 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>200000</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2013 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>4500</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2014 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>212123</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2015 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21312</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2016 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>232</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2017</Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2121234</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2018 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>232323234</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2019 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>21434324</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2020 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>24213456</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2021 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>2421</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                    <View style={styles.chartView1}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="calendar" size={18} color="#00A3E4" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>2022 </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>20134</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ width: '10%' }}></Text>
+                            <Text style={{ width: '90%' }}> 19 %</Text>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
@@ -514,7 +662,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     chartView: {
-        flex: 1,
+        // flex: 1,
         // shadowColor: 'black',
         // shadowOffset: { width: 2, height: 4 },
         // shadowRadius: 6,
@@ -527,25 +675,18 @@ const styles = StyleSheet.create({
         width: '96%'
 
     },
-  
-    // flexDirection: 'row',
-    // shadowColor: 'black',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowRadius: 6,
-    // shadowOpacity: 0.26,
-    // chartView1: {
-    //     flex: 1,
-    //     elevation: 8,
-    //     backgroundColor: 'white',
-    //     padding: 10,
-    //     borderRadius: 10,
-    //     margin: 10,
-    //     width: '96%',
-    //     height: 40,
-        
 
+    chartView1: {
+        flex: 1,
+        elevation: 8,
+        backgroundColor: 'white',
+        marginHorizontal: 10,
+        marginTop: 5,
+        padding: 10,
+        borderRadius: 10,
+        width: '96%'
+    },
 
-    // },
 });
 
 export default Dashboard
