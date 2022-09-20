@@ -258,7 +258,6 @@ const Inventory = () => {
                     <View>
                         <Icon name="file-o" size={18} color="#900" />
                     </View>
-                    <Text style={{ top: -19, marginLeft: 25 }}>Delivery Pending </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>12%</Text>
                 </View>
                 <View style={{ flex: 1, top: -30, elevation: 8, backgroundColor: 'white', padding: 10, borderRadius: 10, margin: 10, width: '96%', height: 40, }}>
                     <View>
@@ -270,10 +269,7 @@ const Inventory = () => {
                     <View>
                         <Icon name="th-list" size={18} color="#900" />
                     </View>
-                    <Text style={{ top: -19, marginLeft: 25 }}>Expired stock </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>45%</Text>
                 </View>
-
-
 
             </ScrollView>
             </View>
@@ -661,6 +657,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 10,
     },
+
     chartView: {
         // flex: 1,
         // shadowColor: 'black',
