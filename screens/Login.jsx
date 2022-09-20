@@ -37,8 +37,8 @@ const Login = () => {
             <View style={{ justifyContent: 'center', width: '100%' }}>
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>
-            <View style={{ paddingRight: '50%', marginVertical: 50, justifyContent: 'center' }}>
-                <Text style={{ fontSize: 50, color: '#00a7e5' }}>LOG IN</Text>
+            <View style={{ width: '80%',marginVertical:50}}>
+                <Text style={{ fontSize: 40, color: '#00a7e5' }}>LOGIN</Text>
             </View>
             <View style={{ width: '80%' }}>
                 <TextInput
@@ -63,7 +63,7 @@ const Login = () => {
                     )}
                 />
             </View>
-            <View style={{ flexDirection: 'row', margin: 10, marginLeft: 45 }}>
+            <View style={{ flexDirection: 'row', width:'80%' }}>
                 <View style={{ width: '30%', flexDirection: 'row' }}>
                     <Text style={{ marginTop: 10 }}>Remember me</Text>
                     <Checkbox
@@ -76,12 +76,12 @@ const Login = () => {
                 </View>
                 <View style={{ width: '70%', marginTop: 10 }}>
                     <TouchableOpacity onPress={() => navigation.navigate("forgotPassword")}>
-                        <Text style={{ textAlign: 'right', color: 'red', marginRight: 30 }}>Forgot Password ?</Text>
+                        <Text style={{ textAlign: 'right', color: 'red', right: 0 }}>Forgot Password ?</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{ margin: 10, width: '80%' }}>
-                <Button onPress={loginHandler} title="Log In" color='#00a7e5' />
+            <View style={{ marginTop: 35, width: '80%' }}>
+                <Button onPress={loginHandler} title="Login" color='#00a7e5' />
             </View>
         </View>
     )

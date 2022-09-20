@@ -97,7 +97,8 @@ export class ProductModal extends Component {
     }
 
     loginHandler = () => {
-        this.props.addProducts("Hello")
+        this.props.addProducts(this.state.selectedProductList)
+        this.setState({ show: false })
     }
 
     renderTitle = () => {

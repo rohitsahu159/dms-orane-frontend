@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Portal, Provider } from 'react-native-paper';
+import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox, TextInput } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Button, IconButton } from '@react-native-material/core';
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -13,17 +13,21 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { getSeller } from '../../redux/sellerAction/action';
 import { getPOMasterData } from '../../redux/purchaseAction/action';
 import { getBuyerById } from '../../redux/buyerAction/action';
+import { inrFormat } from '../../redux/constants';
+import Loader from '../Loader';
 
-const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-];
+const productList = [
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
+]
 
 const CreatePO = () => {
     const dispatch = useDispatch()
@@ -40,6 +44,8 @@ const CreatePO = () => {
     const [dateMode, setDateMode] = useState('');
     const [deliveryDate, setDeliveryDate] = useState(new Date());
     const [expiryDate, setExpiryDate] = useState(new Date());
+    const [selectedProductList, setSelectedProductList] = useState([]);
+    const [quantity, setQuantity] = useState(1)
 
     const { loading, user } = useSelector(state => state.auth)
 
@@ -61,7 +67,7 @@ const CreatePO = () => {
     if (masterData) {
         orderTypeList = masterData.orderType
     }
-    if(buyerData){
+    if (buyerData) {
         billingAddressList = buyerData.address
         shippingAddressList = buyerData.address
     }
@@ -104,180 +110,211 @@ const CreatePO = () => {
     }
 
     const addProducts = (data) => {
-        console.log("this is create PO Page", data)
+        setSelectedProductList(data)
     }
 
+    const handelDecreament = () => {
+        setQuantity(quantity - 1)
+    }
+    const handelIncreament = () => {
+        setQuantity(quantity + 1)
+    }
 
     return (
-        <SafeAreaView>
-            <ScrollView>
-                <View style={styles.container}>
-                    <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-                        Supplier
+        loading ? <Loader /> : <SafeAreaView>
+
+            <View style={styles.container}>
+                <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+                    Supplier
+                </Text>
+                <Dropdown
+                    style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={sellerList || []}
+                    search
+                    maxHeight={300}
+                    labelField="companyName"
+                    valueField="companyName"
+                    placeholder={!isFocus ? 'Select Supplier' : '...'}
+                    searchPlaceholder="Search..."
+                    value={supplier}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={item => {
+                        setSupplier(item.companyName);
+                        setIsFocus(false);
+                    }}
+                    renderLeftIcon={() => (
+                        <AntDesign
+                            style={styles.icon}
+                            color={isFocus ? 'blue' : 'black'}
+                            name="user"
+                            size={20}
+                        />
+                    )}
+                />
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Text style={styles.label}>
+                        Order Type
                     </Text>
                     <Dropdown
-                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                        style={styles.dropdown}
                         placeholderStyle={styles.placeholderStyle}
                         selectedTextStyle={styles.selectedTextStyle}
                         inputSearchStyle={styles.inputSearchStyle}
                         iconStyle={styles.iconStyle}
-                        data={sellerList || []}
+                        data={orderTypeList || []}
                         search
                         maxHeight={300}
-                        labelField="companyName"
-                        valueField="companyName"
-                        placeholder={!isFocus ? 'Select Supplier' : '...'}
+                        labelField="orderType"
+                        valueField="orderType"
+                        placeholder={!isFocus ? 'Select Order Type' : '...'}
                         searchPlaceholder="Search..."
-                        value={supplier}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
+                        value={orderType}
                         onChange={item => {
-                            setSupplier(item.companyName);
-                            setIsFocus(false);
+                            setOrderType(item.orderType);
                         }}
-                        renderLeftIcon={() => (
-                            <AntDesign
-                                style={styles.icon}
-                                color={isFocus ? 'blue' : 'black'}
-                                name="user"
-                                size={20}
-                            />
-                        )}
                     />
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Order Type
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={orderTypeList || []}
-                            search
-                            maxHeight={300}
-                            labelField="orderType"
-                            valueField="orderType"
-                            placeholder={!isFocus ? 'Select Order Type' : '...'}
-                            searchPlaceholder="Search..."
-                            value={orderType}
-                            onChange={item => {
-                                setOrderType(item.orderType);
-                            }}
-                        />
-                    </View>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Paymnt Term
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={paymentTermList || []}
-                            search
-                            maxHeight={300}
-                            labelField="paymentTerm"
-                            valueField="paymentTerm"
-                            placeholder={!isFocus ? 'Select Payment Term' : '...'}
-                            searchPlaceholder="Search..."
-                            value={paymentTerm}
-                            onChange={item => {
-                                setPaymentTerm(item.paymentTerm);
-                            }}
-                        />
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Billing Address
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={billingAddressList || []}
-                            search
-                            maxHeight={300}
-                            labelField="addressLine1"
-                            valueField="addressLine1"
-                            placeholder={!isFocus ? 'Select Address' : '...'}
-                            searchPlaceholder="Search..."
-                            value={billingAddress}
-                            onChange={item => {
-                                setBillingAddress(item.addressLine1);
-                            }}
-                        />
-                    </View>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Shipping Address
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={shippingAddressList || []}
-                            search
-                            maxHeight={300}
-                            labelField="addressLine1"
-                            valueField="addressLine1"
-                            placeholder={!isFocus ? 'Select Address' : '...'}
-                            searchPlaceholder="Search..."
-                            value={shippingAddress}
-                            onChange={item => {
-                                setShippingAddress(item.addressLine1);
-                            }}
-                        />
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Button onPress={() => showDatepicker('deliveryDate')} title="Exp. Delivery Date" />
-                        <Text>{deliveryDate.toString()}</Text>
-                    </View>
-                    <View style={[styles.container, { width: '50%' }]}>
-                        <Button onPress={() => showDatepicker('expiryDate')} title="Expiry Date" />
-                        <Text>{expiryDate.toString()}</Text>
-                    </View>
-                    {show && (
-                        <RNDateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode={mode}
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChange}
-                        />
-                    )}
-                </View>
-                <View style={styles.container}>
-                    <Button onPress={onShowPopup} title="Add Items Detail" color='white' trailing={props => (
-                        <IconButton icon={props => <Icon onPress={onShowPopup} style={{ color: '#00a7e5' }} name="plus" {...props} />} {...props} />
-                    )} />
-                    <ProductModal
-                        ref={(target) => popupRef = target}
-                        onTouchOutside={onClosePopup}
-                        title="Products"
-                        addProducts={addProducts}
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Text style={styles.label}>
+                        Paymnt Term
+                    </Text>
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={paymentTermList || []}
+                        search
+                        maxHeight={300}
+                        labelField="paymentTerm"
+                        valueField="paymentTerm"
+                        placeholder={!isFocus ? 'Select Payment Term' : '...'}
+                        searchPlaceholder="Search..."
+                        value={paymentTerm}
+                        onChange={item => {
+                            setPaymentTerm(item.paymentTerm);
+                        }}
                     />
                 </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Text style={styles.label}>
+                        Billing Address
+                    </Text>
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={billingAddressList || []}
+                        search
+                        maxHeight={300}
+                        labelField="addressLine1"
+                        valueField="addressLine1"
+                        placeholder={!isFocus ? 'Select Address' : '...'}
+                        searchPlaceholder="Search..."
+                        value={billingAddress}
+                        onChange={item => {
+                            setBillingAddress(item.addressLine1);
+                        }}
+                    />
+                </View>
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Text style={styles.label}>
+                        Shipping Address
+                    </Text>
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={shippingAddressList || []}
+                        search
+                        maxHeight={300}
+                        labelField="addressLine1"
+                        valueField="addressLine1"
+                        placeholder={!isFocus ? 'Select Address' : '...'}
+                        searchPlaceholder="Search..."
+                        value={shippingAddress}
+                        onChange={item => {
+                            setShippingAddress(item.addressLine1);
+                        }}
+                    />
+                </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Button onPress={() => showDatepicker('deliveryDate')} title="Exp. Delivery Date" />
+                    <Text>{deliveryDate.toString()}</Text>
+                </View>
+                <View style={[styles.container, { width: '50%' }]}>
+                    <Button onPress={() => showDatepicker('expiryDate')} title="Expiry Date" />
+                    <Text>{expiryDate.toString()}</Text>
+                </View>
+                {show && (
+                    <RNDateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                    />
+                )}
+            </View>
+            <View style={styles.container}>
+                <Button onPress={onShowPopup} title="Add Items Detail" color='white' trailing={props => (
+                    <IconButton icon={props => <Icon onPress={onShowPopup} style={{ color: '#00a7e5' }} name="plus" {...props} />} {...props} />
+                )} />
+                <ProductModal
+                    ref={(target) => popupRef = target}
+                    onTouchOutside={onClosePopup}
+                    title="Products"
+                    addProducts={addProducts}
+                />
+            </View>
+            <View style={{ maxHeight: 500,paddingBottom:30 }}>
+                <ScrollView>
+                    {selectedProductList && selectedProductList.map((list) => (
+                        <Card style={{ marginVertical: 2 }} key={list.productCode}>
+                            <Card.Content>
+                                <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ width: '50%' }}>
+                                        <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
+                                        <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
+                                        <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].purchasePrice)} </Text></Text>
+                                    </View>
+                                    <View style={{ width: '50%' }}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Button color='#fff' title='-' onPress={handelDecreament} />
+                                            <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{quantity}</Text>
+                                            <Button color='#fff' title='+' onPress={handelIncreament} />
+                                        </View>
+                                        <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(1234)}</Text></Text>
+                                    </View>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    ))}
+                </ScrollView>
                 <View style={styles.container}>
-                    <Button onPress={() => { alert('sdhfisufosa') }} title="Generate Purchase Order" color='#00a7e5' trailing={props => (
+                    <Button onPress={() => { alert('sdhfisufosa') }} title="Preview Purchase Order" color='#00a7e5' trailing={props => (
                         <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="plus" {...props} />} {...props} />
                     )} />
                 </View>
-            </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }
