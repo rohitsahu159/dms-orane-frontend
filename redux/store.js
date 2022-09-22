@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { buyerReducer } from './buyerReducer/reducer';
-import { productReducer } from './productReducer/reducer';
-import { poDetailReducer, poMasterDataReducer, poReducer } from './purchaseReducer/reducer';
-import { sellerReducer } from './sellerReducer/reducer';
-import { soReducer,soDetailReducer } from './salesReducer/reducer';
-import { authReducer, messageReducer } from './userReducer/reducer';
+import { buyerReducer } from './reducers/buyerReducer';
+import { productReducer } from './reducers/productReducer';
+import { poDetailReducer, poMasterDataReducer, poReducer } from './reducers/purchaseReducer';
+import { sellerReducer } from './reducers/sellerReducer';
+import { soReducer, soDetailReducer } from './reducers/salesReducer';
+import { authReducer, messageReducer } from './reducers/userReducer';
 
 const store = configureStore({
     reducer: {
@@ -13,10 +13,10 @@ const store = configureStore({
         poDetail: poDetailReducer,
         sellerList: sellerReducer,
         masterData: poMasterDataReducer,
-        buyerData:buyerReducer,
-        products:productReducer,
-        soList:soReducer,
-        soDetail:soDetailReducer,
+        buyerData: buyerReducer,
+        products: productReducer,
+        soList: soReducer,
+        soDetail: soDetailReducer,
     }
 })
 
