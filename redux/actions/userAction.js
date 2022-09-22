@@ -1,14 +1,13 @@
 import axios from "axios";
 import { ActionSheetIOS } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const serverUrl = "http://103.107.67.49:8080/api/v2"
+import { urlConstants } from "../constants"
 
 export const login = (bodyData) => async (dispatch) => {
     try {
         dispatch({ type: "loginRequest" })
 
-        const { data } = await axios.post(`${serverUrl}/authentications`, JSON.stringify(bodyData), {
+        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/authentications`, JSON.stringify(bodyData), {
             headers: {
                 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
             }

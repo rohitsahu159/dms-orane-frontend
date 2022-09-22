@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
 import { round } from 'lodash';
-import { getPODetail } from '../../redux/purchaseAction/action';
+import { getPODetail } from '../../redux/actions/purchaseAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';

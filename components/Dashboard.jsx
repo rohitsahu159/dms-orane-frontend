@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createMaterialTopTabNavigator();
 
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const data = {
     labels: ["January", "February", "March", "April", "May", "June"],
@@ -111,7 +112,7 @@ const KpiAnalysis = () => {
                     hideLegend={false}
                 />
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30, }}>
+            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -204,7 +205,7 @@ const OverView = () => {
                     chartConfig={chartConfig}
                 />
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30, }}>
+            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -299,7 +300,7 @@ const Inventory = () => {
                     bezier
                 />
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30, }}>
+            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -390,7 +391,7 @@ const FillRate = () => {
                     chartConfig={chartConfig}
                 />
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30, }}>
+            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -482,7 +483,7 @@ const PurchaseValue = () => {
                 />
 
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30, }}>
+            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -574,6 +575,18 @@ const Dashboard = () => {
     return (
         <Tab.Navigator
             initialRouteName='kpiAnalysis'
+            screenOptions={({ route }) => ({
+                tabBarActiveTintColor: "blue",
+                tabBarInactiveTintColor: "#555",
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+                tabBarItemStyle: {
+                    width: 'auto',
+                    alignItems: 'flex-start',
+                },
+                tabBarScrollEnabled: true
+            })}
         >
             <Tab.Screen
                 name='kpiAnalysis'

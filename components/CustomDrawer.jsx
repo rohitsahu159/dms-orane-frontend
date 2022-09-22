@@ -3,7 +3,7 @@ import { View, Text, ImageBackground, Image, TouchableOpacity, Platform, StatusB
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from "../redux/userAction/action";
+import { logout } from "../redux/actions/userAction";
 
 const CustomDrawer = (props) => {
     const dispatch = useDispatch()

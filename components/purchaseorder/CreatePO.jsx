@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox, TextInput } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Button, IconButton } from '@react-native-material/core';
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { ProductModal } from '../modal/ProductModal';
-// import DatePicker from 'react-native-date-picker';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
-import { getSeller } from '../../redux/sellerAction/action';
-import { getPOMasterData } from '../../redux/purchaseAction/action';
-import { getBuyerById } from '../../redux/buyerAction/action';
+import { getSeller } from '../../redux/actions/sellerAction';
+import { createPO, getPOMasterData } from '../../redux/actions/purchaseAction';
+import { getBuyerById } from '../../redux/actions/buyerAction';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';
+import { getProducts } from '../../redux/actions/productAction';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Swipeable } from 'react-native-gesture-handler';
 
-const productList = [
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-    { price: [{ mrp: 0, purchasePrice: 0 }], productName: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', gst: 12 },
-]
+const deviceHeight = Dimensions.get('window').height
+
+const data = [
+    { id: 1, txt: 'React Native', isChecked: false },
+    { id: 2, txt: 'Javascript', isChecked: false },
+    { id: 3, txt: 'Laravel', isChecked: false },
+    { id: 4, txt: 'PHP', isChecked: false },
+    { id: 5, txt: 'jQuery', isChecked: false },
+    { id: 6, txt: 'Boostrap', isChecked: false },
+    { id: 7, txt: 'HTML', isChecked: false },
+];
 
 const CreatePO = () => {
     const dispatch = useDispatch()
@@ -37,25 +37,26 @@ const CreatePO = () => {
     const [billingAddress, setBillingAddress] = useState(null);
     const [shippingAddress, setShippingAddress] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
-    const [open, setOpen] = useState(false)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dateMode, setDateMode] = useState('');
     const [deliveryDate, setDeliveryDate] = useState(new Date());
     const [expiryDate, setExpiryDate] = useState(new Date());
+    const [quantity, setQuantity] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [products, setProducts] = useState([]);
     const [selectedProductList, setSelectedProductList] = useState([]);
-    const [quantity, setQuantity] = useState(1)
+    const [selectedSellerData, setSelectedSellerData] = useState({});
 
-    const { loading, user } = useSelector(state => state.auth)
+
+    const { user } = useSelector(state => state.auth)
 
     useEffect(() => {
-        if (user) {
-            dispatch(getSeller(`buyerReferenceId=${user.employerReferenceId}`))
-            dispatch(getBuyerById(user.employerReferenceId))
-        }
+        dispatch(getSeller(`buyerReferenceId=${user.employerReferenceId}`))
+        dispatch(getBuyerById(user.employerReferenceId))
         dispatch(getPOMasterData())
-    }, [dispatch])
+    }, [dispatch, loading])
 
     const { sellerList } = useSelector(state => state.sellerList)
     const { masterData } = useSelector(state => state.masterData)
@@ -99,26 +100,220 @@ const CreatePO = () => {
         showMode('date');
     };
 
-    let popupRef = React.createRef()
-
-    const onShowPopup = () => {
-        popupRef.show()
-    }
-
-    const onClosePopup = () => {
-        popupRef.close()
-    }
-
-    const addProducts = (data) => {
-        setSelectedProductList(data)
-    }
-
     const handelDecreament = () => {
         setQuantity(quantity - 1)
     }
-    const handelIncreament = () => {
-        setQuantity(quantity + 1)
+    const handelIncreament = (name, productCode) => {
+        let tempArr = selectedProductList.map((product) => {
+            if (productCode == product.productCode) {
+                let updatedQuantity = 0
+                if (name == 'increase') {
+                    updatedQuantity = product.orderedQuantity + 1
+                } else {
+                    updatedQuantity = product.orderedQuantity - 1
+                }
+
+                let grossValue = updatedQuantity * product.prcsWithoutGst
+                let primaryDiscountValue = (grossValue * product.primaryDiscountPercent) / 100
+                let netValue = grossValue - primaryDiscountValue
+                let taxValue = (netValue * product.taxPercent) / 100
+                let totalValue = netValue + taxValue
+                let discount = primaryDiscountValue
+                return {
+                    ...product,
+                    orderedQuantity: updatedQuantity,
+                    grossValue: grossValue,
+                    primaryDiscountValue: primaryDiscountValue,
+                    netValue: netValue,
+                    taxValue: taxValue,
+                    totalValue: totalValue,
+                    discount: discount
+                };
+            }
+            return product;
+        });
+        setSelectedProductList(tempArr)
     }
+
+    const openProductModal = async () => {
+        if (supplier == '') {
+            return alert('Please Select Supplier')
+        }
+        if (products.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 25,
+                "sellerRole": selectedSellerData.userRole,
+                "buyerRole": buyerData.userRole,
+                "buyerState": buyerData.address[0].state,
+                "buyerUserId": buyerData.userId,
+                "hierarchyId": buyerData.hierarchyId,
+                "inventoryReferenceId": user.employerUserId,
+                "sortArray": [],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": selectedSellerData.id,
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+            let data = await dispatch(getProducts(bodyData))
+            const arr = data.data.productPrice.map(e => {
+                let sgstPercent = 0
+                let cgstPercent = 0
+                let igstPercent = 0
+                let ugstPercent = 0
+                if (selectedSellerData.address.state == buyerData.address[0].state) {
+                    sgstPercent = e.gst / 2;
+                    cgstPercent = e.gst / 2;
+                    igstPercent = 0;
+                } else {
+                    igstPercent = e.gst;
+                    cgstPercent = 0;
+                    sgstPercent = 0;
+                }
+                return {
+                    ...e,
+                    isChecked: false,
+                    caseBoxQty: 0,
+                    pcsQty: 0,
+                    orderedQuantity: 0,
+                    mrp: e.price[0].mrp,
+                    prcsWithoutGst: e.price[0].purchasePrice / (1 + (e.gst / 100)),
+                    purchasePrice: e.price[0].purchasePrice,
+                    grossValue: 0,
+                    primaryDiscountPercent: 0,
+                    primaryDiscountValue: 0,
+                    netValue: 0,
+                    taxPercent: e.gst,
+                    taxValue: 0,
+                    totalValue: 0,
+                    salesUnit: 'PCS',
+                    pcsPerBox: e.standardUnitConversionFactor,
+                    sgstPercent: sgstPercent,
+                    cgstPercent: cgstPercent,
+                    igstPercent: igstPercent,
+                    ugstPercent: ugstPercent,
+                    discount: 0
+                }
+            });
+            setProducts(arr)
+        }
+        setModalVisible(!modalVisible)
+    }
+
+    const { loading } = useSelector(state => state.products)
+
+    const handleChange = (productCode) => {
+        let temp = products.map((product) => {
+            if (productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setProducts(temp);
+
+        let selected = temp.filter((product) => product.isChecked);
+        setSelectedProductList(selected)
+    };
+
+    const onSelectSuplier = (data) => {
+        setSelectedSellerData(data)
+        setSupplier(data.companyName)
+        setProducts([])
+        setSelectedProductList([])
+    }
+
+    const submitPO = async () => {
+        let lineItemArr = await selectedProductList.map(items => _.pick(items, ['productCode', 'productName', 'purchasePrice', 'orderedQuantity',
+            'salesUnit', 'pcsPerBox', 'mrp', 'taxPercent', 'totalValue', 'netValue', 'grossValue', 'taxValue', 'sgstPercent', 'cgstPercent',
+            'igstPercent', 'ugstPercent', 'discount']))
+
+        let bodyData = {
+            sellerUserId: selectedSellerData.userId,
+            sellerState: selectedSellerData.address.state,
+            sellerFirmName: selectedSellerData.companyName,
+            sellerRole: selectedSellerData.userRole,
+            sellerPhoneNumber: selectedSellerData.employee == null ? null : selectedSellerData.employee.phoneNumber,
+            sellerGstinNumber: selectedSellerData.gstinNumber,
+            buyerPanNumber: buyerData.panNumber,
+            buyerUserId: buyerData.userId,
+            buyerSapCode: buyerData.externalReferenceId,
+            buyerFirmName: buyerData.companyName,
+            buyerPhoneNumber: buyerData.employee.phoneNumber,
+            buyerContactName: buyerData.employee.contactPerson,
+            buyerCity: buyerData.address[0].city,
+            buyerPincode: buyerData.address[0].pincode,
+            buyerState: buyerData.address[0].state,
+            buyerRole: buyerData.userRole,
+            buyerShippingAddress: shippingAddress,
+            buyerBillingAddress: billingAddress,
+            netValue: _.sumBy(lineItemArr, function (o) { return o.netValue }),
+            grossValue: _.sumBy(lineItemArr, function (o) { return o.grossValue }),
+            totalValue: _.sumBy(lineItemArr, function (o) { return o.totalValue }),
+            taxValue: _.sumBy(lineItemArr, function (o) { return o.taxValue }),
+            orderType: orderType,
+            paymentTerm: paymentTerm,
+            shipmentMode: null,
+            expectedDeliveryDate: Number(deliveryDate),
+            orderDateTime: Number(new Date()),
+            expiryDateTime: Number(expiryDate),
+            hierarchyId: buyerData.hierarchyId,
+            lineItems: lineItemArr,
+        };
+
+        console.log("bodyData: ", bodyData)
+        // dispatch(createPO(bodyData))
+    }
+
+    const leftSwipe = () => {
+        return <View style={styles.deleteBox}>
+            <Icon name="trash" size={30} color="#900" />
+        </View>
+    }
+
+    const renderFlatList = (renderData) => {
+        return (
+            <FlatList
+                data={renderData}
+                renderItem={({ item }) => (
+                    <Card style={{ margin: 5 }}>
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Pressable onPress={() => handleChange(item.productCode)} >
+                                    <MaterialCommunityIcons
+                                        name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={24} color="#000" />
+                                </Pressable>
+                                <Text style={{ color: '#00a7e5', marginLeft: 15 }}>{item.productName}</Text>
+                            </View>
+
+                        </View>
+                        <View style={{ marginLeft: 40 }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>MRP:</Text >
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].mrp)}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>GST :</Text >
+                                <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text>Purchase Price:</Text >
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].purchasePrice)}</Text>
+                            </View>
+                        </View>
+                    </Card>
+                )}
+            />
+        );
+    }
+
 
     return (
         loading ? <Loader /> : <SafeAreaView>
@@ -143,10 +338,11 @@ const CreatePO = () => {
                     value={supplier}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={item => {
-                        setSupplier(item.companyName);
-                        setIsFocus(false);
-                    }}
+                    // onChange={item => {
+                    //     setSupplier(item.companyName);
+                    //     setIsFocus(false);
+                    // }}
+                    onChange={item => { onSelectSuplier(item) }}
                     renderLeftIcon={() => (
                         <AntDesign
                             style={styles.icon}
@@ -256,11 +452,11 @@ const CreatePO = () => {
             <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.container, { width: '50%' }]}>
                     <Button onPress={() => showDatepicker('deliveryDate')} title="Exp. Delivery Date" />
-                    <Text>{deliveryDate.toString()}</Text>
+                    <Text style={{ textAlign: 'center' }}>{deliveryDate.toDateString()}</Text>
                 </View>
                 <View style={[styles.container, { width: '50%' }]}>
                     <Button onPress={() => showDatepicker('expiryDate')} title="Expiry Date" />
-                    <Text>{expiryDate.toString()}</Text>
+                    <Text style={{ textAlign: 'center' }}>{expiryDate.toDateString()}</Text>
                 </View>
                 {show && (
                     <RNDateTimePicker
@@ -274,46 +470,65 @@ const CreatePO = () => {
                 )}
             </View>
             <View style={styles.container}>
-                <Button onPress={onShowPopup} title="Add Items Detail" color='white' trailing={props => (
-                    <IconButton icon={props => <Icon onPress={onShowPopup} style={{ color: '#00a7e5' }} name="plus" {...props} />} {...props} />
-                )} />
-                <ProductModal
-                    ref={(target) => popupRef = target}
-                    onTouchOutside={onClosePopup}
-                    title="Products"
-                    addProducts={addProducts}
-                />
+                <Button onPress={() => openProductModal()} title="Add Items Detail" color='white' />
             </View>
-            <View style={{ maxHeight: 500,paddingBottom:30 }}>
+
+            <View>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible)
+                    }}
+                    head
+                >
+                    <View style={styles.modal}>
+                        <View style={{ flexDirection: 'row', margin: 15 }}>
+                            <Text style={{ width: '50%', fontWeight: 'bold', fontSize: 25, color: 'green' }}>
+                                Products
+                            </Text>
+                            <Text style={{ right: 0, position: 'absolute' }}>
+                                <Icon name="arrow-left" onPress={() => { setModalVisible(!modalVisible) }} size={30} color="#900" />
+                            </Text>
+                        </View>
+
+                        {loading ? <Loader /> : <View style={{ flex: 1 }}>
+                            {renderFlatList(products)}
+                        </View>}
+                    </View>
+                </Modal>
+            </View>
+            <View style={{ maxHeight: 500, paddingBottom: 30 }}>
                 <ScrollView>
                     {selectedProductList && selectedProductList.map((list) => (
-                        <Card style={{ marginVertical: 2 }} key={list.productCode}>
-                            <Card.Content>
-                                <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ width: '50%' }}>
-                                        <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
-                                        <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
-                                        <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].purchasePrice)} </Text></Text>
-                                    </View>
-                                    <View style={{ width: '50%' }}>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <Button color='#fff' title='-' onPress={handelDecreament} />
-                                            <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{quantity}</Text>
-                                            <Button color='#fff' title='+' onPress={handelIncreament} />
+                        <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
+                            <Card style={{ marginVertical: 2 }}>
+                                <Card.Content>
+                                    <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ width: '50%' }}>
+                                            <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
+                                            <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
+                                            <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
                                         </View>
-                                        <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(1234)}</Text></Text>
+                                        <View style={{ width: '50%' }}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Button color='#fff' title='-' onPress={() => { handelIncreament('decrease', list.productCode) }} />
+                                                <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
+                                                <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
+                                            </View>
+                                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
+                                        </View>
                                     </View>
-                                </View>
-                            </Card.Content>
-                        </Card>
+                                </Card.Content>
+                            </Card>
+                        </Swipeable>
                     ))}
                 </ScrollView>
-                <View style={styles.container}>
-                    <Button onPress={() => { alert('sdhfisufosa') }} title="Preview Purchase Order" color='#00a7e5' trailing={props => (
-                        <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="plus" {...props} />} {...props} />
-                    )} />
-                </View>
+                {selectedProductList.length != 0 && <View style={styles.container}>
+                    <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
+                </View>}
             </View>
         </SafeAreaView>
     )
@@ -357,6 +572,42 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
+    modalContainer: {
+        justifyContent: 'flex-end',
+        // backgroundColor: '#000000AA',
+        height: deviceHeight * .8,
+    },
+    modal: {
+
+        height: deviceHeight * 1,
+        backgroundColor: '#FFFFFF',
+        width: '100%',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+    },
+    card: {
+        // padding: 10,
+        // margin: 5,
+        // flexDirection: 'row',
+        // justifyContent: 'space-between',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        elevation: 5,
+    },
+    text: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    deleteBox:{
+        justifyContent:'center',
+        margin:30
+    }
 });
 
 export default CreatePO

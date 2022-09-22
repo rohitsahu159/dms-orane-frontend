@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useSelector, useDispatch } from 'react-redux';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import { round, inr } from 'lodash';
-import { getSOList } from '../../redux/salesAction/action'
+import { getSOList } from '../../redux/actions/salesAction'
 import Loader from '../Loader';
 import { inrFormat } from '../../redux/constants';
 const Tab = createMaterialTopTabNavigator();

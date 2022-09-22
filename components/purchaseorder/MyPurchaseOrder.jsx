@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { getPOList } from '../../redux/purchaseAction/action'
+import { getPOList } from '../../redux/actions/purchaseAction'
 import { round } from 'lodash';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +11,6 @@ import { inrFormat } from '../../redux/constants';
 const Tab = createMaterialTopTabNavigator();
 
 const ApprovedPO = ({ navigation }) => {
-    // const { loading } = useSelector(state => state.auth)
     const { poList, loading } = useSelector(state => state.poList)
 
     let approvedPO = []
@@ -28,45 +27,6 @@ const ApprovedPO = ({ navigation }) => {
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
                 {approvedPO && approvedPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-        </SafeAreaView>
-    )
-}
-
-const PendingPO = ({ navigation }) => {
-    // const { loading } = useSelector(state => state.auth)
-    const { poList, loading } = useSelector(state => state.poList)
-
-    let pendingPO = []
-    if (poList) {
-        pendingPO = poList.filter(function (li) {
-            return li.status == "PENDING_FOR_APPROVAL"
-        })
-    }
-
-
-    const inrDateFormatNoTime = (date) =>
-        new Date(date).toLocaleString("en-IN");
-
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
-                {pendingPO && pendingPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -126,6 +86,270 @@ const RejectedPO = ({ navigation }) => {
     )
 }
 
+const PendingForApprovalPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let pendingForApprovalPO = []
+    if (poList) {
+        pendingForApprovalPO = poList.filter(function (li) {
+            return li.status == "PENDING_FOR_APPROVAL"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {pendingForApprovalPO && pendingForApprovalPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+const InProgressPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let inProgressPO = []
+    if (poList) {
+        inProgressPO = poList.filter(function (li) {
+            return li.status == "IN_PROGRESS"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {inProgressPO && inProgressPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+
+const SoCreatedPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let soCreatedPO = []
+    if (poList) {
+        soCreatedPO = poList.filter(function (li) {
+            return li.status == "SO_CREATED"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {soCreatedPO && soCreatedPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+
+const DeliveredPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let deliveredPO = []
+    if (poList) {
+        deliveredPO = poList.filter(function (li) {
+            return li.status == "DELIVERED"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {deliveredPO && deliveredPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+
+const PartialdPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let partialdPO = []
+    if (poList) {
+        partialdPO = poList.filter(function (li) {
+            return li.status == "PARTIAL"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {partialdPO && partialdPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+
+const PartialDeliveredPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let partialDeliveredPO = []
+    if (poList) {
+        partialDeliveredPO = poList.filter(function (li) {
+            return li.status == "PARTIALLY_DELIVERED"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {partialDeliveredPO && partialDeliveredPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+
+const CompletedPO = ({ navigation }) => {
+    const { poList, loading } = useSelector(state => state.poList)
+
+    let completedPO = []
+    if (poList) {
+        completedPO = poList.filter(function (li) {
+            return li.status == "COMPLETED"
+        })
+    }
+
+    const inrDateFormatNoTime = (date) =>
+        new Date(date).toLocaleString("en-IN");
+
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <ScrollView>
+                {completedPO && completedPO.map((list, i) => (
+                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                        <View style={styles.container}>
+                            <View style={styles.item}>
+                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
 
 const MyPurchaseOrder = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -158,39 +382,87 @@ const MyPurchaseOrder = ({ navigation }) => {
     const { loading, user } = useSelector(state => state.auth)
 
     return (
-        loading ? <Loader /> : <Tab.Navigator
-            initialRouteName='approvedPO'
-            screenOptions={({ route }) => ({
-                tabBarActiveTintColor: "blue",
-                tabBarInactiveTintColor: "#555",
-                tabBarLabelStyle: {
-                    fontSize: 12,
-                },
-            })}
-        >
-            <Tab.Screen
-                name='approvedPO'
-                component={ApprovedPO}
-                options={{
-                    title: "Approved"
-                }}
-            />
-            <Tab.Screen
-                name='pendingPO'
-                component={PendingPO}
-                data="gggkgkgkghkg"
-                options={{
-                    title: "Pending"
-                }}
-            />
-            <Tab.Screen
-                name='rejectedPO'
-                component={RejectedPO}
-                options={{
-                    title: "Rejected"
-                }}
-            />
-        </Tab.Navigator>
+        loading ? <Loader /> :
+            <Tab.Navigator
+                initialRouteName='pendingForApprovalPO'
+                screenOptions={({ route }) => ({
+                    tabBarActiveTintColor: "blue",
+                    tabBarInactiveTintColor: "#555",
+                    tabBarLabelStyle: {
+                        fontSize: 12,
+                    },
+                    tabBarItemStyle: {
+                        width: 'auto',
+                        alignItems: 'flex-start',
+                    },
+                    tabBarScrollEnabled: true
+                })}
+            >
+                 <Tab.Screen
+                    name='pendingForApprovalPO'
+                    component={PendingForApprovalPO}
+                    options={{
+                        title: "Pending For Approval"
+                    }}
+                />
+                <Tab.Screen
+                    name='approvedPO'
+                    component={ApprovedPO}
+                    options={{
+                        title: "Approved"
+                    }}
+                />
+                <Tab.Screen
+                    name='rejectedPO'
+                    component={RejectedPO}
+                    options={{
+                        title: "Rejected"
+                    }}
+                />
+               
+                <Tab.Screen
+                    name='inProgressPO'
+                    component={InProgressPO}
+                    options={{
+                        title: "In Progress"
+                    }}
+                />
+                <Tab.Screen
+                    name='soCreatedPO'
+                    component={SoCreatedPO}
+                    options={{
+                        title: "So Created"
+                    }}
+                />
+                <Tab.Screen
+                    name='deliveredPO'
+                    component={DeliveredPO}
+                    options={{
+                        title: "Delivered"
+                    }}
+                />
+                  <Tab.Screen
+                    name='partialdPO'
+                    component={PartialdPO}
+                    options={{
+                        title: "Partial"
+                    }}
+                />
+                  <Tab.Screen
+                    name='partialDeliveredPO'
+                    component={PartialDeliveredPO}
+                    options={{
+                        title: "Partial Delivered"
+                    }}
+                />
+                  <Tab.Screen
+                    name='completedPO'
+                    component={CompletedPO}
+                    options={{
+                        title: "Completed"
+                    }}
+                />
+            </Tab.Navigator>
     );
 }
 

@@ -11,7 +11,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from './screens/Home';
 import Setting from './screens/Setting';
 import Login from './screens/Login';
-// import { login } from './redux/loginAction/action';
 import Register from './screens/Register';
 import ForgotPassword from './screens/ForgotPassword';
 import CustomDrawer from './components/CustomDrawer';

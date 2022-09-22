@@ -1,7 +1,7 @@
 import { Text, View, Modal, Dimensions, TouchableWithoutFeedback, StyleSheet, ScrollView } from 'react-native'
 import React, { Component } from 'react'
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
-import { getProducts } from '../../redux/productAction/action';
+import { getProducts } from '../../redux/actions/productAction';
 import axios from "axios"
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
 import { inrFormat, urlConstants } from '../../redux/constants';
@@ -21,43 +21,46 @@ export class ProductModal extends Component {
     }
 
     async componentDidMount() {
-        let bodyData = {
-            "pageNumber": 0,
-            "pageSize": 99999,
-            "sellerRole": "WAREHOUSE",
-            "buyerRole": "SUPER_DISTRIBUTOR",
-            "buyerState": "Jharkhand",
-            "buyerUserId": "1100072",
-            "hierarchyId": "8d35fe3c-cca8-40d9-8969-aa6f2bd4bf8e",
-            "inventoryReferenceId": "1100072",
-            "sortArray": [
+        if (this.state.productList.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 10,
+                "sellerRole": "WAREHOUSE",
+                "buyerRole": "SUPER_DISTRIBUTOR",
+                "buyerState": "Jharkhand",
+                "buyerUserId": "1100072",
+                "hierarchyId": "8d35fe3c-cca8-40d9-8969-aa6f2bd4bf8e",
+                "inventoryReferenceId": "1100072",
+                "sortArray": [
 
-            ],
-            "searchCriteria": [
-                {
-                    "key": "sellerId",
-                    "value": "3d6e1017-218c-4059-8f1d-880396243977",
-                    "operation": "EQUAL"
-                },
-                {
-                    "key": "isActive",
-                    "value": true,
-                    "operation": "EQUAL"
+                ],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": "3d6e1017-218c-4059-8f1d-880396243977",
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+
+            const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/products/price/filtered`, JSON.stringify(bodyData), {
+                headers: {
+                    'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
                 }
-            ]
+            })
+
+            let productList = await data.data.productPrice
+            // productList.forEach(function (element, index) {
+            //     element.checked = true
+            // });
+            this.setState({ productList })
         }
 
-        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/products/price/filtered`, JSON.stringify(bodyData), {
-            headers: {
-                'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
-            }
-        })
-
-        let productList = await data.data.productPrice
-        // productList.forEach(function (element, index) {
-        //     element.checked = true
-        // });
-        this.setState({ productList })
     }
 
     show = () => {
@@ -76,7 +79,7 @@ export class ProductModal extends Component {
                 if (productList[i].checked == undefined || productList[i].checked == false) {
                     productList[i].checked = true
                 } else {
-                productList[i].checked = false
+                    productList[i].checked = false
                 }
             }
         }
@@ -121,7 +124,7 @@ export class ProductModal extends Component {
 
                                 <View style={{ flexDirection: 'row', marginTop: -15 }}>
                                     <Checkbox
-                                        status={list.checked ? 'checked': 'unchecked'}
+                                        status={list.checked ? 'checked' : 'unchecked'}
                                         onPress={() => this.selectPO(list)}
                                     />
                                     <Title style={{ color: '#00a7e5', fontSize: 17 }}>{list.productName}</Title>

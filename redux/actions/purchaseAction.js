@@ -38,3 +38,19 @@ export const getPOMasterData = () => async (dispatch) => {
         dispatch({ type: "poMasterDataFailure", payload: error.response.data.message });
     }
 };
+
+export const createPO = (bodyData) => async (dispatch) => {
+    try {
+        dispatch({ type: "createPORequest" })
+
+        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/purchaseorder`, JSON.stringify(bodyData), {
+            headers: {
+                'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        dispatch({ type: "createPOSuccess", payload: data })
+    } catch (error) {
+        dispatch({ type: "createPOFailure", payload: error.response.data.message })
+    }
+}

@@ -1,12 +1,11 @@
 import axios from "axios"
-
-const serverUrl = "http://103.107.67.49:8080/api/v2"
+import { urlConstants } from "../constants"
 
 export const getSOList = (bodyData) => async (dispatch) => {
     try {
         dispatch({ type: "salesOrderRequest" })
 
-        const { data } = await axios.post(`${serverUrl}/salesorder/filtered`, JSON.stringify(bodyData), {
+        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/salesorder/filtered`, JSON.stringify(bodyData), {
             headers: {
                 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
             }
@@ -16,6 +15,7 @@ export const getSOList = (bodyData) => async (dispatch) => {
         dispatch({ type: "salesOrderFailure", payload: error.response.data.message })
     }
 }
+
 export const getSODetail = (id) => async (dispatch) => {
     try {
         dispatch({ type: "soDetailRequest" });

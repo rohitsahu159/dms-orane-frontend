@@ -12,6 +12,10 @@ export const getProducts = (bodyData) => async (dispatch) => {
         })
 
         dispatch({ type: "productSuccess", payload: data })
+        // let temp = data.data.productPrice.forEach(function (element, index) {
+        //     element.isChecked = true
+        // });
+        return data
     } catch (error) {
         dispatch({ type: "productFailure", payload: error.response.data.message })
     }

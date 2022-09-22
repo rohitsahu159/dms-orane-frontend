@@ -77,3 +77,29 @@ export const poMasterDataReducer = createReducer(
         },
     }
 );
+
+export const createPOReducer = createReducer(
+    {},
+    {
+        createPORequest: (state) => {
+            state.loading = true;
+            state.poList = [];
+        },
+        createPOSuccess: (state, action) => {
+            state.loading = false;
+            state.poList = action.payload.data;
+        },
+        createPOFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
