@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Image } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
@@ -7,6 +7,8 @@ import { login } from '../redux/actions/userAction';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const { height, width } = Dimensions.get('window')
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -17,6 +19,8 @@ const Login = () => {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("")
     const [checked, setChecked] = React.useState(false);
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+    const [rightIcon, setRightIcon] = useState('eye');
 
     const loginHandler = () => {
         let bodyData = {
@@ -32,12 +36,22 @@ const Login = () => {
         }
     }, [alert, dispatch, error])
 
+    const handlePasswordVisibility = () => {
+        if (rightIcon === 'eye') {
+            setRightIcon('eye-off');
+            setPasswordVisibility(!passwordVisibility);
+        } else if (rightIcon === 'eye-off') {
+            setRightIcon('eye');
+            setPasswordVisibility(!passwordVisibility);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={{ justifyContent: 'center', width: '100%' }}>
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>
-            <View style={{ width: '80%',marginVertical:50}}>
+            <View style={{ width: '80%', marginVertical: 40 }}>
                 <Text style={{ fontSize: 40, color: '#00a7e5' }}>LOGIN</Text>
             </View>
             <View style={{ width: '80%' }}>
@@ -58,12 +72,13 @@ const Login = () => {
                     placeholder="Enter User Password"
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry={passwordVisibility}
                     trailing={props => (
-                        <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} name="lock" {...props} />} {...props} />
+                        <IconButton icon={props => <Icon style={{ color: '#00a7e5' }} onPress={() => { handlePasswordVisibility() }} name={rightIcon} {...props} />} {...props} />
                     )}
                 />
             </View>
-            <View style={{ flexDirection: 'row', width:'80%' }}>
+            <View style={{ flexDirection: 'row', width: '80%' }}>
                 <View style={{ width: '30%', flexDirection: 'row' }}>
                     <Text style={{ marginTop: 10 }}>Remember me</Text>
                     <Checkbox
@@ -89,11 +104,10 @@ const Login = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        // backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 100
+        height: height,
+        width: width
     },
     icon: {
         height: 150,

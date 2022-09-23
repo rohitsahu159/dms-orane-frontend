@@ -26,7 +26,7 @@ const ApprovedPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {approvedPO && approvedPO.map((list, i) => (
+                {approvedPO.length != 0 ? approvedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -41,7 +41,10 @@ const ApprovedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -65,7 +68,7 @@ const RejectedPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {rejectedPO && rejectedPO.map((list, i) => (
+                {rejectedPO.length != 0 ? rejectedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -80,7 +83,10 @@ const RejectedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -102,7 +108,7 @@ const PendingForApprovalPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {pendingForApprovalPO && pendingForApprovalPO.map((list, i) => (
+                {pendingForApprovalPO.length != 0 ? pendingForApprovalPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -117,7 +123,10 @@ const PendingForApprovalPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -139,7 +148,7 @@ const InProgressPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {inProgressPO && inProgressPO.map((list, i) => (
+                {inProgressPO.length != 0 ? inProgressPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -154,7 +163,11 @@ const InProgressPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>
+                }
             </ScrollView>
         </SafeAreaView>
     )
@@ -177,7 +190,7 @@ const SoCreatedPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {soCreatedPO && soCreatedPO.map((list, i) => (
+                {soCreatedPO.length != 0 ? soCreatedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -192,7 +205,10 @@ const SoCreatedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -215,7 +231,7 @@ const DeliveredPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {deliveredPO && deliveredPO.map((list, i) => (
+                {deliveredPO.length != 0 ? deliveredPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -230,7 +246,10 @@ const DeliveredPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -253,7 +272,7 @@ const PartialdPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {partialdPO && partialdPO.map((list, i) => (
+                {partialdPO.length != 0 ? partialdPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -268,7 +287,10 @@ const PartialdPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -291,7 +313,7 @@ const PartialDeliveredPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {partialDeliveredPO && partialDeliveredPO.map((list, i) => (
+                {partialDeliveredPO.length != 0 ? partialDeliveredPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -306,7 +328,10 @@ const PartialDeliveredPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -329,7 +354,7 @@ const CompletedPO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
             <ScrollView>
-                {completedPO && completedPO.map((list, i) => (
+                {completedPO.length != 0 ? completedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
@@ -344,7 +369,10 @@ const CompletedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                ))}
+                )) :
+                    <View style={styles.container}>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                    </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -398,7 +426,7 @@ const MyPurchaseOrder = ({ navigation }) => {
                     tabBarScrollEnabled: true
                 })}
             >
-                 <Tab.Screen
+                <Tab.Screen
                     name='pendingForApprovalPO'
                     component={PendingForApprovalPO}
                     options={{
@@ -419,7 +447,7 @@ const MyPurchaseOrder = ({ navigation }) => {
                         title: "Rejected"
                     }}
                 />
-               
+
                 <Tab.Screen
                     name='inProgressPO'
                     component={InProgressPO}
@@ -441,21 +469,21 @@ const MyPurchaseOrder = ({ navigation }) => {
                         title: "Delivered"
                     }}
                 />
-                  <Tab.Screen
+                <Tab.Screen
                     name='partialdPO'
                     component={PartialdPO}
                     options={{
                         title: "Partial"
                     }}
                 />
-                  <Tab.Screen
+                <Tab.Screen
                     name='partialDeliveredPO'
                     component={PartialDeliveredPO}
                     options={{
                         title: "Partial Delivered"
                     }}
                 />
-                  <Tab.Screen
+                <Tab.Screen
                     name='completedPO'
                     component={CompletedPO}
                     options={{

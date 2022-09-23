@@ -13,7 +13,7 @@ export const login = (bodyData) => async (dispatch) => {
             }
         })
 
-        AsyncStorage.setItem('user', JSON.stringify(data))
+        // AsyncStorage.setItem('user', JSON.stringify(data))
         dispatch({ type: "loginSuccess", payload: data })
     } catch (error) {
         dispatch({ type: "loginFailure", payload: error.response.data.message })
@@ -22,5 +22,5 @@ export const login = (bodyData) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
         dispatch({ type: "logoutSuccess" });
-        AsyncStorage.setItem('user', null)
+        // AsyncStorage.setItem('user', null)
 };

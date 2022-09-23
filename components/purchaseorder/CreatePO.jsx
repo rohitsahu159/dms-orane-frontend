@@ -136,7 +136,7 @@ const CreatePO = () => {
     }
 
     const openProductModal = async () => {
-        if (supplier == '') {
+        if (supplier == null) {
             return alert('Please Select Supplier')
         }
         if (products.length == 0) {
@@ -272,10 +272,52 @@ const CreatePO = () => {
         // dispatch(createPO(bodyData))
     }
 
-    const leftSwipe = () => {
-        return <View style={styles.deleteBox}>
-            <Icon name="trash" size={30} color="#900" />
-        </View>
+
+
+    const ItemBox = (props) => {
+        let list = props.data.item
+        const leftSwipe = () => {
+            return <View style={styles.deleteBox}>
+                <Icon onPress={props.handelDelete} name="trash" size={30} color="#900" />
+            </View>
+        }
+        return (
+            <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
+                <Card style={{ marginVertical: 2 }}>
+                    <Card.Content>
+                        <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ width: '50%' }}>
+                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
+                                <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
+                                <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
+                            </View>
+                            <View style={{ width: '50%' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Button color='#fff' title='-' onPress={() => { handelIncreament('decrease', list.productCode) }} />
+                                    <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
+                                    <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
+                                </View>
+                                <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
+                            </View>
+                        </View>
+                    </Card.Content>
+                </Card>
+            </Swipeable>
+        )
+    }
+
+    const deleteItem = async (lineItem) => {
+        let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.item.productCode })
+
+        let productsTempArr = await products.map((product) => {
+            if (lineItem.item.productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setProducts(productsTempArr);
+        setSelectedProductList(selectedTempArr)
     }
 
     const renderFlatList = (renderData) => {
@@ -500,8 +542,14 @@ const CreatePO = () => {
                 </Modal>
             </View>
             <View style={{ maxHeight: 500, paddingBottom: 30 }}>
-                <ScrollView>
-                    {selectedProductList && selectedProductList.map((list) => (
+                {/* <ScrollView> */}
+                <FlatList
+                    data={selectedProductList}
+                    renderItem={(item) => {
+                        return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
+                    }}
+                />
+                {/* {selectedProductList && selectedProductList.map((list) => (
                         <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
                             <Card style={{ marginVertical: 2 }}>
                                 <Card.Content>
@@ -524,8 +572,8 @@ const CreatePO = () => {
                                 </Card.Content>
                             </Card>
                         </Swipeable>
-                    ))}
-                </ScrollView>
+                    ))} */}
+                {/* </ScrollView> */}
                 {selectedProductList.length != 0 && <View style={styles.container}>
                     <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
                 </View>}
@@ -604,9 +652,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
-    deleteBox:{
-        justifyContent:'center',
-        margin:30
+    deleteBox: {
+        justifyContent: 'center',
+        margin: 30
     }
 });
 
