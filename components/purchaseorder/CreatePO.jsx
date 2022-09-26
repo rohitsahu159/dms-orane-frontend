@@ -290,7 +290,7 @@ const CreatePO = ({ navigation }) => {
 
         console.log("bodyData: ", bodyData)
         // dispatch(createPO(bodyData))
-        navigation.navigate('previewPO')
+        navigation.navigate('previewPO',{params:{data:bodyData}})
     }
 
     const ItemBox = (props) => {
