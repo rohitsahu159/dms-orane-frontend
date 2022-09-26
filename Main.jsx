@@ -28,6 +28,7 @@ import PurchaseDetail from './components/purchaseorder/PurchaseDetail';
 import SalesOrderDetail from './components/salesorder/salesOrderDetails';
 import CreatePO from './components/purchaseorder/CreatePO';
 import CreateSO from './components/salesorder/createSO';
+import Pdf from './components/pdf/Pdf';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -132,6 +133,10 @@ export default function Main() {
                      <Drawer.Screen name="salesOrderDetail" component={SalesOrderDetail} options={{
                         drawerItemStyle: { display: 'none' },
                         title: "Sales Order Detail"
+                    }} />
+                      <Drawer.Screen name="pdf" component={Pdf} options={{
+                        drawerItemStyle: { display: 'none' },
+                        title: "Pdf"
                     }} />
                 </Drawer.Navigator>
 
