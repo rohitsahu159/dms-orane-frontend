@@ -1,11 +1,25 @@
-import { View, Text } from 'react-native'
+import { View, Text,Button } from 'react-native'
 import React from 'react'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Setting = () => {
+const Setting = ({navigation}) => {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>HI, This is Setting</Text>
+            <Text>HI, This is Setting Page </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("pdf")}>
+
+                <Icon name="file-pdf-o" size={35} color="#FF0404" />
+
+                
+
+            </TouchableOpacity>
+          
+
         </View>
+                            
+            
+        
     )
 }
 
