@@ -9,7 +9,7 @@ export const sellerReducer = createReducer(
         },
         sellerSuccess: (state, action) => {
             state.loading = false;
-            state.sellerList = action.payload.data.sellers;
+            state.sellerList = action.payload;
         },
         sellerFailure: (state, action) => {
             state.loading = false;

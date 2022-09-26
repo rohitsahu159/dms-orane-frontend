@@ -6,15 +6,14 @@ export const getSeller = (referenceId) => async (dispatch) => {
         dispatch({ type: "sellerRequest" })
 
         const { data } = await axios.get(`${urlConstants.BASE_URI_DEV}/sellers?${referenceId}`)
-        // data.data.sellers.map(e => {
-        //     return {
-        //         ...e,
-        //         key: e.id,
-        //         value: e.companyName,
-        //     }
-        // });
-        // console.log(data)
-        dispatch({ type: "sellerSuccess", payload: data })
+        let temp = await data.data.sellers.map(e => {
+            return {
+                ...e,
+                key: e.id,
+                value: e.companyName,
+            }
+        });
+        dispatch({ type: "sellerSuccess", payload: temp })
     } catch (error) {
         dispatch({ type: "sellerFailure", payload: error.response.data.message })
     }

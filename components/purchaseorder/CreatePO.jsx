@@ -53,6 +53,7 @@ const CreatePO = ({ navigation }) => {
     const [productList, setProductList] = useState([])
     const [selectedSellerData, setSelectedSellerData] = useState({});
     const [search, setSearch] = useState('')
+    const [selected, setSelected] = React.useState("");
 
     const { user } = useSelector(state => state.auth)
 
@@ -70,17 +71,31 @@ const CreatePO = ({ navigation }) => {
     let billingAddressList = []
     let shippingAddressList = []
     if (masterData) {
-        orderTypeList = masterData.orderType
+        orderTypeList = masterData.orderType.map(e => {
+            return {
+                ...e,
+                key: e.orderType,
+                value: e.orderType,
+            }
+        });
     }
-    if (buyerData) {
-        billingAddressList = buyerData.address
-        shippingAddressList = buyerData.address
+    if (buyerData?.address != undefined) {
+        let tempAddr = buyerData.address.map(e => {
+            return {
+                ...e,
+                key: e.addressLine1,
+                value: e.addressLine1,
+            }
+        });
+
+        billingAddressList = tempAddr
+        shippingAddressList = tempAddr
     }
 
     let paymentTermList = [
-        { paymentTerm: 'PAYMENT IN ADVANCE' },
-        { paymentTerm: 'CASH ON DELIVERY' },
-        { paymentTerm: 'END OF THE MONTH' },
+        { key: 'PAYMENT IN ADVANCE', value: 'PAYMENT IN ADVANCE' },
+        { key: 'CASH ON DELIVERY', value: 'CASH ON DELIVERY' },
+        { key: 'END OF THE MONTH', value: 'END OF THE MONTH' },
     ]
 
     const onChange = (event, selectedDate) => {
@@ -242,10 +257,10 @@ const CreatePO = ({ navigation }) => {
         setSelectedProductList(selected)
     };
 
-    const onSelectSuplier = (data) => {
-        console.log(data)
-        setSelectedSellerData(data)
-        setSupplier(data.companyName)
+    const onSelectSuplier = (supplierId) => {
+        let obj = sellerList.find(o => o.id === supplierId);
+        setSelectedSellerData(obj)
+        setSupplier(obj.companyName)
         setProducts([])
         setSelectedProductList([])
     }
@@ -344,7 +359,7 @@ const CreatePO = ({ navigation }) => {
             <FlatList
                 data={renderData}
                 renderItem={({ item }) => (
-                    <Card style={{ margin: 5 }}>
+                    <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode)}>
                         <View>
                             <View style={{ flexDirection: 'row', width: '90%' }}>
                                 <Pressable onPress={() => handleChange(item.productCode)} >
@@ -380,143 +395,28 @@ const CreatePO = ({ navigation }) => {
     return (
         loading ? <Loader /> : <SafeAreaView style={{ height: height }}>
             <View style={styles.containner1}>
-                {/* <View style={styles.container}>
-                    <SelectList
-                        setSelected={setSupplier}
-                        data={sellerList || []}
-                        onSelect={item => { onSelectSuplier(item) }}
-                        placeholder='Select Supplier'
-                    />
-                </View> */}
                 <View style={styles.container}>
-                    <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-                        Supplier
-                    </Text>
-                    <Dropdown
-                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={sellerList || []}
-                        search
-                        maxHeight={300}
-                        labelField="companyName"
-                        valueField="companyName"
-                        placeholder={!isFocus ? 'Select Supplier' : '...'}
-                        searchPlaceholder="Search..."
-                        value={supplier}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        // onChange={item => {
-                        //     setSupplier(item.companyName);
-                        //     setIsFocus(false);
-                        // }}
-                        onChange={item => { onSelectSuplier(item) }}
-                        renderLeftIcon={() => (
-                            <AntDesign
-                                style={styles.icon}
-                                color={isFocus ? 'blue' : 'black'}
-                                name="user"
-                                size={20}
-                            />
-                        )}
-                    />
+                    <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Supplier</Text>
+                    <SelectList setSelected={setSupplier} data={sellerList || []} onSelect={() => { onSelectSuplier(supplier) }} />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Order Type
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={orderTypeList || []}
-                            search
-                            maxHeight={300}
-                            labelField="orderType"
-                            valueField="orderType"
-                            placeholder={!isFocus ? 'Select Order Type' : '...'}
-                            searchPlaceholder="Search..."
-                            value={orderType}
-                            onChange={item => {
-                                setOrderType(item.orderType);
-                            }}
-                        />
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Order Type</Text>
+                        <SelectList setSelected={setOrderType} data={orderTypeList || []} onSelect={() => setOrderType(orderType)} />
                     </View>
                     <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Paymnt Term
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={paymentTermList || []}
-                            search
-                            maxHeight={300}
-                            labelField="paymentTerm"
-                            valueField="paymentTerm"
-                            placeholder={!isFocus ? 'Select Payment Term' : '...'}
-                            searchPlaceholder="Search..."
-                            value={paymentTerm}
-                            onChange={item => {
-                                setPaymentTerm(item.paymentTerm);
-                            }}
-                        />
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Payment Term</Text>
+                        <SelectList setSelected={setPaymentTerm} data={paymentTermList || []} onSelect={() => setPaymentTerm(paymentTerm)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Billing Address
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={billingAddressList || []}
-                            search
-                            maxHeight={300}
-                            labelField="addressLine1"
-                            valueField="addressLine1"
-                            placeholder={!isFocus ? 'Select Address' : '...'}
-                            searchPlaceholder="Search..."
-                            value={billingAddress}
-                            onChange={item => {
-                                setBillingAddress(item.addressLine1);
-                            }}
-                        />
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Billing Address</Text>
+                        <SelectList setSelected={setBillingAddress} data={billingAddressList || []} onSelect={() => setBillingAddress(billingAddress)} />
                     </View>
                     <View style={[styles.container, { width: '50%' }]}>
-                        <Text style={styles.label}>
-                            Shipping Address
-                        </Text>
-                        <Dropdown
-                            style={styles.dropdown}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={shippingAddressList || []}
-                            search
-                            maxHeight={300}
-                            labelField="addressLine1"
-                            valueField="addressLine1"
-                            placeholder={!isFocus ? 'Select Address' : '...'}
-                            searchPlaceholder="Search..."
-                            value={shippingAddress}
-                            onChange={item => {
-                                setShippingAddress(item.addressLine1);
-                            }}
-                        />
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Shipping Address</Text>
+                        <SelectList setSelected={setShippingAddress} data={shippingAddressList || []} onSelect={() => setShippingAddress(shippingAddress)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
