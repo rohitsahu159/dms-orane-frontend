@@ -27,6 +27,7 @@ import PurchaseDetail from './components/purchaseorder/PurchaseDetail';
 import SalesOrderDetail from './components/salesorder/salesOrderDetails';
 import CreatePO from './components/purchaseorder/CreatePO';
 import CreateSO from './components/salesorder/createSO';
+import PreviewPO from './components/purchaseorder/PreviewPO';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -128,9 +129,13 @@ export default function Main() {
                         drawerItemStyle: { display: 'none' },
                         title: "Create SO"
                     }} />
-                     <Drawer.Screen name="salesOrderDetail" component={SalesOrderDetail} options={{
+                    <Drawer.Screen name="salesOrderDetail" component={SalesOrderDetail} options={{
                         drawerItemStyle: { display: 'none' },
                         title: "Sales Order Detail"
+                    }} />
+                    <Drawer.Screen name="previewPO" component={PreviewPO} options={{
+                        drawerItemStyle: { display: 'none' },
+                        title: "Preview PO"
                     }} />
                 </Drawer.Navigator>
 

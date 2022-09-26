@@ -16,7 +16,8 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Swipeable } from 'react-native-gesture-handler';
-import SelectList from 'react-native-dropdown-select-list'
+import SelectList from 'react-native-dropdown-select-list';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window')
 
@@ -30,7 +31,8 @@ const data = [
     { key: 7, value: 'HTML', isChecked: false },
 ];
 
-const CreatePO = () => {
+const CreatePO = ({ navigation }) => {
+
     const dispatch = useDispatch()
     const [supplier, setSupplier] = useState(null);
     const [orderType, setOrderType] = useState(null);
@@ -145,8 +147,15 @@ const CreatePO = () => {
     }
 
     const openProductModal = async () => {
+
+
         if (supplier == null) {
-            return alert('Please Select Supplier')
+            return Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: `Please Select Supplier`,
+                visibilityTime: 2000
+            })
         }
         if (products.length == 0) {
             let bodyData = {
@@ -281,6 +290,7 @@ const CreatePO = () => {
 
         console.log("bodyData: ", bodyData)
         // dispatch(createPO(bodyData))
+        navigation.navigate('previewPO')
     }
 
     const ItemBox = (props) => {
@@ -574,9 +584,8 @@ const CreatePO = () => {
                         <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
                     </View>}
                 </View>
-
+                <Toast />
             </View>
-
         </SafeAreaView>
     )
 }
