@@ -7,6 +7,7 @@ import { login } from '../redux/actions/userAction';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window')
 
@@ -29,12 +30,12 @@ const Login = () => {
         dispatch(login(bodyData))
     }
 
-    useEffect(() => {
-        if (error) {
-            alert(error)
-            dispatch({ type: "clearError" })
-        }
-    }, [alert, dispatch, error])
+    // useEffect(() => {
+    //     if (error) {
+    //         alert(error)
+    //         dispatch({ type: "clearError" })
+    //     }
+    // }, [alert, dispatch, error])
 
     const handlePasswordVisibility = () => {
         if (rightIcon === 'eye') {
@@ -48,6 +49,7 @@ const Login = () => {
 
     return (
         <View style={styles.container}>
+            <Toast />
             <View style={{ justifyContent: 'center', width: '100%' }}>
                 <Image style={styles.icon} source={require("../assets/img/h.png")} />
             </View>

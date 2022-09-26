@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
-import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox, TextInput } from 'react-native-paper';
+import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Button, IconButton } from '@react-native-material/core';
+import { Button, IconButton, TextInput } from '@react-native-material/core';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { getSeller } from '../../redux/actions/sellerAction';
 import { createPO, getPOMasterData } from '../../redux/actions/purchaseAction';
@@ -16,17 +16,18 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Swipeable } from 'react-native-gesture-handler';
+import SelectList from 'react-native-dropdown-select-list'
 
-const deviceHeight = Dimensions.get('window').height
+const { height, width } = Dimensions.get('window')
 
 const data = [
-    { id: 1, txt: 'React Native', isChecked: false },
-    { id: 2, txt: 'Javascript', isChecked: false },
-    { id: 3, txt: 'Laravel', isChecked: false },
-    { id: 4, txt: 'PHP', isChecked: false },
-    { id: 5, txt: 'jQuery', isChecked: false },
-    { id: 6, txt: 'Boostrap', isChecked: false },
-    { id: 7, txt: 'HTML', isChecked: false },
+    { key: 1, value: 'React Native', isChecked: false },
+    { key: 2, value: 'Javascript', isChecked: false },
+    { key: 3, value: 'Laravel', isChecked: false },
+    { key: 4, value: 'PHP', isChecked: false },
+    { key: 5, value: 'jQuery', isChecked: false },
+    { key: 6, value: 'Boostrap', isChecked: false },
+    { key: 7, value: 'HTML', isChecked: false },
 ];
 
 const CreatePO = () => {
@@ -47,8 +48,9 @@ const CreatePO = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [products, setProducts] = useState([]);
     const [selectedProductList, setSelectedProductList] = useState([]);
+    const [productList, setProductList] = useState([])
     const [selectedSellerData, setSelectedSellerData] = useState({});
-
+    const [search, setSearch] = useState('')
 
     const { user } = useSelector(state => state.auth)
 
@@ -100,9 +102,16 @@ const CreatePO = () => {
         showMode('date');
     };
 
-    const handelDecreament = () => {
-        setQuantity(quantity - 1)
+    const searchFilterFunction = (text) => {
+        let searchResult = productList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setProducts(searchResult)
+        setSearch(Text)
     }
+
     const handelIncreament = (name, productCode) => {
         let tempArr = selectedProductList.map((product) => {
             if (productCode == product.productCode) {
@@ -204,6 +213,7 @@ const CreatePO = () => {
                 }
             });
             setProducts(arr)
+            setProductList(arr)
         }
         setModalVisible(!modalVisible)
     }
@@ -224,6 +234,7 @@ const CreatePO = () => {
     };
 
     const onSelectSuplier = (data) => {
+        console.log(data)
         setSelectedSellerData(data)
         setSupplier(data.companyName)
         setProducts([])
@@ -271,8 +282,6 @@ const CreatePO = () => {
         console.log("bodyData: ", bodyData)
         // dispatch(createPO(bodyData))
     }
-
-
 
     const ItemBox = (props) => {
         let list = props.data.item
@@ -327,12 +336,13 @@ const CreatePO = () => {
                 renderItem={({ item }) => (
                     <Card style={{ margin: 5 }}>
                         <View>
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row', width: '90%' }}>
                                 <Pressable onPress={() => handleChange(item.productCode)} >
-                                    <MaterialCommunityIcons
-                                        name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={24} color="#000" />
+                                    <Checkbox
+                                        status={item.isChecked ? 'checked' : 'unchecked'}
+                                    />
                                 </Pressable>
-                                <Text style={{ color: '#00a7e5', marginLeft: 15 }}>{item.productName}</Text>
+                                <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                             </View>
 
                         </View>
@@ -358,234 +368,227 @@ const CreatePO = () => {
 
 
     return (
-        loading ? <Loader /> : <SafeAreaView>
-
-            <View style={styles.container}>
-                <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-                    Supplier
-                </Text>
-                <Dropdown
-                    style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={sellerList || []}
-                    search
-                    maxHeight={300}
-                    labelField="companyName"
-                    valueField="companyName"
-                    placeholder={!isFocus ? 'Select Supplier' : '...'}
-                    searchPlaceholder="Search..."
-                    value={supplier}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
-                    // onChange={item => {
-                    //     setSupplier(item.companyName);
-                    //     setIsFocus(false);
-                    // }}
-                    onChange={item => { onSelectSuplier(item) }}
-                    renderLeftIcon={() => (
-                        <AntDesign
-                            style={styles.icon}
-                            color={isFocus ? 'blue' : 'black'}
-                            name="user"
-                            size={20}
+        loading ? <Loader /> : <SafeAreaView style={{ height: height }}>
+            <View style={styles.containner1}>
+                {/* <View style={styles.container}>
+                    <SelectList
+                        setSelected={setSupplier}
+                        data={sellerList || []}
+                        onSelect={item => { onSelectSuplier(item) }}
+                        placeholder='Select Supplier'
+                    />
+                </View> */}
+                <View style={styles.container}>
+                    <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+                        Supplier
+                    </Text>
+                    <Dropdown
+                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={sellerList || []}
+                        search
+                        maxHeight={300}
+                        labelField="companyName"
+                        valueField="companyName"
+                        placeholder={!isFocus ? 'Select Supplier' : '...'}
+                        searchPlaceholder="Search..."
+                        value={supplier}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        // onChange={item => {
+                        //     setSupplier(item.companyName);
+                        //     setIsFocus(false);
+                        // }}
+                        onChange={item => { onSelectSuplier(item) }}
+                        renderLeftIcon={() => (
+                            <AntDesign
+                                style={styles.icon}
+                                color={isFocus ? 'blue' : 'black'}
+                                name="user"
+                                size={20}
+                            />
+                        )}
+                    />
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={styles.label}>
+                            Order Type
+                        </Text>
+                        <Dropdown
+                            style={styles.dropdown}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={orderTypeList || []}
+                            search
+                            maxHeight={300}
+                            labelField="orderType"
+                            valueField="orderType"
+                            placeholder={!isFocus ? 'Select Order Type' : '...'}
+                            searchPlaceholder="Search..."
+                            value={orderType}
+                            onChange={item => {
+                                setOrderType(item.orderType);
+                            }}
+                        />
+                    </View>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={styles.label}>
+                            Paymnt Term
+                        </Text>
+                        <Dropdown
+                            style={styles.dropdown}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={paymentTermList || []}
+                            search
+                            maxHeight={300}
+                            labelField="paymentTerm"
+                            valueField="paymentTerm"
+                            placeholder={!isFocus ? 'Select Payment Term' : '...'}
+                            searchPlaceholder="Search..."
+                            value={paymentTerm}
+                            onChange={item => {
+                                setPaymentTerm(item.paymentTerm);
+                            }}
+                        />
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={styles.label}>
+                            Billing Address
+                        </Text>
+                        <Dropdown
+                            style={styles.dropdown}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={billingAddressList || []}
+                            search
+                            maxHeight={300}
+                            labelField="addressLine1"
+                            valueField="addressLine1"
+                            placeholder={!isFocus ? 'Select Address' : '...'}
+                            searchPlaceholder="Search..."
+                            value={billingAddress}
+                            onChange={item => {
+                                setBillingAddress(item.addressLine1);
+                            }}
+                        />
+                    </View>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={styles.label}>
+                            Shipping Address
+                        </Text>
+                        <Dropdown
+                            style={styles.dropdown}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={shippingAddressList || []}
+                            search
+                            maxHeight={300}
+                            labelField="addressLine1"
+                            valueField="addressLine1"
+                            placeholder={!isFocus ? 'Select Address' : '...'}
+                            searchPlaceholder="Search..."
+                            value={shippingAddress}
+                            onChange={item => {
+                                setShippingAddress(item.addressLine1);
+                            }}
+                        />
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Button onPress={() => showDatepicker('deliveryDate')} title="Exp. Delivery Date" />
+                        <Text style={{ textAlign: 'center' }}>{deliveryDate.toDateString()}</Text>
+                    </View>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Button onPress={() => showDatepicker('expiryDate')} title="Expiry Date" />
+                        <Text style={{ textAlign: 'center' }}>{expiryDate.toDateString()}</Text>
+                    </View>
+                    {show && (
+                        <RNDateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode={mode}
+                            is24Hour={true}
+                            display="default"
+                            onChange={onChange}
                         />
                     )}
-                />
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Text style={styles.label}>
-                        Order Type
-                    </Text>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={orderTypeList || []}
-                        search
-                        maxHeight={300}
-                        labelField="orderType"
-                        valueField="orderType"
-                        placeholder={!isFocus ? 'Select Order Type' : '...'}
-                        searchPlaceholder="Search..."
-                        value={orderType}
-                        onChange={item => {
-                            setOrderType(item.orderType);
-                        }}
-                    />
                 </View>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Text style={styles.label}>
-                        Paymnt Term
-                    </Text>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={paymentTermList || []}
-                        search
-                        maxHeight={300}
-                        labelField="paymentTerm"
-                        valueField="paymentTerm"
-                        placeholder={!isFocus ? 'Select Payment Term' : '...'}
-                        searchPlaceholder="Search..."
-                        value={paymentTerm}
-                        onChange={item => {
-                            setPaymentTerm(item.paymentTerm);
-                        }}
-                    />
+                <View style={styles.container}>
+                    <Button onPress={() => openProductModal()} title="Add Items Detail" color='white' />
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Text style={styles.label}>
-                        Billing Address
-                    </Text>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={billingAddressList || []}
-                        search
-                        maxHeight={300}
-                        labelField="addressLine1"
-                        valueField="addressLine1"
-                        placeholder={!isFocus ? 'Select Address' : '...'}
-                        searchPlaceholder="Search..."
-                        value={billingAddress}
-                        onChange={item => {
-                            setBillingAddress(item.addressLine1);
-                        }}
-                    />
-                </View>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Text style={styles.label}>
-                        Shipping Address
-                    </Text>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={shippingAddressList || []}
-                        search
-                        maxHeight={300}
-                        labelField="addressLine1"
-                        valueField="addressLine1"
-                        placeholder={!isFocus ? 'Select Address' : '...'}
-                        searchPlaceholder="Search..."
-                        value={shippingAddress}
-                        onChange={item => {
-                            setShippingAddress(item.addressLine1);
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Button onPress={() => showDatepicker('deliveryDate')} title="Exp. Delivery Date" />
-                    <Text style={{ textAlign: 'center' }}>{deliveryDate.toDateString()}</Text>
-                </View>
-                <View style={[styles.container, { width: '50%' }]}>
-                    <Button onPress={() => showDatepicker('expiryDate')} title="Expiry Date" />
-                    <Text style={{ textAlign: 'center' }}>{expiryDate.toDateString()}</Text>
-                </View>
-                {show && (
-                    <RNDateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChange}
-                    />
-                )}
-            </View>
-            <View style={styles.container}>
-                <Button onPress={() => openProductModal()} title="Add Items Detail" color='white' />
-            </View>
 
-            <View>
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible)
-                    }}
-                    head
-                >
-                    <View style={styles.modal}>
-                        <View style={{ flexDirection: 'row', margin: 15 }}>
-                            <Text style={{ width: '50%', fontWeight: 'bold', fontSize: 25, color: 'green' }}>
-                                Products
-                            </Text>
-                            <Text style={{ right: 0, position: 'absolute' }}>
-                                <Icon name="arrow-left" onPress={() => { setModalVisible(!modalVisible) }} size={30} color="#900" />
-                            </Text>
+                <View>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible)
+                        }}
+                        head
+                    >
+                        <View style={styles.modal}>
+                            <View style={{ flexDirection: 'row', margin: 15 }}>
+                                <TextInput
+                                    label="Search..."
+                                    color='#00a7e5'
+                                    style={{ width: '100%' }}
+                                    value={search}
+                                    onChangeText={(text) => searchFilterFunction(text)}
+                                    leading={props => <Icon name="search" {...props} />}
+                                />
+                                <Text style={{ right: 0, position: 'absolute', width: '10%', marginVertical: 10 }}>
+                                    <Icon name="arrow-left" onPress={() => { setModalVisible(!modalVisible) }} size={25} color="#900" />
+                                </Text>
+                            </View>
+                            {loading ? <Loader /> : <View style={{ flex: 1 }}>
+                                {renderFlatList(products)}
+                            </View>}
                         </View>
+                    </Modal>
+                </View>
+                <View style={{ flex: 1, paddingBottom: 80 }}>
+                    <FlatList
+                        data={selectedProductList}
+                        renderItem={(item) => {
+                            return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
+                        }}
+                    />
+                    {selectedProductList.length != 0 && <View style={{ position: 'absolute', bottom: 60, width: '100%' }}>
+                        <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
+                    </View>}
+                </View>
 
-                        {loading ? <Loader /> : <View style={{ flex: 1 }}>
-                            {renderFlatList(products)}
-                        </View>}
-                    </View>
-                </Modal>
             </View>
-            <View style={{ maxHeight: 500, paddingBottom: 30 }}>
-                {/* <ScrollView> */}
-                <FlatList
-                    data={selectedProductList}
-                    renderItem={(item) => {
-                        return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
-                    }}
-                />
-                {/* {selectedProductList && selectedProductList.map((list) => (
-                        <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
-                            <Card style={{ marginVertical: 2 }}>
-                                <Card.Content>
-                                    <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ width: '50%' }}>
-                                            <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
-                                            <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
-                                            <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
-                                        </View>
-                                        <View style={{ width: '50%' }}>
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <Button color='#fff' title='-' onPress={() => { handelIncreament('decrease', list.productCode) }} />
-                                                <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
-                                                <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
-                                            </View>
-                                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
-                                        </View>
-                                    </View>
-                                </Card.Content>
-                            </Card>
-                        </Swipeable>
-                    ))} */}
-                {/* </ScrollView> */}
-                {selectedProductList.length != 0 && <View style={styles.container}>
-                    <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
-                </View>}
-            </View>
+
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    containner1: {
+        height: height,
+        width: width
+    },
     container: {
         backgroundColor: 'white',
-        padding: 10,
+        padding: 8,
     },
     dropdown: {
         height: 50,
@@ -623,21 +626,14 @@ const styles = StyleSheet.create({
     modalContainer: {
         justifyContent: 'flex-end',
         // backgroundColor: '#000000AA',
-        height: deviceHeight * .8,
+        height: height * .8,
     },
     modal: {
-
-        height: deviceHeight * 1,
+        height: height * 1,
         backgroundColor: '#FFFFFF',
         width: '100%',
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-    },
-    card: {
-        // padding: 10,
-        // margin: 5,
-        // flexDirection: 'row',
-        // justifyContent: 'space-between',
     },
     modalView: {
         margin: 20,
@@ -655,7 +651,7 @@ const styles = StyleSheet.create({
     deleteBox: {
         justifyContent: 'center',
         margin: 30
-    }
+    },
 });
 
 export default CreatePO
