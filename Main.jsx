@@ -28,8 +28,8 @@ import SalesOrderDetail from './components/salesorder/salesOrderDetails';
 import CreatePO from './components/purchaseorder/CreatePO';
 import CreateSO from './components/salesorder/createSO';
 import PreviewPO from './components/purchaseorder/PreviewPO';
-import ProductList from './components/product/productList';
-import ProductDetail from './components/product/productDetail';
+import ProductList from './components/product/ProductList';
+import ProductDetail from './components/product/ProductDetail';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
