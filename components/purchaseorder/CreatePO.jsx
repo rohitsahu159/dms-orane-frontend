@@ -458,13 +458,13 @@ const CreatePO = ({ navigation }) => {
                                 <TextInput
                                     label="Search..."
                                     color='#00a7e5'
-                                    style={{ width: '100%' }}
+                                    style={{ width: '80%' }}
                                     value={search}
                                     onChangeText={(text) => searchFilterFunction(text)}
                                     leading={props => <Icon name="search" {...props} />}
                                 />
                                 <Text style={{ right: 0, position: 'absolute', width: '10%', marginVertical: 10 }}>
-                                    <Icon name="arrow-left" onPress={() => { setModalVisible(!modalVisible) }} size={25} color="#900" />
+                                    <Icon name="plus-circle" onPress={() => { setModalVisible(!modalVisible) }} size={35} color="#00a7e5" />
                                 </Text>
                             </View>
                             {loading ? <Loader /> : <View style={{ flex: 1 }}>
