@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { RefreshControl, View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getPOList } from '../../redux/actions/purchaseAction'
 import { round } from 'lodash';
@@ -10,8 +10,30 @@ import { inrFormat } from '../../redux/constants';
 
 const Tab = createMaterialTopTabNavigator();
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const ApprovedPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
+
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
 
     let approvedPO = []
     if (poList) {
@@ -25,7 +47,14 @@ const ApprovedPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {approvedPO.length != 0 ? approvedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -53,6 +82,23 @@ const ApprovedPO = ({ navigation }) => {
 const RejectedPO = ({ navigation }) => {
     // const { loading } = useSelector(state => state.auth)
     const { poList, loading } = useSelector(state => state.poList)
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
 
     let rejectedPO = []
 
@@ -67,7 +113,14 @@ const RejectedPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {rejectedPO.length != 0 ? rejectedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -95,6 +148,24 @@ const RejectedPO = ({ navigation }) => {
 const PendingForApprovalPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let pendingForApprovalPO = []
     if (poList) {
         pendingForApprovalPO = poList.filter(function (li) {
@@ -107,7 +178,14 @@ const PendingForApprovalPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {pendingForApprovalPO.length != 0 ? pendingForApprovalPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -135,6 +213,24 @@ const PendingForApprovalPO = ({ navigation }) => {
 const InProgressPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let inProgressPO = []
     if (poList) {
         inProgressPO = poList.filter(function (li) {
@@ -147,7 +243,14 @@ const InProgressPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {inProgressPO.length != 0 ? inProgressPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -177,6 +280,24 @@ const InProgressPO = ({ navigation }) => {
 const SoCreatedPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let soCreatedPO = []
     if (poList) {
         soCreatedPO = poList.filter(function (li) {
@@ -189,7 +310,14 @@ const SoCreatedPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {soCreatedPO.length != 0 ? soCreatedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -218,6 +346,24 @@ const SoCreatedPO = ({ navigation }) => {
 const DeliveredPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let deliveredPO = []
     if (poList) {
         deliveredPO = poList.filter(function (li) {
@@ -230,7 +376,14 @@ const DeliveredPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {deliveredPO.length != 0 ? deliveredPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -259,6 +412,24 @@ const DeliveredPO = ({ navigation }) => {
 const PartialdPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let partialdPO = []
     if (poList) {
         partialdPO = poList.filter(function (li) {
@@ -271,7 +442,14 @@ const PartialdPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {partialdPO.length != 0 ? partialdPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -289,7 +467,7 @@ const PartialdPO = ({ navigation }) => {
                     </TouchableOpacity>
                 )) :
                     <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red',height:'100%' }}>No Products Found...</Text>
                     </View>}
             </ScrollView>
         </SafeAreaView>
@@ -299,6 +477,24 @@ const PartialdPO = ({ navigation }) => {
 
 const PartialDeliveredPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
+
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
 
     let partialDeliveredPO = []
     if (poList) {
@@ -312,7 +508,14 @@ const PartialDeliveredPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {partialDeliveredPO.length != 0 ? partialDeliveredPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
@@ -341,6 +544,24 @@ const PartialDeliveredPO = ({ navigation }) => {
 const CompletedPO = ({ navigation }) => {
     const { poList, loading } = useSelector(state => state.poList)
 
+    const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const { user } = useSelector(state => state.auth)
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 99999,
+            "sortArray": [],
+            "searchCriteria": [
+                { "key": "buyerUserId", "value": user.employerUserId, "operation": "EQUAL" }
+            ]
+        }
+        dispatch(getPOList(bodyData))
+    }, []);
+
     let completedPO = []
     if (poList) {
         completedPO = poList.filter(function (li) {
@@ -353,7 +574,14 @@ const CompletedPO = ({ navigation }) => {
 
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {completedPO.length != 0 ? completedPO.map((list, i) => (
                     <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>

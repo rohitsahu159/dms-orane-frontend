@@ -37,7 +37,7 @@ const CreatePO = ({ navigation }) => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ marginRight: 10 }}>
-                    <Icon name="arrow-left" size={25} onPress={()=> navigation.goBack()} color="#00a7e5" />
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('myPurchaseOrder')} color="#00a7e5" />
                 </View>
             ),
         });
@@ -71,7 +71,7 @@ const CreatePO = ({ navigation }) => {
         dispatch(getSeller(`buyerReferenceId=${user.employerReferenceId}`))
         dispatch(getBuyerById(user.employerReferenceId))
         dispatch(getPOMasterData())
-    }, [dispatch, loading])
+    }, [])
 
     const { sellerList } = useSelector(state => state.sellerList)
     const { masterData } = useSelector(state => state.masterData)
@@ -275,7 +275,7 @@ const CreatePO = ({ navigation }) => {
         setSelectedProductList([])
     }
 
-    const submitPO = async () => {
+    const previewPO = async () => {
         let lineItemArr = await selectedProductList.map(items => _.pick(items, ['productCode', 'productName', 'purchasePrice', 'orderedQuantity',
             'salesUnit', 'pcsPerBox', 'mrp', 'taxPercent', 'totalValue', 'netValue', 'grossValue', 'taxValue', 'sgstPercent', 'cgstPercent',
             'igstPercent', 'ugstPercent', 'discount']))
@@ -313,8 +313,6 @@ const CreatePO = ({ navigation }) => {
             lineItems: lineItemArr,
         };
 
-        console.log("bodyData: ", bodyData)
-        // dispatch(createPO(bodyData))
         navigation.navigate('previewPO', { params: { data: bodyData } })
     }
 
@@ -403,11 +401,11 @@ const CreatePO = ({ navigation }) => {
 
 
     return (
-        loading ? <Loader /> : <SafeAreaView style={{ height: height }}>
+         <SafeAreaView style={{ height: height }}>
             <View style={styles.containner1}>
                 <View style={styles.container}>
                     <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Supplier</Text>
-                    <SelectList setSelected={setSupplier} data={sellerList || []} onSelect={() => onSelectSuplier(supplier) } />
+                    <SelectList setSelected={setSupplier} data={sellerList || []} onSelect={() => onSelectSuplier(supplier)} />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={[styles.container, { width: '50%' }]}>
@@ -491,7 +489,7 @@ const CreatePO = ({ navigation }) => {
                         }}
                     />
                     {selectedProductList.length != 0 && <View style={{ position: 'absolute', bottom: 60, width: '100%' }}>
-                        <Button onPress={() => { submitPO() }} title="Preview Purchase Order" color='#00a7e5' />
+                        <Button onPress={() => { previewPO() }} title="Preview Purchase Order" color='#00a7e5' />
                     </View>}
                 </View>
                 <Toast />
