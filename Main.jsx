@@ -28,6 +28,8 @@ import SalesOrderDetail from './components/salesorder/salesOrderDetails';
 import CreatePO from './components/purchaseorder/CreatePO';
 import CreateSO from './components/salesorder/createSO';
 import PreviewPO from './components/purchaseorder/PreviewPO';
+import ProductList from './components/product/productList';
+import ProductDetail from './components/product/productDetail';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -85,13 +87,13 @@ export default function Main() {
                             <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
-                    <Drawer.Screen name="setting" component={Setting} options={{
+                    {/* <Drawer.Screen name="setting" component={Setting} options={{
                         drawerLabel: 'Setting',
                         title: 'Setting',
                         drawerIcon: ({ color }) => (
                             <Ionicons name="settings-outline" size={22} color='blue' />
                         )
-                    }} />
+                    }} /> */}
                     {/* <Drawer.Screen name="profile" component={Profile} options={{
                         drawerLabel: 'Profile',
                         title: 'Profile',
@@ -136,6 +138,20 @@ export default function Main() {
                     <Drawer.Screen name="previewPO" component={PreviewPO} options={{
                         drawerItemStyle: { display: 'none' },
                         title: "Preview PO"
+                    }} />
+                    <Drawer.Screen name="productList" component={ProductList} options={{
+                        drawerLabel: 'Products',
+                        title: 'Products',
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="settings-outline" size={22} color='blue' />
+                        )
+                    }} />
+                    <Drawer.Screen name="productDetail" component={ProductDetail} options={{
+                        drawerLabel: 'Product Detail',
+                        title: 'Product Detail',
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="settings-outline" size={22} color='blue' />
+                        )
                     }} />
                 </Drawer.Navigator>
 
