@@ -7,9 +7,21 @@ import { getPODetail } from '../../redux/actions/purchaseAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const PurchaseDetail = ({ route }) => {
+const PurchaseDetail = ({ route, navigation }) => {
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('myPurchaseOrder')} color="#00a7e5" />
+                </View>
+            ),
+        });
+    }, [navigation]);
+
     const dispatch = useDispatch()
     const { itemId } = route.params;
 
@@ -90,23 +102,23 @@ const PurchaseDetail = ({ route }) => {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Basic Value :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(purchaseDetail.grossValue)}</Text>
+                    <Text style={{ width: '50%', textAlign: 'right' }}>{inrFormat(purchaseDetail.grossValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Discount :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(purchaseDetail.primaryDiscountValue)}</Text>
+                    <Text style={{ width: '50%', textAlign: 'right' }}>{inrFormat(purchaseDetail.primaryDiscountValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Net Value :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(purchaseDetail.netValue)}</Text>
+                    <Text style={{ width: '50%', textAlign: 'right' }}>{inrFormat(purchaseDetail.netValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>CGST :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(purchaseDetail.taxValue)}</Text>
+                    <Text style={{ width: '50%', textAlign: 'right' }}>{inrFormat(purchaseDetail.taxValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ width: '50%', fontWeight: 'bold', color: 'green',fontWeight:'bold' }}>Grand Total :</Text>
-                    <Text style={{ width: '50%', color: 'green',fontWeight:'bold' }}>{inrFormat(purchaseDetail.totalValue)}</Text>
+                    <Text style={{ width: '50%', fontWeight: 'bold', color: 'green', fontWeight: 'bold' }}>Grand Total :</Text>
+                    <Text style={{ width: '50%', color: 'green', fontWeight: 'bold', textAlign: 'right' }}>{inrFormat(purchaseDetail.totalValue)}</Text>
                 </View>
             </View>
 
