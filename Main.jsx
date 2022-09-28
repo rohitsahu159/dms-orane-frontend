@@ -66,7 +66,9 @@ export default function Main() {
                     initialRouteName='dashboard'
                     screenOptions={{ drawerLabelStyle: { marginLeft: -25 } }}
                 >
+
                     <Drawer.Screen name="dashboard" component={Dashboard} options={{
+                        swipeEnabled: true,
                         drawerLabel: 'Dashboard',
                         title: 'Dashboard',
                         drawerIcon: ({ color }) => (
@@ -74,6 +76,7 @@ export default function Main() {
                         )
                     }} />
                     <Drawer.Screen name="myPurchaseOrder" component={MyPurchaseOrder} options={{
+                        swipeEnabled: true,
                         drawerLabel: 'My Purchase Order',
                         title: 'My Purchase Order',
                         drawerIcon: ({ color }) => (
@@ -81,6 +84,7 @@ export default function Main() {
                         )
                     }} />
                     <Drawer.Screen name="mySalesOrder" component={MySalesOrder} options={{
+                        swipeEnabled: true,
                         drawerLabel: 'My Sales Order',
                         title: 'My Sales Order',
                         drawerIcon: ({ color }) => (
@@ -102,44 +106,53 @@ export default function Main() {
                         )
                     }} /> */}
                     <Drawer.Screen name="changePassword" component={ChangePassword} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
                             <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="verify" component={Verify} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
                             <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="camera" component={CameraComponent} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         drawerIcon: ({ color }) => (
                             <Ionicons name="ios-person-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="purchaseDetail" component={PurchaseDetail} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Purchase Detail"
                     }} />
                     <Drawer.Screen name="createPO" component={CreatePO} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Create PO"
                     }} />
                     <Drawer.Screen name="createSO" component={CreateSO} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Create SO"
                     }} />
                     <Drawer.Screen name="salesOrderDetail" component={SalesOrderDetail} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Sales Order Detail"
                     }} />
                     <Drawer.Screen name="previewPO" component={PreviewPO} options={{
+                        swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Preview PO"
                     }} />
                     <Drawer.Screen name="productList" component={ProductList} options={{
+                        swipeEnabled: true,
                         drawerLabel: 'Products',
                         title: 'Products',
                         drawerIcon: ({ color }) => (

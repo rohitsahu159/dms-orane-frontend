@@ -22,8 +22,10 @@ export const getSODetail = (id) => async (dispatch) => {
 
         const { data } = await axios.get(`${urlConstants.BASE_URI_DEV}/salesorder/id/${id}`);
         dispatch({ type: "soDetailSuccess", payload: data });
+        console.log("sfjsdjhfksdhyfiuy",data)
     } catch (error) {
         dispatch({ type: "soDetailFailure", payload: error.response.data.message });
+        console.log("jhkjh",data)
     }
 };
 
