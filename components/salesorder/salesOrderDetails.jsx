@@ -11,10 +11,10 @@ import Loader from '../Loader';
 
 const SalesOrderDetail = ({ route }) => {
     const dispatch = useDispatch()
-    const  itemId  = route.params;
+    const itemId = route.params;
     useEffect(() => {
-        if (user && Object.itemId) {
-            dispatch(getSODetail(itemId))
+        if (user) {
+            dispatch(getSODetail(itemId.itemId))
         }
 
     }, [dispatch, itemId])
@@ -57,51 +57,56 @@ const SalesOrderDetail = ({ route }) => {
     return (
         loading ? <Loader /> : <SafeAreaView>
 
-            <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>SO Number: <Text style={{ color: '#00a7e5' }}>{salesOrderDetail.salesOrderId}</Text></Text>
+
+            <View style={{ flexDirection: 'row' }}>
+                <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18,top:5 }}>SO Number:</Text>
+                <Text style={{ marginTop:14,fontWeight:'bold', color: '#00a7e5',top:5 }}>{salesOrderDetail.salesOrderId}</Text>
+            </View>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ width: '50%', fontWeight: 'bold' }}>Customer :<Text style={{ color: '#00a7e5' }}>{salesOrderDetail.buyerFirmName}</Text></Text>
+                    <Text style={{ width: '50%', fontWeight: 'bold' }}>Customer :</Text>
+                    <Text style={{ marginHorizontal:70, color: '#00a7e5' }}>{salesOrderDetail.buyerFirmName}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Billing Address :</Text>
-                    <Text style={{ width: '50%' }}>{salesOrderDetail.buyerBillingAddress}</Text> 
-                                   </View>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{salesOrderDetail.buyerBillingAddress}</Text>
+                </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Shipping Address :</Text>
-                    <Text style={{ width: '50%' }}>{salesOrderDetail.buyerShippingAddress}</Text>  
-                                  </View>
-            
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{salesOrderDetail.buyerShippingAddress}</Text>
+                </View>
+
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Payment Term :</Text>
-                    <Text style={{ width: '50%' }}>{salesOrderDetail.paymentTerm}</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{salesOrderDetail.paymentTerm}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>SAP Sales Order No :</Text>
-                    <Text style={{ width: '50%' }}></Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}></Text>
                 </View>
             </View>
 
             <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>Summary</Text>
-            <View style={styles.container}>
+            <View style={styles.container2}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Basic Value :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.grossValue)}</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{inrFormat(salesOrderDetail.grossValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Discount :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.primaryDiscountValue)}</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{inrFormat(salesOrderDetail.primaryDiscountValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Net Value :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.netValue)}</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{inrFormat(salesOrderDetail.netValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>GST :</Text>
-                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.taxValue)}</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%' }}>{inrFormat(salesOrderDetail.taxValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ width: '50%', fontWeight: 'bold', color: 'green',fontWeight:'bold' }}>Grand Total :</Text>
-                    <Text style={{ width: '50%', color: 'green',fontWeight:'bold' }}>{inrFormat(salesOrderDetail.totalValue)}</Text>
+                    <Text style={{ width: '50%', fontWeight: 'bold', color: 'green', fontWeight: 'bold' }}>Grand Total :</Text>
+                    <Text style={{ marginHorizontal:70,width: '50%', color: 'green', fontWeight: 'bold' }}>{inrFormat(salesOrderDetail.totalValue)}</Text>
                 </View>
             </View>
 
@@ -172,12 +177,26 @@ const SalesOrderDetail = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         // flex: 1,
+        
         backgroundColor: "#fff",
-        padding: 10,
-        margin: 5,
+        padding: 8,
+        margin: 10,
         elevation: 8,
         borderRadius: 10,
+
     },
+    container2: {
+        // flex: 1,
+        marginBottom:10,
+        top:-5,
+        backgroundColor: "#fff",
+        padding: 8,
+        margin: 10,
+        elevation: 8,
+        borderRadius: 10,
+
+    },
+    
     container1: {
         ...Platform.select({
             ios: {
