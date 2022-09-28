@@ -25,3 +25,29 @@ export const productReducer = createReducer(
         },
     }
 );
+
+export const allProductReducer = createReducer(
+    {},
+    {
+        allProductRequest: (state) => {
+            state.loading = true;
+            state.allProductList = {};
+        },
+        allProductSuccess: (state, action) => {
+            state.loading = false;
+            state.allProductList = action.payload.data;
+        },
+        allProductFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);

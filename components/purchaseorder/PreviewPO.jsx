@@ -36,7 +36,6 @@ const PreviewPO = ({ route, navigation }) => {
     const submitPO = async () => {
         let data = await dispatch(createPO(purchaseDetail))
 
-        console.log(data)
         if (data.status == 'success') {
             Toast.show({
                 type: 'success',

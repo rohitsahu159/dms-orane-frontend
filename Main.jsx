@@ -77,14 +77,14 @@ export default function Main() {
                         drawerLabel: 'My Purchase Order',
                         title: 'My Purchase Order',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color='blue' />
+                            <Ionicons name="ios-list-sharp" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="mySalesOrder" component={MySalesOrder} options={{
                         drawerLabel: 'My Sales Order',
                         title: 'My Sales Order',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="ios-person-outline" size={22} color='blue' />
+                            <Ionicons name="ios-list-sharp" size={22} color='blue' />
                         )
                     }} />
                     {/* <Drawer.Screen name="setting" component={Setting} options={{
@@ -143,15 +143,12 @@ export default function Main() {
                         drawerLabel: 'Products',
                         title: 'Products',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="settings-outline" size={22} color='blue' />
+                            <Ionicons name="ios-fast-food-outline" size={22} color='blue' />
                         )
                     }} />
                     <Drawer.Screen name="productDetail" component={ProductDetail} options={{
-                        drawerLabel: 'Product Detail',
+                        drawerItemStyle: { display: 'none' },
                         title: 'Product Detail',
-                        drawerIcon: ({ color }) => (
-                            <Ionicons name="settings-outline" size={22} color='blue' />
-                        )
                     }} />
                 </Drawer.Navigator>
 

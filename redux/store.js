@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { buyerReducer } from './reducers/buyerReducer';
-import { productReducer } from './reducers/productReducer';
+import { allProductReducer, productReducer } from './reducers/productReducer';
 import { poDetailReducer, poMasterDataReducer, poReducer } from './reducers/purchaseReducer';
 import { sellerReducer } from './reducers/sellerReducer';
 import { soReducer, soDetailReducer } from './reducers/salesReducer';
@@ -17,6 +17,7 @@ const store = configureStore({
         products: productReducer,
         soList: soReducer,
         soDetail: soDetailReducer,
+        allProducts:allProductReducer
     }
 })
 

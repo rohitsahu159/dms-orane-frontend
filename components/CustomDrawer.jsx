@@ -27,14 +27,14 @@ const CustomDrawer = (props) => {
             >
                 <ImageBackground
                     source={require('../assets/img/h.png')}
-                    style={{ paddingTop: 50 }}
+                    style={{ paddingTop: 50, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
                 >
                     {/* <Image
                         source={{ uri: imageUrl }}
                         style={{ height: 80, width: 80, borderRadius: 40, marginBottom: 10 }}
                     /> */}
-                    <Text style={{ color: 'black', fontSize: 12, paddingTop: 10, paddingLeft: 10,fontWeight:'500' }}>{user.userName}</Text>
-                    <Text style={{ color: 'black', fontSize: 10, paddingTop: 10, paddingLeft: 10,fontWeight:'500' }}>Email: <Text style={{ color: 'blue' }}>{user.email}</Text></Text>
+                    <Text style={{ color: 'black', fontSize: 12, paddingTop: 10, paddingLeft: 10, fontWeight: '500' }}>{user.userName}</Text>
+                    <Text style={{ color: 'black', fontSize: 10, paddingTop: 10, paddingLeft: 10, fontWeight: '500' }}>Email: <Text style={{ color: 'blue' }}>{user.email}</Text></Text>
                 </ImageBackground>
                 <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 10 }}>
                     <DrawerItemList {...props} />
