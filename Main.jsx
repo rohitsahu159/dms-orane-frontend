@@ -31,7 +31,7 @@ import PreviewPO from './components/purchaseorder/PreviewPO';
 import ProductList from './components/product/ProductList';
 import ProductDetail from './components/product/ProductDetail';
 import MyReport from './components/reports/MyReport';
-
+import CompanyProfile from './components/Company/CompanyProfile';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
@@ -168,6 +168,14 @@ export default function Main() {
                         swipeEnabled: true,
                         drawerLabel: 'Reports',
                         title: 'Reports',
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="newspaper-outline" size={22} color='blue' />
+                        )
+                    }} />
+                     <Drawer.Screen name="Company profile" component={CompanyProfile} options={{
+                        swipeEnabled: true,
+                        drawerLabel: 'Company Profile',
+                        title: 'Company Profile',
                         drawerIcon: ({ color }) => (
                             <Ionicons name="newspaper-outline" size={22} color='blue' />
                         )
