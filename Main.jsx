@@ -30,6 +30,7 @@ import CreateSO from './components/salesorder/createSO';
 import PreviewPO from './components/purchaseorder/PreviewPO';
 import ProductList from './components/product/ProductList';
 import ProductDetail from './components/product/ProductDetail';
+import MyReport from './components/reports/MyReport';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -162,6 +163,14 @@ export default function Main() {
                     <Drawer.Screen name="productDetail" component={ProductDetail} options={{
                         drawerItemStyle: { display: 'none' },
                         title: 'Product Detail',
+                    }} />
+                    <Drawer.Screen name="reportList" component={MyReport} options={{
+                        swipeEnabled: true,
+                        drawerLabel: 'Reports',
+                        title: 'Reports',
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="newspaper-outline" size={22} color='blue' />
+                        )
                     }} />
                 </Drawer.Navigator>
 
