@@ -13,96 +13,31 @@ const Tab = createMaterialTopTabNavigator();
 
 const width = Dimensions.get('window').width / 2 - 30;
 
-
-const plants = [
-    {
-        id: 1,
-        name: 'Succulent Plant',
-        price: '39.99',
-        like: true,
-        img: require('../../assets/img/Master.jpg'),
-        about:
-            'Succulent Plantis one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-
-    {
-        id: 2,
-        name: 'Dragon Plant',
-        price: '29.99',
-        like: false,
-        img: require('../../assets/img/plant.png'),
-        about:
-            'Dragon Plant one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-    {
-        id: 3,
-        name: 'Ravenea Plant',
-        price: '25.99',
-        like: false,
-        img: require('../../assets/img/plant.png'),
-        about:
-            'Ravenea Plant one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-
-    {
-        id: 4,
-        name: 'Potted Plant',
-        price: '25.99',
-        like: true,
-        img: require('../../assets/img/plant.png'),
-        about:
-            'Potted Plant Ravenea Plant one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-    {
-        id: 5,
-        name: 'Ravenea Plant',
-        price: '50.99',
-        like: true,
-        img: require('../../assets/img/plant.png'),
-        about:
-            'Potted Plant Ravenea Plant one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-    {
-        id: 6,
-        name: 'Dragon Plant',
-        price: '50.99',
-        like: false,
-        img: require('../../assets/img/plant.png'),
-        about:
-            'Potted Plant Ravenea Plant one of the most popular and beautiful species that will produce clumpms. The storage of water often gives succulent plants a more swollen or fleshy appearance than other plants, a characteristic known as succulence.',
-    },
-];
-
 const SaucesPrd = ({ navigation }) => {
     const dispatch = useDispatch()
+    const [saucesProduct, setSaucesProduct] = useState([])
 
     useEffect(() => {
-        if (user) {
-            let bodyData = {
-                "pageNumber": 0,
-                "pageSize": 9999,
-                "sellerRole": "COMPANY",
-                "sortArray": [],
-                "searchCriteria": [
-                    {
-                        "key": "division",
-                        "operation": "PRODUCT_HIERARCHY_EQUAL",
-                        "value": "S&J"
-                    }
-                ]
-            }
-            dispatch(getAllProducts(bodyData))
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 9999,
+            "sortArray": [],
+            "searchCriteria": [
+                {
+                    "key": "category",
+                    "operation": "PRODUCT_HIERARCHY_EQUAL",
+                    "value": "Sauces"
+                }
+            ]
         }
 
-    }, [dispatch, loading])
+        getProducts(bodyData)
 
-    const { loading, user } = useSelector(state => state.auth)
+    }, [])
 
-    const { allProductList } = useSelector(state => state.allProducts)
-
-    let products = []
-    if (allProductList != undefined) {
-        products = allProductList.product
+    const getProducts = async (data) => {
+        let products = await dispatch(getAllProducts(data))
+        setSaucesProduct(products.data.product)
     }
 
     const Card = ({ product }) => {
@@ -150,7 +85,7 @@ const SaucesPrd = ({ navigation }) => {
                     paddingBottom: 50,
                 }}
                 numColumns={2}
-                data={products || []}
+                data={saucesProduct || []}
                 renderItem={({ item }) => {
                     return <Card product={item} />;
                 }}
@@ -160,11 +95,37 @@ const SaucesPrd = ({ navigation }) => {
 }
 
 const NoodlesPrd = ({ navigation }) => {
-    const Card = ({ plant }) => {
+    const dispatch = useDispatch()
+    const [noodlesProduct, setNoodlesProduct] = useState([])
+
+    useEffect(() => {
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 9999,
+            "sortArray": [],
+            "searchCriteria": [
+                {
+                    "key": "category",
+                    "operation": "PRODUCT_HIERARCHY_EQUAL",
+                    "value": "Noodles"
+                }
+            ]
+        }
+
+        getProducts(bodyData)
+
+    }, [])
+
+    const getProducts = async (data) => {
+        let products = await dispatch(getAllProducts(data))
+        setNoodlesProduct(products.data.product)
+    }
+
+    const Card = ({ product }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail', plant)}>
+                onPress={() => navigation.navigate('productDetail')}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -172,13 +133,13 @@ const NoodlesPrd = ({ navigation }) => {
                             alignItems: 'center',
                         }}>
                         <Image
-                            source={plant.img}
-                            style={{ flex: 1, resizeMode: 'contain' }}
+                            source={{ uri: `${product.imageUrl}` }}
+                            style={{ flex: 1, resizeMode: 'contain', height: 170, width: '100%' }}
                         />
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 17, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {plant.name}
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
+                        {product.productName}
                     </Text>
                     <View
                         style={{
@@ -187,7 +148,7 @@ const NoodlesPrd = ({ navigation }) => {
                             marginTop: 5,
                         }}>
                         <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                            MRP: {inrFormat(plant.price)}
+                            Net Weight: {product.netWeight}
                         </Text>
                     </View>
                 </View>
@@ -205,9 +166,9 @@ const NoodlesPrd = ({ navigation }) => {
                     paddingBottom: 50,
                 }}
                 numColumns={2}
-                data={plants}
+                data={noodlesProduct || []}
                 renderItem={({ item }) => {
-                    return <Card plant={item} />;
+                    return <Card product={item} />;
                 }}
             />
         </SafeAreaView>
@@ -215,11 +176,37 @@ const NoodlesPrd = ({ navigation }) => {
 }
 
 const MasalaPrd = ({ navigation }) => {
-    const Card = ({ plant }) => {
+    const dispatch = useDispatch()
+    const [masalaProduct, setMasalaProduct] = useState([])
+
+    useEffect(() => {
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 9999,
+            "sortArray": [],
+            "searchCriteria": [
+                {
+                    "key": "category",
+                    "operation": "PRODUCT_HIERARCHY_EQUAL",
+                    "value": "Masala"
+                }
+            ]
+        }
+
+        getProducts(bodyData)
+
+    }, [])
+
+    const getProducts = async (data) => {
+        let products = await dispatch(getAllProducts(data))
+        setMasalaProduct(products.data.product)
+    }
+
+    const Card = ({ product }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail', plant)}>
+                onPress={() => navigation.navigate('productDetail')}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -227,13 +214,13 @@ const MasalaPrd = ({ navigation }) => {
                             alignItems: 'center',
                         }}>
                         <Image
-                            source={plant.img}
-                            style={{ flex: 1, resizeMode: 'contain' }}
+                            source={{ uri: `${product.imageUrl}` }}
+                            style={{ flex: 1, resizeMode: 'contain', height: 170, width: '100%' }}
                         />
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 17, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {plant.name}
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
+                        {product.productName}
                     </Text>
                     <View
                         style={{
@@ -242,7 +229,7 @@ const MasalaPrd = ({ navigation }) => {
                             marginTop: 5,
                         }}>
                         <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                            MRP: {inrFormat(plant.price)}
+                            Net Weight: {product.netWeight}
                         </Text>
                     </View>
                 </View>
@@ -260,9 +247,9 @@ const MasalaPrd = ({ navigation }) => {
                     paddingBottom: 50,
                 }}
                 numColumns={2}
-                data={plants}
+                data={masalaProduct || []}
                 renderItem={({ item }) => {
-                    return <Card plant={item} />;
+                    return <Card product={item} />;
                 }}
             />
         </SafeAreaView>
@@ -270,11 +257,37 @@ const MasalaPrd = ({ navigation }) => {
 }
 
 const SoupsPrd = ({ navigation }) => {
-    const Card = ({ plant }) => {
+    const dispatch = useDispatch()
+    const [soupsProduct, setSoupsProduct] = useState([])
+
+    useEffect(() => {
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 9999,
+            "sortArray": [],
+            "searchCriteria": [
+                {
+                    "key": "category",
+                    "operation": "PRODUCT_HIERARCHY_EQUAL",
+                    "value": "Soups"
+                }
+            ]
+        }
+
+        getProducts(bodyData)
+
+    }, [])
+
+    const getProducts = async (data) => {
+        let products = await dispatch(getAllProducts(data))
+        setSoupsProduct(products.data.product)
+    }
+
+    const Card = ({ product }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail', plant)}>
+                onPress={() => navigation.navigate('productDetail')}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -282,13 +295,13 @@ const SoupsPrd = ({ navigation }) => {
                             alignItems: 'center',
                         }}>
                         <Image
-                            source={plant.img}
-                            style={{ flex: 1, resizeMode: 'contain' }}
+                            source={{ uri: `${product.imageUrl}` }}
+                            style={{ flex: 1, resizeMode: 'contain', height: 170, width: '100%' }}
                         />
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 17, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {plant.name}
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
+                        {product.productName}
                     </Text>
                     <View
                         style={{
@@ -297,7 +310,7 @@ const SoupsPrd = ({ navigation }) => {
                             marginTop: 5,
                         }}>
                         <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                            MRP: {inrFormat(plant.price)}
+                            Net Weight: {product.netWeight}
                         </Text>
                     </View>
                 </View>
@@ -315,9 +328,9 @@ const SoupsPrd = ({ navigation }) => {
                     paddingBottom: 50,
                 }}
                 numColumns={2}
-                data={plants}
+                data={soupsProduct || []}
                 renderItem={({ item }) => {
-                    return <Card plant={item} />;
+                    return <Card product={item} />;
                 }}
             />
         </SafeAreaView>
@@ -325,11 +338,37 @@ const SoupsPrd = ({ navigation }) => {
 }
 
 const CookingPastePrd = ({ navigation }) => {
-    const Card = ({ plant }) => {
+    const dispatch = useDispatch()
+    const [cookingPasteProduct, setCookingPasteProduct] = useState([])
+
+    useEffect(() => {
+        let bodyData = {
+            "pageNumber": 0,
+            "pageSize": 9999,
+            "sortArray": [],
+            "searchCriteria": [
+                {
+                    "key": "category",
+                    "operation": "PRODUCT_HIERARCHY_EQUAL",
+                    "value": "Cooking Paste"
+                }
+            ]
+        }
+
+        getProducts(bodyData)
+
+    }, [])
+
+    const getProducts = async (data) => {
+        let products = await dispatch(getAllProducts(data))
+        setCookingPasteProduct(products.data.product)
+    }
+
+    const Card = ({ product }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail', plant)}>
+                onPress={() => navigation.navigate('productDetail')}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -337,13 +376,13 @@ const CookingPastePrd = ({ navigation }) => {
                             alignItems: 'center',
                         }}>
                         <Image
-                            source={plant.img}
-                            style={{ flex: 1, resizeMode: 'contain' }}
+                            source={{ uri: `${product.imageUrl}` }}
+                            style={{ flex: 1, resizeMode: 'contain', height: 170, width: '100%' }}
                         />
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 17, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {plant.name}
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
+                        {product.productName}
                     </Text>
                     <View
                         style={{
@@ -352,7 +391,7 @@ const CookingPastePrd = ({ navigation }) => {
                             marginTop: 5,
                         }}>
                         <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                            MRP: {inrFormat(plant.price)}
+                            Net Weight: {product.netWeight}
                         </Text>
                     </View>
                 </View>
@@ -370,9 +409,9 @@ const CookingPastePrd = ({ navigation }) => {
                     paddingBottom: 50,
                 }}
                 numColumns={2}
-                data={plants}
+                data={cookingPasteProduct || []}
                 renderItem={({ item }) => {
-                    return <Card plant={item} />;
+                    return <Card product={item} />;
                 }}
             />
         </SafeAreaView>
@@ -380,8 +419,6 @@ const CookingPastePrd = ({ navigation }) => {
 }
 
 const ProductList = () => {
-
-
     return (
         <SafeAreaView style={{
             flex: 1,
