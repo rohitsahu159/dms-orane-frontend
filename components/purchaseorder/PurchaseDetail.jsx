@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, Platform, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Dimensions, StyleSheet, Platform, FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+const { height, width } = Dimensions.get('window')
 
 
 const PurchaseDetail = ({ route, navigation }) => {
@@ -43,43 +45,18 @@ const PurchaseDetail = ({ route, navigation }) => {
         poLineItems = poDetail.lineItems
     }
 
-    const columns = [
-        {
-            title: 'Product Name',
-            dataIndex: 'productName',
-            width: 182,
-        },
-        {
-            title: 'Quantity',
-            dataIndex: 'orderedQuantity',
-        },
-        {
-            title: 'MRP',
-            dataIndex: 'mrp'
-        },
-        {
-            title: 'GST(%)',
-            dataIndex: 'taxPercent'
-        },
-        {
-            title: 'Total Value',
-            dataIndex: 'totalValue',
-        },
-    ];
-
     const Card = ({ list }) => {
         return (
-            <View style={{  height:550, marginVertical: 2 }}>
-
-                <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -10,marginHorizontal:10 }}>{list.productName}</Title>
+            <View style={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
+                <Title style={{ color: '#00a7e5', fontSize: 17, marginHorizontal: 10 }}>{list.productCode} - {list.productName}</Title>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{marginHorizontal:10, width: '50%' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
                         <Text>MRP:</Text >
                         <Text style={{ fontWeight: '500' }}> {inrFormat(list.mrp)}</Text>
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ marginHorizontal:10,width: '50%' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
                         <Text>Quantity :</Text >
                         <Text style={{ fontWeight: '500' }}> {list.orderedQuantity}</Text>
                     </Text>
@@ -88,7 +65,7 @@ const PurchaseDetail = ({ route, navigation }) => {
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ marginHorizontal:10,width: '50%' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
                         <Text>GST :</Text >
                         <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
                     </Text>
@@ -98,7 +75,7 @@ const PurchaseDetail = ({ route, navigation }) => {
         );
     };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
 
             <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>PO Number: <Text style={{ color: '#00a7e5' }}>{purchaseDetail.purchaseOrderId}</Text></Text>
             <View style={styles.container}>
@@ -153,42 +130,13 @@ const PurchaseDetail = ({ route, navigation }) => {
             </View>
 
             <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>Products</Text>
-            {/* <View style={styles.container1}>
-                    <Table height={400} columns={columns} dataSource={poLineItems} />
-                </View> */}
             <FlatList
-                 showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 data={poLineItems || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
             />
-            {/* <DataTable>
-                        <DataTable.Header>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>Email</DataTable.Title>
-                            <DataTable.Title>Age</DataTable.Title>
-                        </DataTable.Header>
-
-                        <DataTable.Row >
-                            <DataTable.Cell>John</DataTable.Cell>
-                            <DataTable.Cell>john@kindacode.com</DataTable.Cell>
-                            <DataTable.Cell>33</DataTable.Cell>
-                        </DataTable.Row>
-
-                        <DataTable.Row>
-                            <DataTable.Cell>Bob</DataTable.Cell>
-                            <DataTable.Cell>test@test.com</DataTable.Cell>
-                            <DataTable.Cell>105</DataTable.Cell>
-                        </DataTable.Row>
-
-                        <DataTable.Row>
-                            <DataTable.Cell>Mei</DataTable.Cell>
-                            <DataTable.Cell>mei@kindacode.com</DataTable.Cell>
-                            <DataTable.Cell>23</DataTable.Cell>
-                        </DataTable.Row>
-                    </DataTable> */}
-            {/* </View> */}
         </SafeAreaView>
     )
 }

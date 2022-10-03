@@ -9,6 +9,7 @@ import Loader from '../Loader';
 import { inrFormat } from '../../redux/constants';
 
 const Tab = createMaterialTopTabNavigator();
+const { height, width } = Dimensions.get('window')
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -47,7 +48,10 @@ const ApprovedPO = ({ navigation }) => {
 
     const Card = ({ list }) => {
         return (
-            <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -59,13 +63,12 @@ const ApprovedPO = ({ navigation }) => {
                         <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                     </View>
                 </View>
-
             </TouchableOpacity>
         );
     };
 
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={approvedPO || []}
@@ -80,10 +83,6 @@ const ApprovedPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
-
         </SafeAreaView>
     )
 }
@@ -120,28 +119,31 @@ const RejectedPO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
 
-                    </TouchableOpacity>
-            );
-        };
+            </TouchableOpacity>
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
-             <FlatList
-              showsVerticalScrollIndicator={false}
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
+            <FlatList
+                showsVerticalScrollIndicator={false}
                 data={rejectedPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
@@ -154,9 +156,6 @@ const RejectedPO = ({ navigation }) => {
                     />
                 }
             />
-            {/* <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View> */}
         </SafeAreaView>
     )
 }
@@ -191,10 +190,13 @@ const PendingForApprovalPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-       
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -208,13 +210,14 @@ const PendingForApprovalPO = ({ navigation }) => {
                 </View>
 
             </TouchableOpacity>
-            );
-        };
+        );
+    };
+
     return (
-        loading ? <Loader /> : <SafeAreaView>
-           <FlatList
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
+            <FlatList
                 showsVerticalScrollIndicator={false}
- data={pendingForApprovalPO || []}
+                data={pendingForApprovalPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -226,9 +229,6 @@ const PendingForApprovalPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
         </SafeAreaView>
     )
 }
@@ -263,30 +263,33 @@ const InProgressPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-    
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
 
-                    </TouchableOpacity>
-            );
-        };
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={ inProgressPO || []}
+                data={inProgressPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -298,9 +301,6 @@ const InProgressPO = ({ navigation }) => {
                     />
                 }
             />
-            {/* <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View> */}
         </SafeAreaView>
     )
 }
@@ -336,30 +336,33 @@ const SoCreatedPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-    
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity  onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
 
-                    </TouchableOpacity>
-            );
-        };
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={ soCreatedPO || []}
+                data={soCreatedPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -371,9 +374,6 @@ const SoCreatedPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
         </SafeAreaView>
     )
 }
@@ -409,10 +409,13 @@ const DeliveredPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-    
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity  onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -426,13 +429,13 @@ const DeliveredPO = ({ navigation }) => {
                 </View>
 
             </TouchableOpacity>
-            );
-        };
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
-             <FlatList
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
+            <FlatList
                 showsVerticalScrollIndicator={false}
-                 data={deliveredPO || []}
+                data={deliveredPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -444,9 +447,6 @@ const DeliveredPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
         </SafeAreaView>
     )
 }
@@ -483,29 +483,32 @@ const PartialdPO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
-        const Card = ({ list }) => {
-            return (
-                 <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
 
-                    </TouchableOpacity>
-            );
-        };
+            </TouchableOpacity>
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
-          <FlatList
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
+            <FlatList
                 showsVerticalScrollIndicator={false}
-                 data={partialdPO || []}
+                data={partialdPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -517,9 +520,6 @@ const PartialdPO = ({ navigation }) => {
                     />
                 }
             />
-            {/* <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View> */}
         </SafeAreaView>
     )
 }
@@ -555,10 +555,13 @@ const PartialDeliveredPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-    
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -572,14 +575,12 @@ const PartialDeliveredPO = ({ navigation }) => {
                 </View>
 
             </TouchableOpacity>
-            );
-        };
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-
-
                 data={partialDeliveredPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
@@ -592,9 +593,6 @@ const PartialDeliveredPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
         </SafeAreaView>
     )
 }
@@ -630,31 +628,32 @@ const CompletedPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-    
-        const Card = ({ list }) => {
-            return (
-                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
 
-                    </TouchableOpacity>
-            );
-        };
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        );
+    };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-
-
                 data={completedPO || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
@@ -667,9 +666,6 @@ const CompletedPO = ({ navigation }) => {
                     />
                 }
             />
-            {/* <View style={styles.container}>
-                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View> */}
         </SafeAreaView>
     )
 }

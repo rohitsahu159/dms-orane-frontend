@@ -313,7 +313,7 @@ const CreatePO = ({ navigation }) => {
             lineItems: lineItemArr,
         };
 
-        navigation.navigate('previewPO', { params: { data: bodyData } })
+        // navigation.navigate('previewPO', { params: { data: bodyData } })
     }
 
     const ItemBox = (props) => {
