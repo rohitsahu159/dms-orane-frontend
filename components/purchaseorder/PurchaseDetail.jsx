@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, Platform } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, StyleSheet, Platform,FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
@@ -34,7 +34,7 @@ const PurchaseDetail = ({ route, navigation }) => {
 
     const { user } = useSelector(state => state.auth)
     const { poDetail, loading } = useSelector(state => state.poDetail)
-
+    
     let purchaseDetail = {}
     let poLineItems = []
 
@@ -66,7 +66,37 @@ const PurchaseDetail = ({ route, navigation }) => {
             dataIndex: 'totalValue',
         },
     ];
-
+    
+    const Card = ({ list }) => {
+        return (
+            <View style={{ marginVertical: 2 }}>
+                        
+                            <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ width: '50%' }}>
+                                    <Text>MRP:</Text >
+                                    <Text style={{ fontWeight: '500' }}> {inrFormat(list.mrp)}</Text>
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ width: '50%' }}>
+                                    <Text>Quantity :</Text >
+                                    <Text style={{ fontWeight: '500' }}> {list.orderedQuantity}</Text>
+                                </Text>
+                                <Text style={{ width: '50%' }}>
+                                    <Text style={{ fontWeight: 'bold', color: 'green', textAlign: 'right', right: 0, position: 'absolute' }}>Total : {inrFormat(list.totalValue)}</Text>
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ width: '50%' }}>
+                                    <Text>GST :</Text >
+                                    <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
+                                </Text>
+                            </View>
+                        
+                    </View>
+        );
+    };
     return (
         loading ? <Loader /> : <SafeAreaView>
 
@@ -126,36 +156,13 @@ const PurchaseDetail = ({ route, navigation }) => {
             {/* <View style={styles.container1}>
                     <Table height={400} columns={columns} dataSource={poLineItems} />
                 </View> */}
-            <ScrollView>
-                {poLineItems && poLineItems.map((list) => (
-                    <Card style={{ marginVertical: 2 }} key={list.id}>
-                        <Card.Content>
-                            <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>MRP:</Text >
-                                    <Text style={{ fontWeight: '500' }}> {inrFormat(list.mrp)}</Text>
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>Quantity :</Text >
-                                    <Text style={{ fontWeight: '500' }}> {list.orderedQuantity}</Text>
-                                </Text>
-                                <Text style={{ width: '50%' }}>
-                                    <Text style={{ fontWeight: 'bold', color: 'green', textAlign: 'right', right: 0, position: 'absolute' }}>Total : {inrFormat(list.totalValue)}</Text>
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>GST :</Text >
-                                    <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
-                                </Text>
-                            </View>
-                        </Card.Content>
-                    </Card>
-                ))}
-            </ScrollView>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+                data={ purchaseDetail || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+            />
             {/* <DataTable>
                         <DataTable.Header>
                             <DataTable.Title>Name</DataTable.Title>

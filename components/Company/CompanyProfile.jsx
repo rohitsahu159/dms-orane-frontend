@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         margin: 10,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        height: height 
+        height: height
     },
     container1: {
         backgroundColor: "#f5f5fd",
