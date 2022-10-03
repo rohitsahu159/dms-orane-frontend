@@ -154,9 +154,9 @@ const RejectedPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
+            {/* <View style={styles.container}>
                 <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -298,9 +298,9 @@ const InProgressPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
+            {/* <View style={styles.container}>
                 <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -517,9 +517,9 @@ const PartialdPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
+            {/* <View style={styles.container}>
                 <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -667,9 +667,9 @@ const CompletedPO = ({ navigation }) => {
                     />
                 }
             />
-            <View style={styles.container}>
+            {/* <View style={styles.container}>
                 <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
