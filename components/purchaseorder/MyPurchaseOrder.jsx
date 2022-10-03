@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { RefreshControl, View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { RefreshControl, View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getPOList } from '../../redux/actions/purchaseAction'
 import { round } from 'lodash';
@@ -45,36 +45,45 @@ const ApprovedPO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
+    const Card = ({ list }) => {
+        return (
+            <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        );
+    };
+
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={approvedPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
                 }
-            >
-                {approvedPO.length != 0 ? approvedPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
+            />
+            <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View>
 
-                    </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -111,18 +120,9 @@ const RejectedPO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-            >
-                {rejectedPO.length != 0 ? rejectedPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -136,11 +136,27 @@ const RejectedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            );
+        };
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+             <FlatList
+              showsVerticalScrollIndicator={false}
+                data={rejectedPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            />
+            {/* <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -175,37 +191,44 @@ const PendingForApprovalPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
+       
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
 
+            </TouchableOpacity>
+            );
+        };
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
+           <FlatList
+                showsVerticalScrollIndicator={false}
+ data={pendingForApprovalPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
                 }
-            >
-                {pendingForApprovalPO.length != 0 ? pendingForApprovalPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-
-                    </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            />
+            <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View>
         </SafeAreaView>
     )
 }
@@ -240,19 +263,10 @@ const InProgressPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-            >
-                {inProgressPO.length != 0 ? inProgressPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+    
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -266,12 +280,27 @@ const InProgressPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>
+            );
+        };
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={ inProgressPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
                 }
-            </ScrollView>
+            />
+            {/* <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -307,19 +336,10 @@ const SoCreatedPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-            >
-                {soCreatedPO.length != 0 ? soCreatedPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+    
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity  onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -333,11 +353,27 @@ const SoCreatedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            );
+        };
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={ soCreatedPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            />
+            <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View>
         </SafeAreaView>
     )
 }
@@ -373,37 +409,44 @@ const DeliveredPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
+    
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity  onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
 
+            </TouchableOpacity>
+            );
+        };
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
+             <FlatList
+                showsVerticalScrollIndicator={false}
+                 data={deliveredPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
                 }
-            >
-                {deliveredPO.length != 0 ? deliveredPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-
-                    </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            />
+            <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View>
         </SafeAreaView>
     )
 }
@@ -440,18 +483,9 @@ const PartialdPO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-            >
-                {partialdPO.length != 0 ? partialdPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+        const Card = ({ list }) => {
+            return (
+                 <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -465,11 +499,27 @@ const PartialdPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red',height:'100%' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            );
+        };
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+          <FlatList
+                showsVerticalScrollIndicator={false}
+                 data={partialdPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            />
+            {/* <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -505,37 +555,46 @@ const PartialDeliveredPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
+    
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
 
+            </TouchableOpacity>
+            );
+        };
     return (
         loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
+            <FlatList
+                showsVerticalScrollIndicator={false}
+
+
+                data={partialDeliveredPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
                     />
                 }
-            >
-                {partialDeliveredPO.length != 0 ? partialDeliveredPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                                <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-
-                    </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            />
+            <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View>
         </SafeAreaView>
     )
 }
@@ -571,19 +630,10 @@ const CompletedPO = ({ navigation }) => {
 
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
-
-    return (
-        loading ? <Loader /> : <SafeAreaView>
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-            >
-                {completedPO.length != 0 ? completedPO.map((list, i) => (
-                    <TouchableOpacity key={i} onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
+    
+        const Card = ({ list }) => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}>
                         <View style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={{ fontWeight: '500' }}>Purchase Order No: <Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
@@ -597,11 +647,29 @@ const CompletedPO = ({ navigation }) => {
                         </View>
 
                     </TouchableOpacity>
-                )) :
-                    <View style={styles.container}>
-                        <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
-                    </View>}
-            </ScrollView>
+            );
+        };
+    return (
+        loading ? <Loader /> : <SafeAreaView>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+
+
+                data={completedPO || []}
+                renderItem={({ item }) => {
+                    return <Card list={item} />;
+                }}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            />
+            {/* <View style={styles.container}>
+                <Text style={{ flex: 1, justifyContent: 'center', textAlign: 'center', color: 'red' }}>No Products Found...</Text>
+            </View> */}
         </SafeAreaView>
     )
 }

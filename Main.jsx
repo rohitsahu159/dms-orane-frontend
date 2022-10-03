@@ -177,7 +177,7 @@ export default function Main() {
                         drawerLabel: 'Company Profile',
                         title: 'Company Profile',
                         drawerIcon: ({ color }) => (
-                            <Ionicons name="newspaper-outline" size={22} color='blue' />
+                            <Ionicons name="md-people-sharp" size={22} color='blue' />
                         )
                     }} />
                 </Drawer.Navigator>
