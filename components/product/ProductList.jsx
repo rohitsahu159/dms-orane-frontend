@@ -44,7 +44,7 @@ const SaucesPrd = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail')}>
+                onPress={() => navigation.navigate('productDetail', { itemId: product.id })}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -125,7 +125,7 @@ const NoodlesPrd = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail')}>
+                onPress={() => navigation.navigate('productDetail', { itemId: product.id })}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -206,7 +206,7 @@ const MasalaPrd = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail')}>
+                onPress={() => navigation.navigate('productDetail', { itemId: product.id })}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -287,7 +287,7 @@ const SoupsPrd = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail')}>
+                onPress={() => navigation.navigate('productDetail', { itemId: product.id })}>
                 <View style={styles.card}>
                     <View
                         style={{
@@ -368,7 +368,7 @@ const CookingPastePrd = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('productDetail')}>
+                onPress={() => navigation.navigate('productDetail', { itemId: product.id })}>
                 <View style={styles.card}>
                     <View
                         style={{

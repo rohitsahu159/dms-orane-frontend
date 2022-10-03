@@ -1,79 +1,94 @@
-import { StyleSheet, Image, Text, View, SafeAreaView, Button } from 'react-native'
-import React from 'react'
-import { inrFormat } from '../../redux/constants';
+import { StyleSheet, Image, Text, View, SafeAreaView, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { COLORS, inrFormat } from '../../redux/constants';
+import { getProuctDetail } from '../../redux/actions/productAction';
+import Loader from '../Loader';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const ProductDetail = () => {
+const ProductDetail = ({ route, navigation }) => {
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('productList')} color="#00a7e5" />
+                </View>
+            ),
+        });
+    }, [navigation]);
+
+    const dispatch = useDispatch()
+    const { itemId } = route.params;
+
+    useEffect(() => {
+        dispatch(getProuctDetail(itemId))
+    }, [dispatch, itemId])
+
+    const { productDetail, loading } = useSelector(state => state.productDetail)
+
+    let product = {}
+    if (productDetail != undefined) {
+        product = productDetail
+    }
+
     return (
-        <SafeAreaView>
-
+        loading ? <Loader /> : <SafeAreaView>
             <Image
+                source={{ uri: `${product.imageUrl}` }}
                 style={styles.logo}
-                source={require("../../assets/maggi.png")} />
+            />
             <View style={styles.container}>
-                <Text style={{ fontSize: 18, fontWeight: "400", margin: 10 }}>
-                    S&J Pink Pasta Sauce Mix 60 * 2 * 23 gm
+                <Text style={{ fontSize: 18, fontWeight: "400", margin: 10, color: COLORS.oraneBlue }}>
+                    {product.productDescription}
                 </Text>
-                <Text style={{ width: '50%', fontSize: 20, marginLeft: 10, color: '#1a1aff' }}>{inrFormat(30293)}</Text>
             </View>
-                 {/* {margin:5,padding:5,top:10} */}
-
             <Text style={styles.atk}>
                 Basic Product Details
             </Text>
 
-            <View  style={styles.container1} >
-
+            <View style={styles.container1} >
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product Name : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>S&J Pink Pasta Sauce Mix 60 * 2 * 23 gm</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productName}</Text>
                 </View>
 
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product ID : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>1601474</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productCode}</Text>
                 </View>
-
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Description : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>S&J Pink Pasta Sauce Mix 60 * 2 * 23 gm</Text>
                 </View>
-
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Brand(Division) : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>S&J</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Brand (Division) : </Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.division}</Text>
                 </View>
-
-
-
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Category :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>Masala</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.category}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>Pasta Masala</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category 2 :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}></Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory2}</Text>
                 </View>
-                
+
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>SAP Product ID :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>1601474</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.externalReferenceId}</Text>
                 </View>
 
-
-
             </View>
-
-
         </SafeAreaView>
 
     )
@@ -82,13 +97,12 @@ const ProductDetail = () => {
 export default ProductDetail
 
 const styles = StyleSheet.create({
-
     logo: {
-        width: '50%',
+        width: '100%',
         height: '40%',
         justifyContent: 'center',
         marginTop: 20,
-        marginLeft: 100
+        resizeMode: 'contain'
     },
     container: {
         backgroundColor: "white",
@@ -100,7 +114,6 @@ const styles = StyleSheet.create({
     },
     container1: {
         backgroundColor: "white",
-        
         padding: 10,
         margin: 10,
         justifyContent: 'flex-end'
@@ -112,12 +125,10 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         borderRadius: 20
-
     },
     atk: {
-        textAlign:'center',
+        textAlign: 'center',
         fontSize: 20,
-        fontWeight:'bold'
+        fontWeight: 'bold'
     }
-
 })

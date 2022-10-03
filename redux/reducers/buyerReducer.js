@@ -25,3 +25,21 @@ export const buyerReducer = createReducer(
         },
     }
 );
+
+export const buyerListReducer = createReducer(
+    {},
+    {
+        buyersRequest: (state) => {
+            state.loading = true;
+            state.buyerList = [];
+        },
+        buyersSuccess: (state, action) => {
+            state.loading = false;
+            state.buyerList = action.payload;
+        },
+        buyersFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+    }
+);

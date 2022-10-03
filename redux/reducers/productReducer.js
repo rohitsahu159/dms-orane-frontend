@@ -51,3 +51,21 @@ export const allProductReducer = createReducer(
         },
     }
 );
+
+export const productDetailReducer = createReducer(
+    {},
+    {
+        productDetailRequest: (state) => {
+            state.loading = true;
+            state.productDetail = {};
+        },
+        productDetailSuccess: (state, action) => {
+            state.loading = false;
+            state.productDetail = action.payload.data;
+        },
+        productDetailFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+    }
+);
