@@ -158,7 +158,7 @@ const PurchaseDetail = ({ route, navigation }) => {
                 </View> */}
             <FlatList
               showsVerticalScrollIndicator={false}
-                data={ purchaseDetail || []}
+                data={ poLineItems || []}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
