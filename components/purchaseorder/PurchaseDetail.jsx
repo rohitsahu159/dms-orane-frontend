@@ -69,8 +69,8 @@ const PurchaseDetail = ({ route, navigation }) => {
     
     const Card = ({ list }) => {
         return (
-            <View style={{ marginVertical: 2 }}>
-                        
+            <Card style={{ marginVertical: 2 }}>
+                        <Card.Content>
                             <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ width: '50%' }}>
@@ -93,8 +93,8 @@ const PurchaseDetail = ({ route, navigation }) => {
                                     <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
                                 </Text>
                             </View>
-                        
-                    </View>
+                        </Card.Content>
+                    </Card>
         );
     };
     return (
