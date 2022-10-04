@@ -10,7 +10,7 @@ import Loader from '../Loader';
 import { inrFormat } from '../../redux/constants';
 const Tab = createMaterialTopTabNavigator();
 
-
+const { height, width } = Dimensions.get('window')
 
 const PendingSO = ({ navigation }) => {
     const { soList, loading } = useSelector(state => state.soList)
@@ -27,82 +27,33 @@ const PendingSO = ({ navigation }) => {
 
     const Card = ({ list }) => {
         return (
-            <TouchableOpacity onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
                         <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                     </View>
-
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-
                 </View>
             </TouchableOpacity>
         );
     };
     return (
-        loading ? <Loader /> : <SafeAreaView>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={pendingSOList}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
-                }
-                }
-
+                }}
             />
-
-
         </SafeAreaView>
     )
 }
@@ -123,81 +74,33 @@ const DeliveredSO = ({ navigation }) => {
 
         return (
 
-            <TouchableOpacity  onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
+            >
                 <View style={styles.container}>
                     <View style={styles.item}>
                         <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
                         <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
                     </View>
                 </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                        <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-                </View>
-
             </TouchableOpacity>
-
-
-
         )
     };
     return (
         loading ? <Loader /> : <SafeAreaView>
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={deliveredSOList}
                 renderItem={({ item }) => {
                     return <DeliveredCard list={item} />;
-                }
-                }
-
+                }}
             />
-
-
         </SafeAreaView>
     )
 
@@ -216,76 +119,39 @@ const PartialSO = ({ navigation }) => {
     const inrDateFormatNoTime = (date) =>
         new Date(date).toLocaleString("en-IN");
 
-        const PartialCard = ({ list }) => {
+    const PartialCard = ({ list }) => {
+
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.item}>
+                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    };
 
     return (
-     
-         
-        
-                    <TouchableOpacity  onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>Customer Name:<Text>{list.buyerFirmName}</Text></Text>
-                                <Text style={{ fontWeight: '500' }}>SO Date:<Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                            </View>
-                        </View>
-
-                    </TouchableOpacity>
-                )
-            };
-       
-            return (
-                loading ? <Loader /> : <SafeAreaView>
-                    <FlatList
-                        data={partialSOList}
-                        renderItem={({ item }) => {
-                            return <PartialCard  list={item} />;
-                        }
-                        }
-        
-                    />
-        
-        
-                </SafeAreaView>
-            )
+        loading ? <Loader /> : <SafeAreaView>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={partialSOList}
+                renderItem={({ item }) => {
+                    return <PartialCard list={item} />;
+                }}
+            />
+        </SafeAreaView>
+    )
 }
 
 
@@ -303,19 +169,45 @@ const MySalesOrder = ({ navigation }) => {
 
     useEffect(() => {
         if (user) {
+            let searchCriteriaArr = [];
+            if (user.subRole == "RH" || user.subRole == "KAM" || user.subRole == "KAE") {
+                searchCriteriaArr = [
+                    {
+                        key: "buyerSubRegion",
+                        operation: "EQUAL",
+                        value: user.assignedGeolocation[0],
+                    },
+                    {
+                        key: "buyerHierarchyType",
+                        operation: "EQUAL",
+                        value: user.assignedHierarchyType,
+                    },
+                ];
+            } else if (user && user.subRole == "ASM") {
+                searchCriteriaArr = [
+                    {
+                        key: "buyerTerritory",
+                        operation: "EQUAL",
+                        value: user.assignedGeolocation[0],
+                    },
+                ];
+            } else if (user && user.role == "COMPANY" && user.subRole == "ADMIN") {
+                searchCriteriaArr = [];
+            } else {
+                searchCriteriaArr = [
+                    {
+                        key: "sellerUserId",
+                        value: user.employerUserId,
+                        operation: "EQUAL",
+                    },
+                ];
+            }
+
             let bodyData = {
                 "pageNumber": 0,
-                "pageSize": 10,
-                "sortArray": [
-
-                ],
-                "searchCriteria": [
-                    {
-                        "key": "sellerUserId",
-                        "value": "1100072",
-                        "operation": "EQUAL"
-                    }
-                ]
+                "pageSize": 9999,
+                "sortArray": [],
+                "searchCriteria": searchCriteriaArr
             }
             dispatch(getSOList(bodyData))
         }
@@ -324,16 +216,20 @@ const MySalesOrder = ({ navigation }) => {
     const { user } = useSelector(state => state.auth)
     const { loading, soList } = useSelector(state => state.soList)
 
-
     return (
         loading ? <Loader /> : <Tab.Navigator
             initialRouteName='pendingSO'
             screenOptions={({ route }) => ({
                 tabBarActiveTintColor: "blue",
                 tabBarInactiveTintColor: "#555",
-                tabBarLabelStyle: {
-                    fontSize: 12,
-                },
+                // tabBarLabelStyle: {
+                //     fontSize: 12,
+                // },
+                // tabBarItemStyle: {
+                //     width: 'auto',
+                //     alignItems: 'flex-start',
+                // },
+                // tabBarScrollEnabled: true
             })}
         >
             <Tab.Screen
@@ -367,7 +263,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         backgroundColor: "#fff",
         padding: 10,
-        margin: 5,
+        margin: 1,
         elevation: 8,
         borderRadius: 10,
         flexDirection: 'row'

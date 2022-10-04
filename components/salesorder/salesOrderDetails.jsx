@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, Platform, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Dimensions, StyleSheet, Platform, FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
@@ -7,16 +7,28 @@ import { getSODetail } from '../../redux/actions/salesAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const { height, width } = Dimensions.get('window')
 
 
-const SalesOrderDetail = ({ route }) => {
+const SalesOrderDetail = ({ route, navigation }) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('mySalesOrder')} color="#00a7e5" />
+                </View>
+            ),
+        });
+    }, [navigation]);
+
     const dispatch = useDispatch()
     const itemId = route.params;
     useEffect(() => {
         if (user) {
             dispatch(getSODetail(itemId.itemId))
         }
-
     }, [dispatch, itemId])
 
     const { user } = useSelector(state => state.auth)
@@ -24,90 +36,89 @@ const SalesOrderDetail = ({ route }) => {
 
     let salesOrderDetail = {}
     let soLineItems = []
-    console.log("daaaaata", soLineItems)
     if (soDetail) {
         salesOrderDetail = soDetail;
         soLineItems = soDetail.lineItems
     }
 
-    const columns = [
-        {
-            title: 'Product Name',
-            dataIndex: 'productName',
-            width: 182,
-        },
-        {
-            title: 'Quantity',
-            dataIndex: 'orderedQuantity',
-        },
-        {
-            title: 'MRP',
-            dataIndex: 'mrp'
-        },
-        {
-            title: 'GST(%)',
-            dataIndex: 'taxPercent'
-        },
-        {
-            title: 'Total Value',
-            dataIndex: 'totalValue',
-        },
-    ];
-    let ProductCard;
+    const Card = ({ list }) => {
+        return (
+            <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                <Title style={{ color: '#00a7e5', fontSize: 17, marginHorizontal: 10 }}>{list.productCode} - {list.productName}</Title>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
+                        <Text>MRP:</Text >
+                        <Text style={{ fontWeight: '500' }}> {inrFormat(list.mrp)}</Text>
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
+                        <Text>Quantity :</Text >
+                        <Text style={{ fontWeight: '500' }}> {list.orderedQuantity}</Text>
+                    </Text>
+                    <Text style={{ width: '50%' }}>
+                        <Text style={{ fontWeight: 'bold', color: 'green', textAlign: 'right', right: 0, position: 'absolute' }}>Total : {inrFormat(list.totalValue)}</Text>
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ marginHorizontal: 10, width: '50%' }}>
+                        <Text>GST :</Text >
+                        <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
+                    </Text>
+                </View>
+
+            </View>
+        );
+    };
 
     return (
-        loading ? <Loader /> : <SafeAreaView>
-
-
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18, top: 5 }}>SO Number:</Text>
-                <Text style={{ marginTop: 14, fontWeight: 'bold', color: '#00a7e5', top: 5 }}>{salesOrderDetail.salesOrderId}</Text>
-            </View>
+        loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
+            <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>SO Number: <Text style={{ color: '#00a7e5' }}>{salesOrderDetail.salesOrderId}</Text></Text>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Customer :</Text>
-                    <Text style={{ marginHorizontal: 70, color: '#00a7e5' }}>{salesOrderDetail.buyerFirmName}</Text>
+                    <Text style={{ color: '#00a7e5' }}>{salesOrderDetail.buyerFirmName}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Billing Address :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{salesOrderDetail.buyerBillingAddress}</Text>
+                    <Text style={{ width: '50%' }}>{salesOrderDetail.buyerBillingAddress}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Shipping Address :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{salesOrderDetail.buyerShippingAddress}</Text>
+                    <Text style={{ width: '50%' }}>{salesOrderDetail.buyerShippingAddress}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Payment Term :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{salesOrderDetail.paymentTerm}</Text>
+                    <Text style={{ width: '50%' }}>{salesOrderDetail.paymentTerm}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>SAP Sales Order No :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}></Text>
+                    <Text style={{ width: '50%' }}></Text>
                 </View>
             </View>
 
             <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 18 }}>Summary</Text>
-            <View style={styles.container2}>
+            <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Basic Value :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{inrFormat(salesOrderDetail.grossValue)}</Text>
+                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.grossValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Total Discount :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{inrFormat(salesOrderDetail.primaryDiscountValue)}</Text>
+                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.primaryDiscountValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>Net Value :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{inrFormat(salesOrderDetail.netValue)}</Text>
+                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.netValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold' }}>GST :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%' }}>{inrFormat(salesOrderDetail.taxValue)}</Text>
+                    <Text style={{ width: '50%' }}>{inrFormat(salesOrderDetail.taxValue)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ width: '50%', fontWeight: 'bold', color: 'green', fontWeight: 'bold' }}>Grand Total :</Text>
-                    <Text style={{ marginHorizontal: 70, width: '50%', color: 'green', fontWeight: 'bold' }}>{inrFormat(salesOrderDetail.totalValue)}</Text>
+                    <Text style={{ width: '50%', color: 'green', fontWeight: 'bold' }}>{inrFormat(salesOrderDetail.totalValue)}</Text>
                 </View>
             </View>
 
@@ -149,72 +160,12 @@ const SalesOrderDetail = ({ route }) => {
             }
 
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={soLineItems || []}
                 renderItem={({ item }) => {
-                    return <ProductCard list={item} />;
-                }
-                }
-
+                    return <Card list={item} />;
+                }}
             />
-
-
-            {/* <ScrollView>
-                {soLineItems && soLineItems.map((list) => (
-                    <Card style={{ marginVertical: 2 }} key={list.id}>
-                        <Card.Content>
-                            <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>MRP:</Text >
-                                    <Text style={{ fontWeight: '500' }}> {inrFormat(list.mrp)}</Text>
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>Quantity :</Text >
-                                    <Text style={{ fontWeight: '500' }}> {list.orderedQuantity}</Text>
-                                </Text>
-                                <Text style={{ width: '50%' }}>
-                                    <Text style={{ fontWeight: 'bold', color: 'green', textAlign: 'right', right: 0, position: 'absolute' }}>Total : {inrFormat(list.totalValue)}</Text>
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ width: '50%' }}>
-                                    <Text>GST :</Text >
-                                    <Text style={{ fontWeight: '500' }}> {list.taxPercent} %</Text>
-                                </Text>
-                            </View>
-                        </Card.Content>
-                        
-                    </Card>
-                ))}
-            </ScrollView> */}
-            {/* <DataTable>
-                        <DataTable.Header>
-                            <DataTable.Title>Name</DataTable.Title>
-                            <DataTable.Title>Email</DataTable.Title>
-                            <DataTable.Title>Age</DataTable.Title>
-                        </DataTable.Header>
-
-                        <DataTable.Row >
-                            <DataTable.Cell>John</DataTable.Cell>
-                            <DataTable.Cell>john@kindacode.com</DataTable.Cell>
-                            <DataTable.Cell>33</DataTable.Cell>
-                        </DataTable.Row>
-
-                        <DataTable.Row>
-                            <DataTable.Cell>Bob</DataTable.Cell>
-                            <DataTable.Cell>test@test.com</DataTable.Cell>
-                            <DataTable.Cell>105</DataTable.Cell>
-                        </DataTable.Row>
-
-                        <DataTable.Row>
-                            <DataTable.Cell>Mei</DataTable.Cell>
-                            <DataTable.Cell>mei@kindacode.com</DataTable.Cell>
-                            <DataTable.Cell>23</DataTable.Cell>
-                        </DataTable.Row>
-                    </DataTable> */}
-            {/* </View> */}
         </SafeAreaView>
     )
 }
