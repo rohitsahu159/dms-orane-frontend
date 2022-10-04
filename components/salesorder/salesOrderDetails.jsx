@@ -142,6 +142,7 @@ const SalesOrderDetail = ({ route }) => {
                             </Card.Content>
 
                         </Card>
+                        
 
                     </>)
                 }
