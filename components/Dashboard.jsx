@@ -1,5 +1,6 @@
 import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     LineChart,
@@ -101,6 +102,25 @@ const progressData = {
 };
 
 const KpiAnalysis = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (user) {
+            let kpiBodyData = {
+                "role": userRole,
+                "subRole": userSubRole,
+                "userId": employerUserId,
+                "assignedHierarchyType": assignedHierarchyType,
+                "assignedGeoLocation": str,
+              };
+            dispatch(getDashboardList(kpiBodyData))
+        }
+
+    }, [dispatch])
+
+    const { user } = useSelector(state => state.auth)
+    console.log(user)
+
     return (
         <SafeAreaView>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
