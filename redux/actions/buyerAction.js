@@ -14,7 +14,6 @@ export const getBuyerById = (buyerId) => async (dispatch) => {
 }
 
 export const getBuyerList = (referenceId) => async (dispatch) => {
-    console.log(referenceId)
     try {
         dispatch({ type: "buyersRequest" })
 

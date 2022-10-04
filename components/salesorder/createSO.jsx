@@ -37,7 +37,7 @@ const CreatePO = ({ navigation }) => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ marginRight: 10 }}>
-                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('myPurchaseOrder')} color="#00a7e5" />
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('mySalesOrder')} color="#00a7e5" />
                 </View>
             ),
         });

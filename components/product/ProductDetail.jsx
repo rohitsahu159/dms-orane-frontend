@@ -50,41 +50,41 @@ const ProductDetail = ({ route, navigation }) => {
 
             <View style={styles.container1} >
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product Name : </Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Product Name : </Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productName}</Text>
                 </View>
 
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product ID : </Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Product ID : </Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productCode}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Description : </Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Description : </Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Brand (Division) : </Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Brand (Division) : </Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.division}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Category :</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Category :</Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.category}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category :</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Sub Category :</Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category 2 :</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Sub Category 2 :</Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory2}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>SAP Product ID :</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>SAP Product ID :</Text>
                     <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.externalReferenceId}</Text>
                 </View>
 
