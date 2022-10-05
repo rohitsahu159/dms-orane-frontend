@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView,BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
@@ -33,6 +33,22 @@ const data = [
 
 
 const CreatePO = ({ navigation }) => {
+    useEffect(() => {
+        const backAction = () => {
+          
+            navigation.navigate("mySalesOrder")
+          
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
