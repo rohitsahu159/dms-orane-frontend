@@ -4,6 +4,8 @@ import { allProductReducer, productDetailReducer, productReducer } from './reduc
 import { poDetailReducer, poMasterDataReducer, poReducer } from './reducers/purchaseReducer';
 import { sellerReducer } from './reducers/sellerReducer';
 import { soReducer, soDetailReducer } from './reducers/salesReducer';
+import { dashboardListReducer,dashboardDetailsReducer } from './reducers/dashboardReducer';
+
 import { authReducer, messageReducer } from './reducers/userReducer';
 
 const store = configureStore({
@@ -15,7 +17,8 @@ const store = configureStore({
         masterData: poMasterDataReducer,
         buyerData: buyerReducer,
         products: productReducer,
-        soList: soReducer,
+        dashboardList: dashboardListReducer,
+        dashboardDetails: dashboardDetailsReducer,
         soDetail: soDetailReducer,
         allProducts:allProductReducer,
         productDetail:productDetailReducer,
