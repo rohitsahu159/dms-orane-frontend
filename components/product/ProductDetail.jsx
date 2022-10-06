@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Text, View, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, Image, Text, View, SafeAreaView,BackHandler, Button } from 'react-native';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { COLORS, inrFormat } from '../../redux/constants';
@@ -8,6 +8,22 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const ProductDetail = ({ route, navigation }) => {
+    useEffect(() => {
+        const backAction = () => {
+          
+            navigation.navigate("productList")
+          
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
