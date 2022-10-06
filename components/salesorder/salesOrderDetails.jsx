@@ -17,7 +17,7 @@ const SalesOrderDetail = ({ route, navigation }) => {
 
     useEffect(() => {
         const backAction = () => {
-          navigation.navigate("mySalesOrder") 
+        navigation.navigate("mySalesOrder") 
           return true;
         };
     

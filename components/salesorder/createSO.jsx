@@ -21,19 +21,7 @@ import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window')
 
-useEffect(() => {
-    const backAction = () => {
-      navigation.navigate("mySalesOrder") 
-      return true;
-    };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
 const data = [
     { key: 1, value: 'React Native', isChecked: false },
