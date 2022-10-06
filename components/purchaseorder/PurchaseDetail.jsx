@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Dimensions, StyleSheet, Platform, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Dimensions,BackHandler,Alert, StyleSheet, Platform, FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
@@ -13,6 +13,24 @@ const { height, width } = Dimensions.get('window')
 
 
 const PurchaseDetail = ({ route, navigation }) => {
+   
+    
+    useEffect(() => {
+        const backAction = () => {
+          
+            navigation.navigate("myPurchaseOrder")
+          
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -46,6 +64,7 @@ const PurchaseDetail = ({ route, navigation }) => {
     }
 
     const Card = ({ list }) => {
+        
         return (
             <View style={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
                 <Title style={{ color: '#00a7e5', fontSize: 17, marginHorizontal: 10 }}>{list.productCode} - {list.productName}</Title>
@@ -74,6 +93,8 @@ const PurchaseDetail = ({ route, navigation }) => {
             </View>
         );
     };
+
+    
     return (
         loading ? <Loader /> : <SafeAreaView style={{ height: height, paddingBottom: 20, flex: 1 }}>
 
