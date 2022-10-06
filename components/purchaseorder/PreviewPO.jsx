@@ -1,5 +1,5 @@
-import { StyleSheet, Button, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Button, Text,BackHandler, View } from 'react-native'
+import React, { useEffect } from 'react';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
@@ -19,6 +19,24 @@ const cars = [
 ];
 
 const PreviewPO = ({ route, navigation }) => {
+    useEffect(() => {
+        const backAction = () => {
+          
+            navigation.navigate("createPO")
+          
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
+
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (

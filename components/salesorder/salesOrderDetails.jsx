@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Dimensions, StyleSheet, Platform, FlatList, BackHandler,  } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Dimensions,BackHandler, StyleSheet, Platform, FlatList } from 'react-native'
 import React, { useEffect } from 'react'
 import { DataTable, Searchbar, Card, Title, Paragraph } from 'react-native-paper';
 import Table from 'react-native-simple-table';
