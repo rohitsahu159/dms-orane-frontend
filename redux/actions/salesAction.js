@@ -14,6 +14,7 @@ export const getSOList = (bodyData) => async (dispatch) => {
         return data
     } catch (error) {
         dispatch({ type: "salesOrderFailure", payload: error.response.data.message })
+        return error.response
     }
 }
 
