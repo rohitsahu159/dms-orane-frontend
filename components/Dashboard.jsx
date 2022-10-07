@@ -251,7 +251,7 @@ const OverView = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails.totalSuperDistributorGT}</Text>
+                            <Text style={{ width: '90%' }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
 
                         </View>
                     </View>
@@ -274,7 +274,7 @@ const OverView = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails.totalDistributorGT}</Text>
+                            <Text style={{ width: '90%' }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalDistributorGT}</Text>
                         </View>
                         
                     </View>
@@ -285,7 +285,7 @@ const OverView = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails.numberOfProducts}</Text>
+                            <Text style={{ width: '90%' }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails?.numberOfProducts}</Text>
                         </View>
                         
                     </View>
@@ -296,7 +296,7 @@ const OverView = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails.nubmerOfPurchaseOrders}</Text>
+                            <Text style={{ width: '90%' }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
                         </View>
                     </View>
                     </>}
@@ -306,7 +306,7 @@ const OverView = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails.totalRetailerGT}</Text>
+                            <Text style={{ width: '90%' }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalRetailerGT}</Text>
                         </View>
                     </View>
                     </>}
