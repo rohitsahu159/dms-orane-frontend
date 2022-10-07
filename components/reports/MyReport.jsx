@@ -247,9 +247,9 @@ export default MyReport
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
-        borderTopRightRadius: 20,
-        height: height - 40,
-        paddingBottom: 20
+        // borderTopRightRadius: 20,
+        height: height,
+        paddingBottom: 90
     },
     icons: {
         flexDirection: 'row',
@@ -266,12 +266,10 @@ const styles = StyleSheet.create({
     reportContainer: {
         backgroundColor: '#A5D5E8',
         width: '100%',
-        // height: 90,
-        top: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderRadius: 20,
-        marginVertical: 10
+        marginVertical: 10,
     },
     contain: {
         backgroundColor: '#FFFFFF',
