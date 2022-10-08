@@ -13,14 +13,15 @@ const CancelledSO = ({ navigation }) => {
     const [pageNumber, setPageNumber] = useState(0)
     const [cancelledSoList, setCancelledSoList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [onScrollBegin, setOnScrollBegin] = useState(false)
 
     const { user } = useSelector(state => state.auth)
     useEffect(() => {
         setIsLoading(true)
-        getSalesOrderList();
+        getSalesOrderList(pageNumber);
     }, [])
 
-    async function getSalesOrderList() {
+    async function getSalesOrderList(pageNum) {
         setIsLoading(true)
         let searchCriteriaArr = [];
         if (user.subRole == "RH" || user.subRole == "KAM" || user.subRole == "KAE") {
@@ -78,12 +79,11 @@ const CancelledSO = ({ navigation }) => {
         }
 
         let bodyData = {
-            "pageNumber": pageNumber,
+            "pageNumber": pageNum,
             "pageSize": 15,
             "sortArray": [],
             "searchCriteria": searchCriteriaArr
         }
-        console.log("cancelled",bodyData)
         let temp = await dispatch(getSOList(bodyData))
         if (temp.status == 'success') {
             setCancelledSoList(cancelledSoList.concat(temp.data.salesOrder))
@@ -117,18 +117,19 @@ const CancelledSO = ({ navigation }) => {
 
     const renderFooter = () => {
         return isLoading ? <View style={styles.loader}>
+            <Text>Hold on, Loading Products..</Text>
             <ActivityIndicator animating={true} size="large" />
         </View> : null
     }
 
     const handelLoadMore = () => {
         setPageNumber(pageNumber + 1)
-        getSalesOrderList()
+        getSalesOrderList(pageNumber + 1)
     }
 
     return (
         <SafeAreaView style={{ height: height, flex: 1 }}>
-            <FlatList
+            {cancelledSoList.length != 0 ? <FlatList
                 showsVerticalScrollIndicator={false}
                 data={cancelledSoList}
                 renderItem={({ item }) => {
@@ -136,8 +137,18 @@ const CancelledSO = ({ navigation }) => {
                 }}
                 keyExtractor={(item, index) => index.toString()}
                 ListFooterComponent={() => renderFooter()}
-                onEndReached={() => handelLoadMore()}
-            />
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() => { setOnScrollBegin(true) }}
+                onEndReached={() => {
+                    if (onScrollBegin) {
+                        handelLoadMore()
+                        setOnScrollBegin(false)
+                    }
+
+                }}
+            /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: '700', color: 'red' }}>No Products Found...</Text>
+            </View>}
             <Toast />
         </SafeAreaView>
     )

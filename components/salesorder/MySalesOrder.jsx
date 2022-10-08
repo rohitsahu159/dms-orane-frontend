@@ -7,6 +7,7 @@ import PendingSO from './statusWiseSO/PendingSO';
 import DeliveredSO from './statusWiseSO/DeliveredSO';
 import PartialSO from './statusWiseSO/PartialSO';
 import CancelledSO from './statusWiseSO/CancelledSO';
+import ClosedSO from './statusWiseSO/ClosedSO';
 const Tab = createMaterialTopTabNavigator();
 
 const MySalesOrder = ({ navigation }) => {
@@ -26,14 +27,14 @@ const MySalesOrder = ({ navigation }) => {
             screenOptions={({ route }) => ({
                 tabBarActiveTintColor: "blue",
                 tabBarInactiveTintColor: "#555",
-                // tabBarLabelStyle: {
-                //     fontSize: 12,
-                // },
-                // tabBarItemStyle: {
-                //     width: 'auto',
-                //     alignItems: 'flex-start',
-                // },
-                // tabBarScrollEnabled: true
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+                tabBarItemStyle: {
+                    width: 100,
+                    alignItems: 'center',
+                },
+                tabBarScrollEnabled: true
             })}
         >
             <Tab.Screen
@@ -57,11 +58,18 @@ const MySalesOrder = ({ navigation }) => {
                     title: "Partial"
                 }}
             />
-              <Tab.Screen
+            <Tab.Screen
                 name='cancelledSO'
                 component={CancelledSO}
                 options={{
                     title: "Cancelled"
+                }}
+            />
+            <Tab.Screen
+                name='closedSO'
+                component={ClosedSO}
+                options={{
+                    title: "Closed"
                 }}
             />
         </Tab.Navigator>

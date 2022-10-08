@@ -5,7 +5,7 @@
     "description": "This is a dms app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/OraneLogo.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/orane-splash.png",
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/OraneLogo.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.rohitsahu.dmsorane"

@@ -13,14 +13,16 @@ const DeliveredSO = ({ navigation }) => {
     const [pageNumber, setPageNumber] = useState(0)
     const [pendingSoList, setPendingSoList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [onScrollBegin, setOnScrollBegin] = useState(false)
 
     const { user } = useSelector(state => state.auth)
     useEffect(() => {
         setIsLoading(true)
-        getSalesOrderList();
+        getSalesOrderList(pageNumber);
     }, [])
 
-    async function getSalesOrderList() {
+    async function getSalesOrderList(pageNum) {
+        setIsLoading(true)
         let searchCriteriaArr = [];
         if (user.subRole == "RH" || user.subRole == "KAM" || user.subRole == "KAE") {
             searchCriteriaArr = [
@@ -77,17 +79,14 @@ const DeliveredSO = ({ navigation }) => {
         }
 
         let bodyData = {
-            "pageNumber": pageNumber,
+            "pageNumber": pageNum,
             "pageSize": 15,
             "sortArray": [],
             "searchCriteria": searchCriteriaArr
         }
-        console.log("delivered",bodyData)
         let temp = await dispatch(getSOList(bodyData))
         if (temp.status == 'success') {
             setPendingSoList(pendingSoList.concat(temp.data.salesOrder))
-        }else{
-            setIsLoading(false)
         }
         setIsLoading(false)
     }
@@ -118,18 +117,19 @@ const DeliveredSO = ({ navigation }) => {
 
     const renderFooter = () => {
         return isLoading ? <View style={styles.loader}>
+            <Text>Hold on, Loading Products..</Text>
             <ActivityIndicator animating={true} size="large" />
         </View> : null
     }
 
     const handelLoadMore = () => {
         setPageNumber(pageNumber + 1)
-        // setIsLoading(true) 
+        getSalesOrderList(pageNumber + 1)
     }
 
     return (
         <SafeAreaView style={{ height: height, flex: 1 }}>
-            <FlatList
+            {pendingSoList.length != 0 ? <FlatList
                 showsVerticalScrollIndicator={false}
                 data={pendingSoList}
                 renderItem={({ item }) => {
@@ -137,8 +137,18 @@ const DeliveredSO = ({ navigation }) => {
                 }}
                 keyExtractor={(item, index) => index.toString()}
                 ListFooterComponent={() => renderFooter()}
-                onEndReached={() => handelLoadMore()}
-            />
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() => { setOnScrollBegin(true) }}
+                onEndReached={() => {
+                    if (onScrollBegin) {
+                        handelLoadMore()
+                        setOnScrollBegin(false)
+                    }
+
+                }}
+            /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: '700', color: 'red' }}>No Products Found...</Text>
+            </View>}
             <Toast />
         </SafeAreaView>
     )

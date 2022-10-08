@@ -8,10 +8,10 @@ import { inrFormat } from '../../../redux/constants';
 
 const { height, width } = Dimensions.get('window')
 
-const PartialSO = ({ navigation }) => {
+const ClosedSO = ({ navigation }) => {
     const dispatch = useDispatch()
     const [pageNumber, setPageNumber] = useState(0)
-    const [partialSoList, setPartialSoList] = useState([])
+    const [closedSoList, setClosedSoList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [onScrollBegin, setOnScrollBegin] = useState(false)
 
@@ -39,7 +39,7 @@ const PartialSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'CLOSED',
                 },
             ];
         } else if (user && user.subRole == "ASM") {
@@ -52,7 +52,7 @@ const PartialSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'CLOSED',
                 },
             ];
         } else if (user && user.role == "COMPANY" && user.subRole == "ADMIN") {
@@ -60,7 +60,7 @@ const PartialSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'CLOSED',
                 },
             ];
         } else {
@@ -73,7 +73,7 @@ const PartialSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'CLOSED',
                 },
             ];
         }
@@ -86,9 +86,8 @@ const PartialSO = ({ navigation }) => {
         }
         let temp = await dispatch(getSOList(bodyData))
         if (temp.status == 'success') {
-            setPartialSoList(partialSoList.concat(temp.data.salesOrder))
+            setClosedSoList(closedSoList.concat(temp.data.salesOrder))
         }
-
         setIsLoading(false)
     }
 
@@ -130,9 +129,9 @@ const PartialSO = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ height: height, flex: 1 }}>
-            {partialSoList.length != 0 ? <FlatList
+            {closedSoList.length != 0 ? <FlatList
                 showsVerticalScrollIndicator={false}
-                data={partialSoList}
+                data={closedSoList}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -155,7 +154,7 @@ const PartialSO = ({ navigation }) => {
     )
 }
 
-export default PartialSO
+export default ClosedSO
 
 const styles = StyleSheet.create({
     container: {

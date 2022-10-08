@@ -18,3 +18,14 @@ export const getSeller = (referenceId) => async (dispatch) => {
         dispatch({ type: "sellerFailure", payload: error.response.data.message })
     }
 }
+
+export const getSellerById = (referenceId) => async (dispatch) => {
+    try {
+        dispatch({ type: "sellerByIdRequest" })
+
+        const { data } = await axios.get(`${urlConstants.BASE_URI_DEV}/sellers/id/${referenceId}`)
+        dispatch({ type: "sellerByIdSuccess", payload: data.data })
+    } catch (error) {
+        dispatch({ type: "sellerByIdFailure", payload: error.response.data.message })
+    }
+}

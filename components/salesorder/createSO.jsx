@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView,BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Button, IconButton, TextInput } from '@react-native-material/core';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
-import { getSeller } from '../../redux/actions/sellerAction';
-import { createPO, getPOMasterData } from '../../redux/actions/purchaseAction';
+import { getSeller, getSellerById } from '../../redux/actions/sellerAction';
+import { getPOMasterData } from '../../redux/actions/purchaseAction';
 import { getBuyerById, getBuyerList } from '../../redux/actions/buyerAction';
 import { inrFormat } from '../../redux/constants';
 import Loader from '../Loader';
@@ -21,33 +21,20 @@ import Toast from 'react-native-toast-message';
 
 const { height, width } = Dimensions.get('window')
 
-const data = [
-    { key: 1, value: 'React Native', isChecked: false },
-    { key: 2, value: 'Javascript', isChecked: false },
-    { key: 3, value: 'Laravel', isChecked: false },
-    { key: 4, value: 'PHP', isChecked: false },
-    { key: 5, value: 'jQuery', isChecked: false },
-    { key: 6, value: 'Boostrap', isChecked: false },
-    { key: 7, value: 'HTML', isChecked: false },
-];
-
-
-const CreatePO = ({ navigation }) => {
+const CreateSO = ({ navigation }) => {
     useEffect(() => {
         const backAction = () => {
-          
             navigation.navigate("mySalesOrder")
-          
-          return true;
+            return true;
         };
-    
+
         const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
+            "hardwareBackPress",
+            backAction
         );
-    
+
         return () => backHandler.remove();
-      }, []);
+    }, []);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -79,7 +66,10 @@ const CreatePO = ({ navigation }) => {
     const [productList, setProductList] = useState([])
     const [selectedBuyerData, setSelectedBuyerData] = useState({});
     const [search, setSearch] = useState('')
-    const [selected, setSelected] = React.useState("");
+    const [shippingCarrier, setShippingCarrier] = useState(null);
+    const [shippingAddressList, setShippingAddressList] = useState([])
+    const [billingAddressList, setBillingAddressList] = useState([])
+    const [referenceNumber, setReferenceNumber] = useState(null)
 
     const { user } = useSelector(state => state.auth)
 
@@ -87,15 +77,16 @@ const CreatePO = ({ navigation }) => {
         dispatch(getBuyerList(user.employerReferenceId))
         dispatch(getBuyerById(user.employerReferenceId))
         dispatch(getPOMasterData())
+        dispatch(getSellerById(user.employerReferenceId))
     }, [])
 
     const { buyerList } = useSelector(state => state.buyerList)
     const { masterData } = useSelector(state => state.masterData)
     const { buyerData } = useSelector(state => state.buyerData)
+    const { seller } = useSelector(state => state.seller)
 
     let orderTypeList = []
-    let billingAddressList = []
-    let shippingAddressList = []
+    let shippingCarrierList = []
     if (masterData) {
         orderTypeList = masterData.orderType.map(e => {
             return {
@@ -104,18 +95,14 @@ const CreatePO = ({ navigation }) => {
                 value: e.orderType,
             }
         });
-    }
-    if (buyerData?.address != undefined) {
-        let tempAddr = buyerData.address.map(e => {
+
+        shippingCarrierList = masterData.shipmentModes.map(e => {
             return {
                 ...e,
-                key: e.addressLine1,
-                value: e.addressLine1,
+                key: e.shipmentMode,
+                value: e.shipmentMode,
             }
         });
-
-        billingAddressList = tempAddr
-        shippingAddressList = tempAddr
     }
 
     let paymentTermList = [
@@ -188,31 +175,29 @@ const CreatePO = ({ navigation }) => {
     }
 
     const openProductModal = async () => {
-
-
-        if (supplier == null) {
+        if (buyer == null) {
             return Toast.show({
                 type: 'success',
                 position: 'top',
-                text1: `Please Select Supplier`,
+                text1: `Please Select Buyer`,
                 visibilityTime: 2000
             })
         }
         if (products.length == 0) {
             let bodyData = {
                 "pageNumber": 0,
-                "pageSize": 25,
-                "sellerRole": selectedSellerData.userRole,
-                "buyerRole": buyerData.userRole,
-                "buyerState": buyerData.address[0].state,
-                "buyerUserId": buyerData.userId,
-                "hierarchyId": buyerData.hierarchyId,
+                "pageSize": 2,
+                "sellerRole": seller.userRole,
+                "buyerRole": selectedBuyerData.userRole,
+                "buyerState": selectedBuyerData.address[0].state,
+                "buyerUserId": selectedBuyerData.userId,
+                "hierarchyId": selectedBuyerData.hierarchyId,
                 "inventoryReferenceId": user.employerUserId,
                 "sortArray": [],
                 "searchCriteria": [
                     {
                         "key": "sellerId",
-                        "value": selectedSellerData.id,
+                        "value": seller.id,
                         "operation": "EQUAL"
                     },
                     {
@@ -223,12 +208,13 @@ const CreatePO = ({ navigation }) => {
                 ]
             }
             let data = await dispatch(getProducts(bodyData))
+            console.log(data)
             const arr = data.data.productPrice.map(e => {
                 let sgstPercent = 0
                 let cgstPercent = 0
                 let igstPercent = 0
                 let ugstPercent = 0
-                if (selectedSellerData.address.state == buyerData.address[0].state) {
+                if (seller.address.state == selectedBuyerData.address[0].state) {
                     sgstPercent = e.gst / 2;
                     cgstPercent = e.gst / 2;
                     igstPercent = 0;
@@ -243,9 +229,9 @@ const CreatePO = ({ navigation }) => {
                     caseBoxQty: 0,
                     pcsQty: 0,
                     orderedQuantity: 0,
-                    mrp: e.price[0].mrp,
-                    prcsWithoutGst: e.price[0].purchasePrice / (1 + (e.gst / 100)),
-                    purchasePrice: e.price[0].purchasePrice,
+                    mrp: e.price.length != 0 ? e.price[0].mrp : 0,
+                    prcsWithoutGst: e.price.length != 0 ? (e.price[0].purchasePrice / (1 + (e.gst / 100))) : 0,
+                    purchasePrice: e.price.length != 0 ? (e.price[0].purchasePrice) : 0,
                     grossValue: 0,
                     primaryDiscountPercent: 0,
                     primaryDiscountValue: 0,
@@ -287,49 +273,71 @@ const CreatePO = ({ navigation }) => {
         let obj = buyerList.find(o => o.id === buyerId);
         setSelectedBuyerData(obj)
         setBuyer(buyer)
+        let tempAddr = obj.address.map(e => {
+            return {
+                ...e,
+                key: e.addressLine1,
+                value: e.addressLine1,
+            }
+        });
+        setBillingAddressList(tempAddr)
+        setShippingAddressList(tempAddr)
+        setBillingAddress(null)
+        setShippingAddress(null)
         setProducts([])
         setSelectedProductList([])
     }
 
-    const previewPO = async () => {
+    const previewSO = async () => {
+        console.log(selectedBuyerData)
         let lineItemArr = await selectedProductList.map(items => _.pick(items, ['productCode', 'productName', 'purchasePrice', 'orderedQuantity',
             'salesUnit', 'pcsPerBox', 'mrp', 'taxPercent', 'totalValue', 'netValue', 'grossValue', 'taxValue', 'sgstPercent', 'cgstPercent',
-            'igstPercent', 'ugstPercent', 'discount']))
+            'igstPercent', 'ugstPercent', 'discount', 'hsnCode', 'pricePerPiece', 'tcs', 'primarySchemeCode', 'primarySchemeId',
+            'secondarySchemeCode', 'secondarySchemeId', 'isBonusProduct', 'primaryDiscountValue', 'primaryDiscountPercent',
+            'secondaryDiscountValue', 'secondaryDiscountPercent']))
 
         let bodyData = {
-            sellerUserId: selectedSellerData.userId,
-            sellerState: selectedSellerData.address.state,
-            sellerFirmName: selectedSellerData.companyName,
-            sellerRole: selectedSellerData.userRole,
-            sellerPhoneNumber: selectedSellerData.employee == null ? null : selectedSellerData.employee.phoneNumber,
-            sellerGstinNumber: selectedSellerData.gstinNumber,
-            buyerPanNumber: buyerData.panNumber,
-            buyerUserId: buyerData.userId,
-            buyerSapCode: buyerData.externalReferenceId,
-            buyerFirmName: buyerData.companyName,
-            buyerPhoneNumber: buyerData.employee.phoneNumber,
-            buyerContactName: buyerData.employee.contactPerson,
-            buyerCity: buyerData.address[0].city,
-            buyerPincode: buyerData.address[0].pincode,
-            buyerState: buyerData.address[0].state,
-            buyerRole: buyerData.userRole,
+            sellerUserId: seller.userId,
+            sellerState: seller.address.state,
+            sellerFirmName: seller.companyName,
+            sellerRole: seller.userRole,
+            sellerPhoneNumber: seller.employee == null ? null : seller.employee.phoneNumber,
+            sellerGstinNumber: seller.gstinNumber,
+            buyerPanNumber: selectedBuyerData.panNumber,
+            buyerUserId: selectedBuyerData.userId,
+            buyerSubRegion: selectedBuyerData.geolocation.subRegion,
+            buyerTerritory: selectedBuyerData.geolocation.territory,
+            buyerSapCode: selectedBuyerData.externalReferenceId,
+            buyerFirmName: selectedBuyerData.companyName,
+            buyerCity: selectedBuyerData.address[0].city,
+            buyerPincode: selectedBuyerData.address[0].pincode,
+            buyerState: selectedBuyerData.address[0].state,
+            buyerRole: selectedBuyerData.userRole,
             buyerShippingAddress: shippingAddress,
             buyerBillingAddress: billingAddress,
+            comment: "",
             netValue: _.sumBy(lineItemArr, function (o) { return o.netValue }),
             grossValue: _.sumBy(lineItemArr, function (o) { return o.grossValue }),
             totalValue: _.sumBy(lineItemArr, function (o) { return o.totalValue }),
             taxValue: _.sumBy(lineItemArr, function (o) { return o.taxValue }),
+            tcsValue: 0,
             orderType: orderType,
+            orderSource: "DIRECT_SALES",
             paymentTerm: paymentTerm,
-            shipmentMode: null,
-            expectedDeliveryDate: Number(deliveryDate),
+            poId: referenceNumber,
+            shippingCarriers: shippingCarrier,
+            poExpectedDeliveryDate: Number(deliveryDate),
+            soExpectedDeliveryDate: Number(deliveryDate),
             orderDateTime: Number(new Date()),
-            expiryDateTime: Number(expiryDate),
-            hierarchyId: buyerData.hierarchyId,
+            expiryDate: Number(expiryDate),
+            hierarchyId: selectedBuyerData.hierarchyId,
+            primaryDiscountValue: 0,
+            secondaryDiscountValue: 0,
+            buyerHierarchyType: selectedBuyerData.hierarchyType,
             lineItems: lineItemArr,
         };
 
-        // navigation.navigate('previewPO', { params: { data: bodyData } })
+        navigation.navigate('previewSO', { params: { data: bodyData } })
     }
 
     const ItemBox = (props) => {
@@ -346,7 +354,7 @@ const CreatePO = ({ navigation }) => {
                         <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ width: '50%' }}>
-                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
+                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
                                 <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
                                 <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
                             </View>
@@ -398,7 +406,7 @@ const CreatePO = ({ navigation }) => {
                         <View style={{ marginLeft: 40 }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>MRP:</Text >
-                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].mrp)}</Text>
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>GST :</Text >
@@ -406,7 +414,7 @@ const CreatePO = ({ navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>Purchase Price:</Text >
-                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].purchasePrice)}</Text>
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
                             </View>
                         </View>
                     </Card>
@@ -441,6 +449,21 @@ const CreatePO = ({ navigation }) => {
                     <View style={[styles.container, { width: '50%' }]}>
                         <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Shipping Address</Text>
                         <SelectList setSelected={setShippingAddress} data={shippingAddressList || []} onSelect={() => setShippingAddress(shippingAddress)} />
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>PO/Reference Number</Text>
+                        <TextInput
+                            value={referenceNumber}
+                            onChangeText={(text) => setReferenceNumber(text)}
+                            variant="outlined"
+                            color='#00a7e5'
+                        />
+                    </View>
+                    <View style={[styles.container, { width: '50%' }]}>
+                        <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Shiping Carriers</Text>
+                        <SelectList setSelected={setShippingCarrier} data={shippingCarrierList || []} onSelect={() => setShippingCarrier(shippingCarrier)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -505,7 +528,7 @@ const CreatePO = ({ navigation }) => {
                         }}
                     />
                     {selectedProductList.length != 0 && <View style={{ position: 'absolute', bottom: 60, width: '100%' }}>
-                        <Button onPress={() => { previewPO() }} title="Preview Purchase Order" color='#00a7e5' />
+                        <Button onPress={() => { previewSO() }} title="Preview Sales Order" color='#00a7e5' />
                     </View>}
                 </View>
                 <Toast />
@@ -587,4 +610,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreatePO
+export default CreateSO

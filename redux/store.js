@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { buyerListReducer, buyerReducer } from './reducers/buyerReducer';
 import { allProductReducer, productDetailReducer, productReducer } from './reducers/productReducer';
 import { poDetailReducer, poMasterDataReducer, poReducer } from './reducers/purchaseReducer';
-import { sellerReducer } from './reducers/sellerReducer';
+import { sellerByIdReducer, sellerReducer } from './reducers/sellerReducer';
 import { soReducer, soDetailReducer } from './reducers/salesReducer';
 import { dashboardListReducer,dashboardDetailsReducer } from './reducers/dashboardReducer';
 
@@ -22,7 +22,8 @@ const store = configureStore({
         soDetail: soDetailReducer,
         allProducts:allProductReducer,
         productDetail:productDetailReducer,
-        buyerList: buyerListReducer
+        buyerList: buyerListReducer,
+        seller:sellerByIdReducer
     }
 })
 

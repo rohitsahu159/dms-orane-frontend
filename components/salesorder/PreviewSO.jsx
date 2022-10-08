@@ -1,4 +1,4 @@
-import { StyleSheet, Button, Text, BackHandler, View } from 'react-native'
+import { StyleSheet, Button, Text, BackHandler, View, Alert } from 'react-native'
 import React, { useEffect } from 'react';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'react-native-paper';
@@ -18,11 +18,11 @@ const cars = [
     'Maruti Suzuki Ertiga',
 ];
 
-const PreviewPO = ({ route, navigation }) => {
+const PreviewSO = ({ route, navigation }) => {
     useEffect(() => {
         const backAction = () => {
 
-            navigation.navigate("createPO")
+            navigation.navigate("createSO")
 
             return true;
         };
@@ -41,7 +41,7 @@ const PreviewPO = ({ route, navigation }) => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ marginRight: 10 }}>
-                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('createPO')} color="#00a7e5" />
+                    <Icon name="arrow-left" size={25} onPress={() => navigation.navigate('createSO')} color="#00a7e5" />
                 </View>
             ),
         });
@@ -49,20 +49,28 @@ const PreviewPO = ({ route, navigation }) => {
 
     const dispatch = useDispatch()
     const { params } = route.params;
-    let purchaseDetail = params.data
+    let salesDetail = params.data
 
-    const submitPO = async () => {
-        let data = await dispatch(createPO(purchaseDetail))
+    const submitSO = async () => {
+        console.log(salesDetail)
+        Alert.alert(
+            "",
+            "Your Sales Order Created Successfully",
+            [
+                { text: "OK", onPress: () => navigation.navigate("mySalesOrder") }
+            ]
+        );
+        // let data = await dispatch(createPO(salesDetail))
 
-        if (data.status == 'success') {
-            Toast.show({
-                type: 'success',
-                position: 'top',
-                text1: `Your Purchase Order Created Successfully`,
-                visibilityTime: 2000
-            })
-            navigation.navigate('myPurchaseOrder')
-        }
+        // if (data.status == 'success') {
+        //     Toast.show({
+        //         type: 'success',
+        //         position: 'top',
+        //         text1: `Your Purchase Order Created Successfully`,
+        //         visibilityTime: 2000
+        //     })
+        //     navigation.navigate('mySalesOrder')
+        // }
 
     }
     return (
@@ -73,44 +81,44 @@ const PreviewPO = ({ route, navigation }) => {
                         <Icon name="check-circle" size={40} color="green" />
                     </Text>
                 </View>
-                <Text style={[styles.commonStyle]}>{purchaseDetail.buyerFirmName}</Text>
-                <Text style={[styles.common]}>{purchaseDetail.buyerBillingAddress}</Text>
+                <Text style={[styles.commonStyle]}>{salesDetail.buyerFirmName}</Text>
+                <Text style={[styles.common]}>{salesDetail.buyerBillingAddress}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ flex: 1, height: 2, backgroundColor: 'black' }} />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 20, fontWeight: 'bold' }}>Purchase Order</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 20, fontWeight: 'bold' }}>Sales Order</Text>
 
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Supplier :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.sellerFirmName}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Buyer :</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.sellerFirmName}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Billing Address :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.buyerBillingAddress}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.buyerBillingAddress}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Order Type :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.orderType}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.orderType}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Payment Term :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.paymentTerm}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.paymentTerm}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Shipping Adress :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.buyerShippingAddress}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.buyerShippingAddress}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Exp Delivery Date :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.expectedDeliveryDate}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.expectedDeliveryDate}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Expiry Date :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{purchaseDetail.expiryDateTime}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.expiryDateTime}</Text>
                 </View>
             </View>
             <Text style={{ margin: 10, fontWeight: '400', fontSize: 25, marginTop: 40 }}>Summary</Text>
@@ -118,7 +126,7 @@ const PreviewPO = ({ route, navigation }) => {
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Total Basic Value </Text>
-                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(purchaseDetail.grossValue)}</Text>
+                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(salesDetail.grossValue)}</Text>
                 </View>
                 <Divider style={{ height: 2, marginTop: 10 }} />
 
@@ -130,19 +138,19 @@ const PreviewPO = ({ route, navigation }) => {
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Net Value </Text>
-                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(purchaseDetail.netValue)}</Text>
+                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(salesDetail.netValue)}</Text>
                 </View>
                 <Divider style={{ height: 2, marginTop: 10 }} />
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Tax Value</Text>
-                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(purchaseDetail.taxValue)}</Text>
+                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold' }}>{inrFormat(salesDetail.taxValue)}</Text>
                 </View>
                 <Divider style={{ height: 2, marginTop: 10 }} />
 
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, color: 'green' }}>Grand Total</Text>
-                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold', color: 'green' }}>{inrFormat(purchaseDetail.totalValue)}</Text>
+                    <Text style={{ width: '50%', marginLeft: 100, top: 7, fontWeight: 'bold', color: 'green' }}>{inrFormat(salesDetail.totalValue)}</Text>
                 </View>
                 <Divider style={{ height: 2, marginTop: 10 }} />
 
@@ -150,11 +158,11 @@ const PreviewPO = ({ route, navigation }) => {
             </View>
             <View style={{ justifyContent: 'center', width: '100%', bottom: 0, alignItems: 'center', flexDirection: 'row' }}>
                 <Text style={{ padding: 20 }}>
-                    <Button onPress={() => { submitPO() }} title="Confirm" color='#00a7e5' />
+                    <Button onPress={() => { submitSO() }} title="Confirm" color='#00a7e5' />
                 </Text>
 
                 <Text style={{ padding: 20 }}>
-                    <Button onPress={() => { navigation.navigate('createPO') }} title="Cancel" color='#00a7e5' />
+                    <Button onPress={() => { navigation.navigate('createSO') }} title="Cancel" color='#00a7e5' />
                 </Text>
             </View>
             <Toast />
@@ -164,7 +172,7 @@ const PreviewPO = ({ route, navigation }) => {
     );
 };
 
-export default PreviewPO
+export default PreviewSO
 
 const styles = StyleSheet.create({
 
@@ -180,10 +188,10 @@ const styles = StyleSheet.create({
 
     common: {
         fontSize: 15,
-        textAlign: "center",
+        textAlign: 'center',
         top: -25,
         padding: 3,
-        margin: 3
+        margin: 3,
     },
     contain: {
 

@@ -15,13 +15,23 @@ export const sellerReducer = createReducer(
             state.loading = false;
             state.error = action.payload;
         },
+    }
+);
 
-        clearError: (state) => {
-            state.error = null;
+export const sellerByIdReducer = createReducer(
+    {},
+    {
+        sellerByIdRequest: (state) => {
+            state.loading = true;
+            state.seller = {};
         },
-
-        clearMessage: (state) => {
-            state.message = null;
+        sellerByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.seller = action.payload;
+        },
+        sellerByIdFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         },
     }
 );

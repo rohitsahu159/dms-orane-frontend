@@ -245,9 +245,9 @@ const CreatePO = ({ navigation }) => {
                     caseBoxQty: 0,
                     pcsQty: 0,
                     orderedQuantity: 0,
-                    mrp: e.price[0].mrp,
-                    prcsWithoutGst: e.price[0].purchasePrice / (1 + (e.gst / 100)),
-                    purchasePrice: e.price[0].purchasePrice,
+                    mrp: e.price.length != 0 ? e.price[0].mrp : 0,
+                    prcsWithoutGst: e.price.length != 0 ? (e.price[0].purchasePrice / (1 + (e.gst / 100))) : 0,
+                    purchasePrice: e.price.length != 0 ? (e.price[0].purchasePrice) : 0,
                     grossValue: 0,
                     primaryDiscountPercent: 0,
                     primaryDiscountValue: 0,
@@ -348,7 +348,7 @@ const CreatePO = ({ navigation }) => {
                         <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ width: '50%' }}>
-                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.price[0].mrp)}</Text></Text>
+                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
                                 <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
                                 <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
                             </View>
@@ -400,7 +400,7 @@ const CreatePO = ({ navigation }) => {
                         <View style={{ marginLeft: 40 }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>MRP:</Text >
-                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].mrp)}</Text>
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>GST :</Text >
@@ -408,7 +408,7 @@ const CreatePO = ({ navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text>Purchase Price:</Text >
-                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.price[0].purchasePrice)}</Text>
+                                <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
                             </View>
                         </View>
                     </Card>
