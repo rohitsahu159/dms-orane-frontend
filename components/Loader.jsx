@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -12,6 +12,7 @@ const Loader = () => {
                 alignItems: "center",
             }}
         >
+            <Text>Please Wait...</Text>
             <ActivityIndicator animating={true} size={50} color="#00a7e4" />
         </View>
     )

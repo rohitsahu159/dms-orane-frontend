@@ -3,18 +3,18 @@ import { View, Text, Dimensions, StyleSheet, RefreshControl, SafeAreaView, Touch
 import { DataTable, Searchbar, ActivityIndicator } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { getSOList } from '../../../redux/actions/salesAction';
 import { inrFormat } from '../../../redux/constants';
+import { getPOList } from '../../../redux/actions/purchaseAction';
 
 const { height, width } = Dimensions.get('window')
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const PartialSO = ({ navigation }) => {
+const SoCreatedPO = ({ navigation }) => {
     const dispatch = useDispatch()
     const [pageNumber, setPageNumber] = useState(0)
-    const [partialSoList, setPartialSoList] = useState([])
+    const [soCreatedPoList, setSoCreatedPoList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [onScrollBegin, setOnScrollBegin] = useState(false)
     const [refreshing, setRefreshing] = useState(false);
@@ -22,17 +22,17 @@ const PartialSO = ({ navigation }) => {
     const { user } = useSelector(state => state.auth)
     useEffect(() => {
         setIsLoading(true)
-        getSalesOrderList(pageNumber);
+        getPurchaseOrderList(pageNumber);
     }, [])
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
-        getSalesOrderList(0)
+        getPurchaseOrderList(0)
         setPageNumber(0)
     }, []);
 
-    async function getSalesOrderList(pageNum) {
+    async function getPurchaseOrderList(pageNum) {
         setIsLoading(true)
         let searchCriteriaArr = [];
         if (user.subRole == "RH" || user.subRole == "KAM" || user.subRole == "KAE") {
@@ -43,14 +43,9 @@ const PartialSO = ({ navigation }) => {
                     value: user.assignedGeolocation[0],
                 },
                 {
-                    key: "buyerHierarchyType",
-                    operation: "EQUAL",
-                    value: user.assignedHierarchyType,
-                },
-                {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'SO_CREATED',
                 },
             ];
         } else if (user && user.subRole == "ASM") {
@@ -63,28 +58,20 @@ const PartialSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
-                },
-            ];
-        } else if (user && user.role == "COMPANY" && user.subRole == "ADMIN") {
-            searchCriteriaArr = [
-                {
-                    key: "status",
-                    operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'SO_CREATED',
                 },
             ];
         } else {
             searchCriteriaArr = [
                 {
-                    key: "sellerUserId",
+                    key: "buyerUserId",
                     value: user.employerUserId,
                     operation: "EQUAL",
                 },
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'PARTIALLY_DELIVERED',
+                    value: 'SO_CREATED',
                 },
             ];
         }
@@ -95,11 +82,10 @@ const PartialSO = ({ navigation }) => {
             "sortArray": [],
             "searchCriteria": searchCriteriaArr
         }
-        let temp = await dispatch(getSOList(bodyData))
+        let temp = await dispatch(getPOList(bodyData))
         if (temp.status == 'success') {
-            setPartialSoList(partialSoList.concat(temp.data.salesOrder))
+            setSoCreatedPoList(soCreatedPoList.concat(temp.data.purchaseOrder))
         }
-
         setIsLoading(false)
     }
 
@@ -110,13 +96,13 @@ const PartialSO = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
+                onPress={() => navigation.navigate("purchaseDetail", { itemId: list.id })}
             >
                 <View style={styles.container}>
                     <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                        <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                        <Text style={{ fontWeight: '500' }}>Purchase Order No:<Text style={{ color: '#00a7e5' }}>{list.purchaseOrderId}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>Supplier Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                        <Text><Text style={{ fontWeight: '500' }}>PO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
@@ -136,14 +122,14 @@ const PartialSO = ({ navigation }) => {
 
     const handelLoadMore = () => {
         setPageNumber(pageNumber + 1)
-        getSalesOrderList(pageNumber + 1)
+        getPurchaseOrderList(pageNumber + 1)
     }
 
     return (
         <SafeAreaView style={{ height: height, flex: 1 }}>
-            {partialSoList.length != 0 ? <FlatList
+            {soCreatedPoList.length != 0 ? <FlatList
                 showsVerticalScrollIndicator={false}
-                data={partialSoList}
+                data={soCreatedPoList}
                 renderItem={({ item }) => {
                     return <Card list={item} />;
                 }}
@@ -172,7 +158,7 @@ const PartialSO = ({ navigation }) => {
     )
 }
 
-export default PartialSO
+export default SoCreatedPO
 
 const styles = StyleSheet.create({
     container: {

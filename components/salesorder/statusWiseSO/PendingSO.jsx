@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, Dimensions, StyleSheet, RefreshControl, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import { DataTable, Searchbar, ActivityIndicator } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
@@ -7,6 +7,9 @@ import { getSOList } from '../../../redux/actions/salesAction';
 import { inrFormat } from '../../../redux/constants';
 
 const { height, width } = Dimensions.get('window')
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const PendingSO = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -14,12 +17,20 @@ const PendingSO = ({ navigation }) => {
     const [pendingSoList, setPendingSoList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [onScrollBegin, setOnScrollBegin] = useState(false)
+    const [refreshing, setRefreshing] = useState(false);
 
     const { user } = useSelector(state => state.auth)
     useEffect(() => {
         setIsLoading(true)
         getSalesOrderList(pageNumber);
     }, [])
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+        getSalesOrderList(0)
+        setPageNumber(0)
+    }, []);
 
     async function getSalesOrderList(pageNum) {
         setIsLoading(true)
@@ -39,7 +50,7 @@ const PendingSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'NOT_DELIVERED',
+                    value: 'APPROVED',
                 },
             ];
         } else if (user && user.subRole == "ASM") {
@@ -52,7 +63,7 @@ const PendingSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'NOT_DELIVERED',
+                    value: 'APPROVED',
                 },
             ];
         } else if (user && user.role == "COMPANY" && user.subRole == "ADMIN") {
@@ -60,7 +71,7 @@ const PendingSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'NOT_DELIVERED',
+                    value: 'APPROVED',
                 },
             ];
         } else {
@@ -73,7 +84,7 @@ const PendingSO = ({ navigation }) => {
                 {
                     key: "status",
                     operation: "ORDER_STATUS",
-                    value: 'NOT_DELIVERED',
+                    value: 'APPROVED',
                 },
             ];
         }
@@ -147,6 +158,12 @@ const PendingSO = ({ navigation }) => {
                     }
 
                 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
             /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 20, fontWeight: '700', color: 'red' }}>No Products Found...</Text>
             </View>}

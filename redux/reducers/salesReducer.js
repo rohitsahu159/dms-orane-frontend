@@ -15,14 +15,6 @@ export const soReducer = createReducer(
             state.loading = false;
             state.error = action.payload;
         },
-
-        clearError: (state) => {
-            state.error = null;
-        },
-
-        clearMessage: (state) => {
-            state.message = null;
-        },
     }
 );
 export const soDetailReducer = createReducer(
@@ -40,13 +32,23 @@ export const soDetailReducer = createReducer(
             state.loading = false;
             state.error = action.payload;
         },
+    }
+);
 
-        clearError: (state) => {
-            state.error = null;
+export const soCreateReducer = createReducer(
+    {},
+    {
+        createSORequest: (state) => {
+            state.loading = true;
+            state.createSo = {};
         },
-
-        clearMessage: (state) => {
-            state.message = null;
+        createSOSuccess: (state, action) => {
+            state.loading = false;
+            state.createSo = action.payload.data;
+        },
+        createSOFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         },
     }
 );

@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
-import { inrFormat } from '../../redux/constants';
+import { inrDateFormatNoTime, inrDateFormatWithTime, inrFormat } from '../../redux/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPO } from '../../redux/actions/purchaseAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from "react-native-toast-message";
+import { createSO } from '../../redux/actions/salesAction';
 
 const cars = [
     'Hyundai Venue',
@@ -52,27 +53,20 @@ const PreviewSO = ({ route, navigation }) => {
     let salesDetail = params.data
 
     const submitSO = async () => {
-        console.log(salesDetail)
-        Alert.alert(
-            "",
-            "Your Sales Order Created Successfully",
-            [
-                { text: "OK", onPress: () => navigation.navigate("mySalesOrder") }
-            ]
-        );
-        // let data = await dispatch(createPO(salesDetail))
+        let data = await dispatch(createSO(salesDetail))
+        console.log(data)
 
-        // if (data.status == 'success') {
-        //     Toast.show({
-        //         type: 'success',
-        //         position: 'top',
-        //         text1: `Your Purchase Order Created Successfully`,
-        //         visibilityTime: 2000
-        //     })
-        //     navigation.navigate('mySalesOrder')
-        // }
-
+        if (data.status == 'success') {
+            Alert.alert(
+                `Sales Order Id: ${data.data.salesOrderId}`,
+                "Your Sales Order Created Successfully",
+                [
+                    { text: "OK", onPress: () => navigation.navigate("mySalesOrder") }
+                ]
+            );
+        }
     }
+
     return (
         <SafeAreaView>
             <View style={styles.Container}>
@@ -92,14 +86,9 @@ const PreviewSO = ({ route, navigation }) => {
 
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Buyer :</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Seller :</Text>
                     <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.sellerFirmName}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Billing Address :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.buyerBillingAddress}</Text>
-                </View>
-
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Order Type :</Text>
                     <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.orderType}</Text>
@@ -113,12 +102,24 @@ const PreviewSO = ({ route, navigation }) => {
                     <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.buyerShippingAddress}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Billing Address :</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.buyerBillingAddress}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>PO/Referencr Number :</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.poId}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Shipping Carriers :</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.shippingCarriers}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Exp Delivery Date :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.expectedDeliveryDate}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{inrDateFormatNoTime(salesDetail.soExpectedDeliveryDate)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Expiry Date :</Text>
-                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{salesDetail.expiryDateTime}</Text>
+                    <Text style={{ width: '50%', top: 7, fontWeight: 'bold' }}>{inrDateFormatNoTime(salesDetail.expiryDate)}</Text>
                 </View>
             </View>
             <Text style={{ margin: 10, fontWeight: '400', fontSize: 25, marginTop: 40 }}>Summary</Text>

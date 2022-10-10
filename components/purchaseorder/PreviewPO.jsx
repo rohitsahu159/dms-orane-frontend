@@ -55,16 +55,16 @@ const PreviewPO = ({ route, navigation }) => {
         let data = await dispatch(createPO(purchaseDetail))
 
         if (data.status == 'success') {
-            Toast.show({
-                type: 'success',
-                position: 'top',
-                text1: `Your Purchase Order Created Successfully`,
-                visibilityTime: 2000
-            })
-            navigation.navigate('myPurchaseOrder')
+            Alert.alert(
+                "",
+                "Your Purchase Order Created Successfully",
+                [
+                    { text: "OK", onPress: () => navigation.navigate("myPurchaseOrder") }
+                ]
+            );
         }
-
     }
+
     return (
         <SafeAreaView>
             <View style={styles.Container}>

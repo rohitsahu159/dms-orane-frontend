@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Text, View, SafeAreaView,BackHandler, Button } from 'react-native';
+import { StyleSheet, Image, Text, View, SafeAreaView, BackHandler, Button } from 'react-native';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { COLORS, inrFormat } from '../../redux/constants';
@@ -10,19 +10,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const ProductDetail = ({ route, navigation }) => {
     useEffect(() => {
         const backAction = () => {
-          
             navigation.navigate("productList")
-          
-          return true;
+            return true;
         };
-    
+
         const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
+            "hardwareBackPress",
+            backAction
         );
-    
+
         return () => backHandler.remove();
-      }, []);
+    }, []);
 
 
     React.useLayoutEffect(() => {
@@ -66,42 +64,38 @@ const ProductDetail = ({ route, navigation }) => {
 
             <View style={styles.container1} >
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Product Name : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productName}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product Name : </Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productName}</Text>
                 </View>
 
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Product ID : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productCode}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Product ID : </Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productCode}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Description : </Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Brand (Division) : </Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productHierarchy?.division}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Brand (Division) : </Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.division}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Category :</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productHierarchy?.category}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category :</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productHierarchy?.subCategory}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Category :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.category}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Sub Category :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>Sub Category 2 :</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.productHierarchy?.subCategory2}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>Sub Category 2 :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.productHierarchy?.subCategory2}</Text>
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4, fontWeight: 'bold' }}>SAP Product ID :</Text>
-                    <Text style={{ width: '50%', marginLeft: 5, top: 7 }}>{product.externalReferenceId}</Text>
+                    <Text style={{ margin: 3, width: '50%', fontSize: 15, top: 4 }}>SAP Product ID :</Text>
+                    <Text style={{ width: '50%', marginLeft: 5, top: 7, fontWeight: 'bold' }}>{product.externalReferenceId}</Text>
                 </View>
 
             </View>
@@ -126,7 +120,7 @@ const styles = StyleSheet.create({
         margin: 10,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        justifyContent: 'flex-end'
+        alignItems: 'center'
     },
     container1: {
         backgroundColor: "white",

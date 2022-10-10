@@ -13,8 +13,10 @@ export const getPOList = (bodyData) => async (dispatch) => {
         })
 
         dispatch({ type: "purchaseOrderSuccess", payload: data })
+        return data
     } catch (error) {
         dispatch({ type: "purchaseOrderFailure", payload: error.response.data.message })
+        return error.response
     }
 }
 

@@ -17,3 +17,13 @@ export const COLORS = {
   green: '#00B761',
   oraneBlue: '#00a7e5',
 };
+
+export const inrDateFormatNoTime = (date) =>
+  new Date(date).toLocaleString("en-IN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+export const inrDateFormatWithTime = (date) =>
+  new Date(date).toLocaleString("en-IN");
