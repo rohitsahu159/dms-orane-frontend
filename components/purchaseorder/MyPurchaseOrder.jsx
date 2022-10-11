@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RefreshControl, View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView,BackHandler, TouchableOpacity, FlatList } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
-import PendingForAprovalPO from './statusWisePO/PendingForAprovalPO';
+import PendingForAprovalPO from './statusWisePO/PendingForAprovalPO'
 import ApprovedPO from './statusWisePO/ApprovedPO';
 import RejectedPO from './statusWisePO/RejectedPO';
 import InProgressPO from './statusWisePO/InProgressPO';

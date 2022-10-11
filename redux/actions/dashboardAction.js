@@ -12,7 +12,7 @@ export const getDashboardList = (bodyData) => async (dispatch) => {
         })
         dispatch({ type: "dashboardListSuccess", payload: data })
     } catch (error) {
-        dispatch({ type: "dashboardListFailure", payload: error.response.data.message })
+        dispatch({ type: "dashboardListFailure", payload: error?.response?.data?.message })
     }
 }
 export const getdashboardDetail = (URL) => async (dispatch) => {
@@ -25,5 +25,26 @@ export const getdashboardDetail = (URL) => async (dispatch) => {
     }
 };
 
+export const getdashboardInventoryData = (bodyData) => async (dispatch) => {
+    try {
+        dispatch({ type: "dashboardInventoryDataRequest" })
 
-
+        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/dashboard/inventoryChart`, JSON.stringify(bodyData), {
+            headers: {
+                'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
+            }
+        })
+        dispatch({ type: "dashboardInventoryDataSuccess", payload: data })
+    } catch (error) {
+        dispatch({ type: "dashboardInventoryDataFailure", payload: error.response.data.message })
+    }
+}
+export const getdashboardFillRateData = (param) => async (dispatch) => {
+    try {
+        dispatch({ type: "dashboardFillRateRequest" });
+        const { data } = await axios.get(`${urlConstants.BASE_URI_DEV}/dashboard/fillRateStats?${param}`);
+        dispatch({ type: "dashboardFillRateSuccess", payload: data });
+    } catch (error) {
+        dispatch({ type: "dashboardFillRateFailure", payload: error.response.data.message });
+    }
+};
