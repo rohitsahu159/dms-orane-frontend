@@ -11,8 +11,9 @@ import {
     StackedBarChart
 } from 'react-native-chart-kit';
 import { Card, Button, Title, Paragraph } from 'react-native-paper';
-import { getDashboardList,getdashboardDetail } from '../redux/actions/dashboardAction'
+import { getDashboardList,getdashboardDetail,getdashboardInventoryData,getssList } from '../redux/actions/dashboardAction'
 import { } from '@react-navigation/native';
+import SelectList from 'react-native-dropdown-select-list';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -101,6 +102,9 @@ const progressData = {
     // labels: ["Sales Order", "Purchase Orders", "Sales Invoices", "Collected Amount"], // optional
     data: [0.42, -0.98, -1.00, 1.44, 0.00, 1.00]
 };
+
+
+
 
 const KpiAnalysis = () => {
     const dispatch = useDispatch()
@@ -319,95 +323,47 @@ const OverView = () => {
 }
 
 const Inventory = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (user) { 
+            const param = {
+                "role": user?.role ,
+                "subRole": user?.subRole,
+                "assignedHierarchyType": user?.assignedHierarchyType ,
+                "userId": user?.employerUserId 
+              };
+              const requestPayload={
+                pageNumber: 0,
+                pageSize: 1000,
+                sortArray: [],
+                searchCriteria: [],
+              };
+
+            dispatch(getdashboardInventoryData(param))
+            dispatch(getssList(requestPayload))
+ 
+        }
+
+    }, [dispatch])
+
+    const { user } = useSelector(state => state?.auth)
+    const { dashboardInventoryData } = useSelector(state => state?.dashboardInventoryData)
+    console.log(dashboardInventoryData)
+
+
+
     return (
         <SafeAreaView>
 
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                <LineChart
-                    data={data}
-                    width={screenWidth}
-                    height={250}
-                    verticalLabelRotation={30}
-                    chartConfig={chartConfig}
-                    bezier
-                />
+            <View>
+                    <Text style={{ paddingLeft: 5, color: 'black' }}>Select</Text>
+                    <SelectList  data={user.subRole == "RH" || user.subRole == "KAM" ? "" : ""} onSelect={() => onSelectSS()} />
+                </View>
+                
             </View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+            
         </SafeAreaView>
     )
 }
