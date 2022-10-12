@@ -9,7 +9,7 @@ import PartialSO from './statusWiseSO/PartialSO';
 import CancelledSO from './statusWiseSO/CancelledSO';
 import ClosedSO from './statusWiseSO/ClosedSO';
 const Tab = createMaterialTopTabNavigator();
-
+ 
 const MySalesOrder = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
