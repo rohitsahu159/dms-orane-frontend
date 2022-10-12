@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    BackHandler,
+    ScrollView,
+    TouchableOpacity,
+    Pressable,
+    Modal,
+    Dimensions,
+    FlatList,
+    TouchableWithoutFeedback,
+    Keyboard
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
 import { Button, IconButton, TextInput } from '@react-native-material/core';
@@ -150,17 +164,10 @@ const CreateSO = ({ navigation }) => {
         setSearch(Text)
     }
 
-    const handelIncreament = async (name, productCode) => {
+    const handelIncreament = async (value, productCode) => {
         let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
-                let updatedQuantity = 0
-                if (name == 'increase') {
-                    updatedQuantity = product.orderedQuantity + 1
-                } else {
-                    updatedQuantity = product.orderedQuantity - 1
-                }
-
-                let grossValue = updatedQuantity * product.prcsWithoutGst
+                let grossValue = value * product.prcsWithoutGst
                 let primaryDiscountValue = (grossValue * product.primaryDiscountPercent) / 100
                 let netValue = grossValue - primaryDiscountValue
                 let taxValue = (netValue * product.taxPercent) / 100
@@ -168,7 +175,7 @@ const CreateSO = ({ navigation }) => {
                 let discount = primaryDiscountValue
                 return {
                     ...product,
-                    orderedQuantity: updatedQuantity,
+                    orderedQuantity: value,
                     grossValue: grossValue,
                     primaryDiscountValue: primaryDiscountValue,
                     netValue: netValue,
@@ -776,17 +783,19 @@ const CreateSO = ({ navigation }) => {
                                 <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
                                 <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
                                 <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
+                                <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
                             </View>
                             <View style={{ width: '50%' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Button color='#fff' title='-' onPress={() => { handelIncreament('decrease', list.productCode) }} />
-                                    <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
-                                    <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
+                                <View style={{ width: '70%', alignSelf: 'flex-end' }}>
+                                    <TextInput
+                                        label="Quantity (Pcs)"
+                                        variant='filled'
+                                        value={String(list.orderedQuantity)}
+                                        keyboardType='numeric'
+                                        onChangeText={(value) => { handelIncreament(value, list.productCode) }}
+                                    />
+                                    <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                                 </View>
-                                {/* <View style={{ width: '30%' }}>
-                                    <Text>Order Quantity: </Text>  <TextInput variant='standard' maxLength={6} value={list.orderedQuantity} keyboardType='numeric' />
-                                </View> */}
-                                <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                             </View>
                         </View>
                     </Card.Content>
