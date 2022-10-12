@@ -150,8 +150,8 @@ const CreateSO = ({ navigation }) => {
         setSearch(Text)
     }
 
-    const handelIncreament = (name, productCode) => {
-        let tempArr = selectedProductList.map((product) => {
+    const handelIncreament = async (name, productCode) => {
+        let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
                 let updatedQuantity = 0
                 if (name == 'increase') {
@@ -474,10 +474,15 @@ const CreateSO = ({ navigation }) => {
         });
         setBillingAddressList(tempAddr)
         setShippingAddressList(tempAddr)
-        setBillingAddress(null)
-        setShippingAddress(null)
+        setBillingAddress('')
+        setShippingAddress('')
         setProducts([])
         setSelectedProductList([])
+        setSaucesProductList([])
+        setNoodelsProductList([])
+        setMasalaProductList([])
+        setCookingPasteProductList([])
+        setSoupsProductList([])
     }
 
     const SaucesPrd = ({ navigation }) => {
@@ -486,18 +491,18 @@ const CreateSO = ({ navigation }) => {
             <View>
                 <FlatList
                     data={saucesProductList}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={item => `key-${item.productCode}`}
                     renderItem={({ item, index }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'sauceTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'sauceTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -530,16 +535,16 @@ const CreateSO = ({ navigation }) => {
                     data={noodelsProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'noodlesTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'noodlesTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -572,16 +577,16 @@ const CreateSO = ({ navigation }) => {
                     data={masalaProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'masalaTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'masalaTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -614,16 +619,16 @@ const CreateSO = ({ navigation }) => {
                     data={soupsProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'soupsTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'soupsTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -656,16 +661,16 @@ const CreateSO = ({ navigation }) => {
                     data={cookingPasteProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -763,7 +768,7 @@ const CreateSO = ({ navigation }) => {
         }
         return (
             <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
-                <Card style={{ marginVertical: 2 }}>
+                <Card style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                     <Card.Content>
                         <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
                         <View style={{ flexDirection: 'row' }}>
@@ -778,6 +783,9 @@ const CreateSO = ({ navigation }) => {
                                     <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
                                     <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
                                 </View>
+                                {/* <View style={{ width: '30%' }}>
+                                    <Text>Order Quantity: </Text>  <TextInput variant='standard' maxLength={6} value={list.orderedQuantity} keyboardType='numeric' />
+                                </View> */}
                                 <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                             </View>
                         </View>
@@ -832,45 +840,6 @@ const CreateSO = ({ navigation }) => {
 
         setSelectedProductList(selectedTempArr)
     }
-
-    const renderFlatList = (renderData) => {
-        return (
-            <FlatList
-                data={renderData}
-                renderItem={({ item }) => (
-                    <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode)}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                    <Checkbox
-                                        status={item.isChecked ? 'checked' : 'unchecked'}
-                                    />
-                                </Pressable>
-                            </View>
-                            <View style={{ width: '90%' }}>
-                                <View>
-                                    <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text>MRP:</Text >
-                                    <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text>GST :</Text >
-                                    <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text>Purchase Price:</Text >
-                                    <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </Card>
-                )}
-            />
-        );
-    }
-
 
     return (
         <SafeAreaView style={{ height: height }}>
@@ -1035,7 +1004,7 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        padding: 8,
+        padding: 5,
     },
     dropdown: {
         height: 50,
