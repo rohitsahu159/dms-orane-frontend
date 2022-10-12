@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView,BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
@@ -18,39 +18,32 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Swipeable } from 'react-native-gesture-handler';
 import SelectList from 'react-native-dropdown-select-list';
 import Toast from 'react-native-toast-message';
-
+import { COLORS } from '../../redux/constants';
 const { height, width } = Dimensions.get('window')
 
-const data = [
-    { key: 1, value: 'React Native', isChecked: false },
-    { key: 2, value: 'Javascript', isChecked: false },
-    { key: 3, value: 'Laravel', isChecked: false },
-    { key: 4, value: 'PHP', isChecked: false },
-    { key: 5, value: 'jQuery', isChecked: false },
-    { key: 6, value: 'Boostrap', isChecked: false },
-    { key: 7, value: 'HTML', isChecked: false },
-];
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+const Tab = createMaterialTopTabNavigator();
 
 
 const CreatePO = ({ navigation }) => {
     useEffect(() => {
         const backAction = () => {
-          
-            navigation.navigate("myPurchaseOrder")
-          
-          return true;
-        };
-    
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
-    
-        return () => backHandler.remove();
-      }, []);
 
-     
-    
+            navigation.navigate("myPurchaseOrder")
+
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
+
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -62,6 +55,7 @@ const CreatePO = ({ navigation }) => {
     }, [navigation]);
 
     const dispatch = useDispatch()
+    const [isLoading, setIsLoading] = useState(false)
     const [supplier, setSupplier] = useState(null);
     const [orderType, setOrderType] = useState(null);
     const [paymentTerm, setPaymentTerm] = useState(null);
@@ -82,6 +76,12 @@ const CreatePO = ({ navigation }) => {
     const [selectedSellerData, setSelectedSellerData] = useState({});
     const [search, setSearch] = useState('')
     const [selected, setSelected] = React.useState("");
+
+    const [saucesProductList, setSaucesProductList] = useState([])
+    const [noodelsProductList, setNoodelsProductList] = useState([])
+    const [masalaProductList, setMasalaProductList] = useState([])
+    const [cookingPasteProductList, setCookingPasteProductList] = useState([])
+    const [soupsProductList, setSoupsProductList] = useState([])
 
     const { user } = useSelector(state => state.auth)
 
@@ -189,9 +189,49 @@ const CreatePO = ({ navigation }) => {
         setSelectedProductList(tempArr)
     }
 
+    const getModifiedData = (products) => {
+        return products.map(e => {
+            let sgstPercent = 0
+            let cgstPercent = 0
+            let igstPercent = 0
+            let ugstPercent = 0
+            if (selectedSellerData.address.state == buyerData.address[0].state) {
+                sgstPercent = e.gst / 2;
+                cgstPercent = e.gst / 2;
+                igstPercent = 0;
+            } else {
+                igstPercent = e.gst;
+                cgstPercent = 0;
+                sgstPercent = 0;
+            }
+            return {
+                ...e,
+                isChecked: false,
+                caseBoxQty: 0,
+                pcsQty: 0,
+                orderedQuantity: 0,
+                mrp: e.price.length != 0 ? e.price[0].mrp : 0,
+                prcsWithoutGst: e.price.length != 0 ? (e.price[0].purchasePrice / (1 + (e.gst / 100))) : 0,
+                purchasePrice: e.price.length != 0 ? (e.price[0].purchasePrice) : 0,
+                grossValue: 0,
+                primaryDiscountPercent: 0,
+                primaryDiscountValue: 0,
+                netValue: 0,
+                taxPercent: e.gst,
+                taxValue: 0,
+                totalValue: 0,
+                salesUnit: 'PCS',
+                pcsPerBox: e.standardUnitConversionFactor,
+                sgstPercent: sgstPercent,
+                cgstPercent: cgstPercent,
+                igstPercent: igstPercent,
+                ugstPercent: ugstPercent,
+                discount: 0
+            }
+        });
+    }
+
     const openProductModal = async () => {
-
-
         if (supplier == null) {
             return Toast.show({
                 type: 'success',
@@ -200,10 +240,12 @@ const CreatePO = ({ navigation }) => {
                 visibilityTime: 2000
             })
         }
-        if (products.length == 0) {
+        setIsLoading(true)
+
+        if (saucesProductList.length == 0) {
             let bodyData = {
                 "pageNumber": 0,
-                "pageSize": 25,
+                "pageSize": 9999,
                 "sellerRole": selectedSellerData.userRole,
                 "buyerRole": buyerData.userRole,
                 "buyerState": buyerData.address[0].state,
@@ -218,6 +260,11 @@ const CreatePO = ({ navigation }) => {
                         "operation": "EQUAL"
                     },
                     {
+                        "key": "category",
+                        "operation": "PRODUCT_HIERARCHY_EQUAL",
+                        "value": "Sauces"
+                    },
+                    {
                         "key": "isActive",
                         "value": true,
                         "operation": "EQUAL"
@@ -225,64 +272,200 @@ const CreatePO = ({ navigation }) => {
                 ]
             }
             let data = await dispatch(getProducts(bodyData))
-            const arr = data.data.productPrice.map(e => {
-                let sgstPercent = 0
-                let cgstPercent = 0
-                let igstPercent = 0
-                let ugstPercent = 0
-                if (selectedSellerData.address.state == buyerData.address[0].state) {
-                    sgstPercent = e.gst / 2;
-                    cgstPercent = e.gst / 2;
-                    igstPercent = 0;
-                } else {
-                    igstPercent = e.gst;
-                    cgstPercent = 0;
-                    sgstPercent = 0;
-                }
-                return {
-                    ...e,
-                    isChecked: false,
-                    caseBoxQty: 0,
-                    pcsQty: 0,
-                    orderedQuantity: 0,
-                    mrp: e.price.length != 0 ? e.price[0].mrp : 0,
-                    prcsWithoutGst: e.price.length != 0 ? (e.price[0].purchasePrice / (1 + (e.gst / 100))) : 0,
-                    purchasePrice: e.price.length != 0 ? (e.price[0].purchasePrice) : 0,
-                    grossValue: 0,
-                    primaryDiscountPercent: 0,
-                    primaryDiscountValue: 0,
-                    netValue: 0,
-                    taxPercent: e.gst,
-                    taxValue: 0,
-                    totalValue: 0,
-                    salesUnit: 'PCS',
-                    pcsPerBox: e.standardUnitConversionFactor,
-                    sgstPercent: sgstPercent,
-                    cgstPercent: cgstPercent,
-                    igstPercent: igstPercent,
-                    ugstPercent: ugstPercent,
-                    discount: 0
-                }
-            });
-            setProducts(arr)
-            setProductList(arr)
+            let arr1 = await getModifiedData(data.data.productPrice)
+            setSaucesProductList(arr1)
         }
+
+        if (noodelsProductList.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 9999,
+                "sellerRole": selectedSellerData.userRole,
+                "buyerRole": buyerData.userRole,
+                "buyerState": buyerData.address[0].state,
+                "buyerUserId": buyerData.userId,
+                "hierarchyId": buyerData.hierarchyId,
+                "inventoryReferenceId": user.employerUserId,
+                "sortArray": [],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": selectedSellerData.id,
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "category",
+                        "operation": "PRODUCT_HIERARCHY_EQUAL",
+                        "value": "Noodles"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+            let data = await dispatch(getProducts(bodyData))
+            let arr2 = await getModifiedData(data.data.productPrice)
+            setNoodelsProductList(arr2)
+        }
+
+        if (masalaProductList.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 9999,
+                "sellerRole": selectedSellerData.userRole,
+                "buyerRole": buyerData.userRole,
+                "buyerState": buyerData.address[0].state,
+                "buyerUserId": buyerData.userId,
+                "hierarchyId": buyerData.hierarchyId,
+                "inventoryReferenceId": user.employerUserId,
+                "sortArray": [],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": selectedSellerData.id,
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "category",
+                        "operation": "PRODUCT_HIERARCHY_EQUAL",
+                        "value": "Masala"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+            let data = await dispatch(getProducts(bodyData))
+            let arr3 = await getModifiedData(data.data.productPrice)
+            setMasalaProductList(arr3)
+        }
+
+        if (cookingPasteProductList.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 9999,
+                "sellerRole": selectedSellerData.userRole,
+                "buyerRole": buyerData.userRole,
+                "buyerState": buyerData.address[0].state,
+                "buyerUserId": buyerData.userId,
+                "hierarchyId": buyerData.hierarchyId,
+                "inventoryReferenceId": user.employerUserId,
+                "sortArray": [],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": selectedSellerData.id,
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "category",
+                        "operation": "PRODUCT_HIERARCHY_EQUAL",
+                        "value": "Cooking Paste"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+            let data = await dispatch(getProducts(bodyData))
+            let arr4 = await getModifiedData(data.data.productPrice)
+            setCookingPasteProductList(arr4)
+        }
+
+        if (soupsProductList.length == 0) {
+            let bodyData = {
+                "pageNumber": 0,
+                "pageSize": 9999,
+                "sellerRole": selectedSellerData.userRole,
+                "buyerRole": buyerData.userRole,
+                "buyerState": buyerData.address[0].state,
+                "buyerUserId": buyerData.userId,
+                "hierarchyId": buyerData.hierarchyId,
+                "inventoryReferenceId": user.employerUserId,
+                "sortArray": [],
+                "searchCriteria": [
+                    {
+                        "key": "sellerId",
+                        "value": selectedSellerData.id,
+                        "operation": "EQUAL"
+                    },
+                    {
+                        "key": "category",
+                        "operation": "PRODUCT_HIERARCHY_EQUAL",
+                        "value": "Soups"
+                    },
+                    {
+                        "key": "isActive",
+                        "value": true,
+                        "operation": "EQUAL"
+                    }
+                ]
+            }
+            let data = await dispatch(getProducts(bodyData))
+            let arr5 = await getModifiedData(data.data.productPrice)
+            setSoupsProductList(arr5)
+        }
+
+        setIsLoading(false)
         setModalVisible(!modalVisible)
     }
 
-    const { loading } = useSelector(state => state.products)
+    const handleChange = (productCode, tabName) => {
+        if (tabName == 'sauceTab') {
+            let temp = saucesProductList.map((product) => {
+                if (productCode == product.productCode) {
+                    return { ...product, isChecked: !product.isChecked };
+                }
+                return product;
+            });
+            setSaucesProductList(temp);
+        }
 
-    const handleChange = (productCode) => {
-        let temp = products.map((product) => {
-            if (productCode == product.productCode) {
-                return { ...product, isChecked: !product.isChecked };
-            }
-            return product;
-        });
-        setProducts(temp);
+        if (tabName == 'noodlesTab') {
+            let temp = noodelsProductList.map((product) => {
+                if (productCode == product.productCode) {
+                    return { ...product, isChecked: !product.isChecked };
+                }
+                return product;
+            });
+            setNoodelsProductList(temp);
+        }
 
-        let selected = temp.filter((product) => product.isChecked);
-        setSelectedProductList(selected)
+        if (tabName == 'masalaTab') {
+            let temp = masalaProductList.map((product) => {
+                if (productCode == product.productCode) {
+                    return { ...product, isChecked: !product.isChecked };
+                }
+                return product;
+            });
+            setMasalaProductList(temp);
+        }
+
+        if (tabName == 'cookingpasteTab') {
+            let temp = cookingPasteProductList.map((product) => {
+                if (productCode == product.productCode) {
+                    return { ...product, isChecked: !product.isChecked };
+                }
+                return product;
+            });
+            setCookingPasteProductList(temp);
+        }
+
+        if (tabName == 'soupsTab') {
+            let temp = soupsProductList.map((product) => {
+                if (productCode == product.productCode) {
+                    return { ...product, isChecked: !product.isChecked };
+                }
+                return product;
+            });
+            setSoupsProductList(temp);
+        }
     };
 
     const onSelectSuplier = (supplierId) => {
@@ -291,6 +474,229 @@ const CreatePO = ({ navigation }) => {
         setSupplier(supplier)
         setProducts([])
         setSelectedProductList([])
+    }
+
+    const SaucesPrd = ({ navigation }) => {
+
+        return (
+            <View>
+                <FlatList
+                    data={saucesProductList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'sauceTab')}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
+                                        <Checkbox
+                                            status={item.isChecked ? 'checked' : 'unchecked'}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <View>
+                                        <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>MRP:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>GST :</Text >
+                                        <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>Purchase Price:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Card>
+                    )}
+                />
+            </View>
+        )
+    }
+
+    const NoodlesPrd = ({ navigation }) => {
+
+        return (
+            <View>
+                <FlatList
+                    data={noodelsProductList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'noodlesTab')}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
+                                        <Checkbox
+                                            status={item.isChecked ? 'checked' : 'unchecked'}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <View>
+                                        <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>MRP:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>GST :</Text >
+                                        <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>Purchase Price:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Card>
+                    )}
+                />
+            </View>
+        )
+    }
+
+    const MasalaPrd = ({ navigation }) => {
+
+        return (
+            <View>
+                <FlatList
+                    data={masalaProductList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'masalaTab')}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
+                                        <Checkbox
+                                            status={item.isChecked ? 'checked' : 'unchecked'}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <View>
+                                        <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>MRP:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>GST :</Text >
+                                        <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>Purchase Price:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Card>
+                    )}
+                />
+            </View>
+        )
+    }
+
+    const SoupsPrd = ({ navigation }) => {
+
+        return (
+            <View>
+                <FlatList
+                    data={soupsProductList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'soupsTab')}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
+                                        <Checkbox
+                                            status={item.isChecked ? 'checked' : 'unchecked'}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <View>
+                                        <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>MRP:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>GST :</Text >
+                                        <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>Purchase Price:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Card>
+                    )}
+                />
+            </View>
+        )
+    }
+
+    const CookingPastePrd = ({ navigation }) => {
+
+        return (
+            <View>
+                <FlatList
+                    data={cookingPasteProductList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
+                                        <Checkbox
+                                            status={item.isChecked ? 'checked' : 'unchecked'}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{ width: '90%' }}>
+                                    <View>
+                                        <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>MRP:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.mrp)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>GST :</Text >
+                                        <Text style={{ fontWeight: '500' }}> {item.gst} %</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text>Purchase Price:</Text >
+                                        <Text style={{ fontWeight: '500' }}> {inrFormat(item.purchasePrice)}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </Card>
+                    )}
+                />
+            </View>
+        )
+    }
+
+    const addSelectedProducts = async () => {
+        setIsLoading(true)
+        let array1 = await saucesProductList.filter((product) => product.isChecked);
+        let array2 = await noodelsProductList.filter((product) => product.isChecked);
+        let array3 = await masalaProductList.filter((product) => product.isChecked);
+        let array4 = await cookingPasteProductList.filter((product) => product.isChecked);
+        let array5 = await soupsProductList.filter((product) => product.isChecked);
+        let mergedArray = await array1.concat(array2, array3, array4, array5)
+        setSelectedProductList(mergedArray)
+        setModalVisible(false)
+        setIsLoading(false)
     }
 
     const previewPO = async () => {
@@ -370,15 +776,49 @@ const CreatePO = ({ navigation }) => {
     const deleteItem = async (lineItem) => {
         let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.item.productCode })
 
-        let productsTempArr = await products.map((product) => {
+        let productsTempArr1 = await saucesProductList.map((product) => {
             if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
         });
-        setProducts(productsTempArr);
+        setSaucesProductList(productsTempArr1);
+
+        let productsTempArr2 = await noodelsProductList.map((product) => {
+            if (lineItem.item.productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setNoodelsProductList(productsTempArr2);
+
+        let productsTempArr3 = await masalaProductList.map((product) => {
+            if (lineItem.item.productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setMasalaProductList(productsTempArr3);
+
+        let productsTempArr4 = await cookingPasteProductList.map((product) => {
+            if (lineItem.item.productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setCookingPasteProductList(productsTempArr4);
+
+        let productsTempArr5 = await soupsProductList.map((product) => {
+            if (lineItem.item.productCode == product.productCode) {
+                return { ...product, isChecked: !product.isChecked };
+            }
+            return product;
+        });
+        setSoupsProductList(productsTempArr5);
+
         setSelectedProductList(selectedTempArr)
     }
+
 
     const renderFlatList = (renderData) => {
         return (
@@ -419,7 +859,7 @@ const CreatePO = ({ navigation }) => {
 
 
     return (
-         <SafeAreaView style={{ height: height }}>
+        <SafeAreaView style={{ height: height }}>
             <View style={styles.containner1}>
                 <View style={styles.container}>
                     <Text style={{ paddingLeft: 5, color: '#00a7e5' }}>Supplier</Text>
@@ -480,22 +920,66 @@ const CreatePO = ({ navigation }) => {
                         head
                     >
                         <View style={styles.modal}>
-                            <View style={{ flexDirection: 'row', margin: 15 }}>
-                                <TextInput
-                                    label="Search..."
-                                    color='#00a7e5'
-                                    style={{ width: '80%' }}
-                                    value={search}
-                                    onChangeText={(text) => searchFilterFunction(text)}
-                                    leading={props => <Icon name="search" {...props} />}
-                                />
-                                <Text style={{ right: 0, position: 'absolute', width: '10%', marginVertical: 10 }}>
-                                    <Icon name="plus-circle" onPress={() => { setModalVisible(!modalVisible) }} size={35} color="#00a7e5" />
-                                </Text>
-                            </View>
-                            {loading ? <Loader /> : <View style={{ flex: 1 }}>
-                                {renderFlatList(products)}
-                            </View>}
+
+                            <SafeAreaView style={{
+                                flex: 1,
+                                backgroundColor: COLORS.white,
+                            }}>
+                                {isLoading ? <Loader /> : <View style={{ width: '80%', alignSelf: 'center', padding: 20 }}>
+                                    <Button onPress={() => { addSelectedProducts() }} title="Add Selected Products" color='#00a7e5' />
+                                </View>}
+                                <Tab.Navigator
+                                    initialRouteName='sauces'
+                                    screenOptions={({ route }) => ({
+                                        tabBarActiveTintColor: "blue",
+                                        tabBarInactiveTintColor: "#555",
+                                        tabBarLabelStyle: {
+                                            fontSize: 15,
+                                        },
+                                        tabBarItemStyle: {
+                                            width: 'auto',
+                                            alignItems: 'center',
+                                        },
+                                        tabBarScrollEnabled: true
+                                    })}
+                                >
+                                    <Tab.Screen
+                                        name='sauces'
+                                        component={SaucesPrd}
+                                        options={{
+                                            title: "Sauces"
+                                        }}
+                                    />
+                                    <Tab.Screen
+                                        name='noodles'
+                                        component={NoodlesPrd}
+                                        options={{
+                                            title: "Noodles"
+                                        }}
+                                    />
+                                    <Tab.Screen
+                                        name='masala'
+                                        component={MasalaPrd}
+                                        options={{
+                                            title: "Masala"
+                                        }}
+                                    />
+                                    <Tab.Screen
+                                        name='cookingPaste'
+                                        component={CookingPastePrd}
+                                        options={{
+                                            title: "Cooking Paste"
+                                        }}
+                                    />
+                                    <Tab.Screen
+                                        name='soups'
+                                        component={SoupsPrd}
+                                        options={{
+                                            title: "Soups"
+                                        }}
+                                    />
+                                </Tab.Navigator>
+                            </SafeAreaView>
                         </View>
                     </Modal>
                 </View>
