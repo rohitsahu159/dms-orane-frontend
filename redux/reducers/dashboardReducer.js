@@ -50,5 +50,55 @@ export const dashboardDetailsReducer = createReducer(
         },
     }
 );
+export const dashboardInventoryDataReducer = createReducer(
+    {},
+    {
+        dashboardInventoryDataRequest: (state) => {
+            state.loading = true;
+            state.dashboardInventoryData = [];
+        },
+        dashboardInventoryDataSuccess: (state, action) => {
+            state.loading = false;
+            state.dashboardInventoryData = action.payload.data;
+        },
+        dashboardInventoryDataFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
+export const dashboardFillRateReducer = createReducer(
+    {},
+    {
+        dashboardFillRateRequest: (state) => {
+            state.loading = true;
+            state.dashboardFillRate = [];
+        },
+        dashboardFillRateSuccess: (state, action) => {
+            state.loading = false;
+            state.dashboardFillRate = action.payload.data;
+        },
+        dashboardFillRateFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
 
 
