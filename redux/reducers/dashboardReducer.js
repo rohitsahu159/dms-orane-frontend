@@ -100,5 +100,30 @@ export const ssDataReducer = createReducer(
         },
     }
 );
+export const dashboardFillRateReducer = createReducer(
+    {},
+    {
+        sSDataRequest: (state) => {
+            state.loading = true;
+            state.fillRateStats = [];
+        },
+        sSDataSuccess: (state, action) => {
+            state.loading = false;
+            state.fillRateStats = action.payload.data.salesOrderFillRateStats;
+        },
+        sSDataFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
 
 

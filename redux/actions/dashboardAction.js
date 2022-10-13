@@ -53,5 +53,14 @@ export const getSSList = (bodyData) => async (dispatch) => {
         dispatch({ type: "sSDataFailure", payload: error.response.data.message })
     }
 }
+export const getdashboardFillRateData = (param) => async (dispatch) => {
+    try {
+        dispatch({ type: "dashboardFillRateRequest" });
+        const { data } = await axios.get(`${urlConstants.BASE_URI_DEV}/dashboard/fillRateStats?${param}`);
+        dispatch({ type: "dashboardFillRateSuccess", payload: data });
+    } catch (error) {
+        dispatch({ type: "dashboardFillRateFailure", payload: error.response.data.message });
+    }
+};
 
 

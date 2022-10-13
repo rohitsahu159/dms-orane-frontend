@@ -1,5 +1,5 @@
-import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import React, { useEffect } from 'react';
+import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView , Pressable} from 'react-native';
+import React, { useEffect,useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -10,8 +10,8 @@ import {
     ContributionGraph,
     StackedBarChart
 } from 'react-native-chart-kit';
-import { Card, Button, Title, Paragraph } from 'react-native-paper';
-import { getDashboardList,getdashboardDetail,getdashboardInventoryData,getssList } from '../redux/actions/dashboardAction'
+import { Card, Button, Title, Paragraph,Checkbox } from 'react-native-paper';
+import { getDashboardList,getdashboardDetail,getdashboardInventoryData,getSSList,getdashboardFillRateData } from '../redux/actions/dashboardAction'
 import { } from '@react-navigation/native';
 import SelectList from 'react-native-dropdown-select-list';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -105,7 +105,6 @@ const progressData = {
 
 
 
-
 const KpiAnalysis = () => {
     const dispatch = useDispatch()
 
@@ -127,7 +126,6 @@ const KpiAnalysis = () => {
     const { user } = useSelector(state => state.auth)
     const { dashboardList } = useSelector(state => state.dashboardList)
 
-    console.log(user,dashboardList)
     
     return (
         <SafeAreaView>
@@ -234,7 +232,6 @@ const OverView = () => {
 
     const { user } = useSelector(state => state.auth)
     const { dashboardDetails } = useSelector(state => state.dashboardDetails)
-    console.log(dashboardDetails)
     return (
         <SafeAreaView>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
@@ -341,15 +338,35 @@ const Inventory = () => {
               };
 
             dispatch(getdashboardInventoryData(param))
-            dispatch(getssList(requestPayload))
+            dispatch(getSSList(requestPayload))
  
         }
 
     }, [dispatch])
 
     const { user } = useSelector(state => state?.auth)
+    const { ssData } = useSelector(state => state?.ssData)
     const { dashboardInventoryData } = useSelector(state => state?.dashboardInventoryData)
-    console.log(dashboardInventoryData)
+
+    const [sellerFirmName, setSellerData] = useState(null);
+const [selectedSellerData, setSelectedSellerData] = useState({});
+let billingAddressList = []
+if (ssData?.sellerFirmName != undefined) {
+    let tempAddr = ssData.businessPartners.rhInfo.sellerFirmName.map(e => {
+        return {
+            ...e,
+            key: e.sellerFirmName,
+            value: e.sellerFirmName,
+        }
+    });
+
+    billingAddressList = tempAddr
+}
+const onSelectSS = (sellerFirmName) => {
+    let obj = ssData.find(o => o.id === sellerFirmName);
+    setSelectedSellerData(obj)
+    setSellerData(sellerFirmName)
+}
 
 
 
@@ -359,8 +376,51 @@ const Inventory = () => {
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
             <View>
                     <Text style={{ paddingLeft: 5, color: 'black' }}>Select</Text>
-                    <SelectList  data={user.subRole == "RH" || user.subRole == "KAM" ? "" : ""} onSelect={() => onSelectSS()} />
+                    <SelectList  data={billingAddressList || []} setSelected={setSellerData} onSelect={() => onSelectSS(sellerFirmName)} />
                 </View>
+                <View>
+                <LineChart
+    data={{
+      labels: ["Current Stock", "Delivery Pending", "Damaged Stock", "Expired Stock"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100,
+            Math.random() * 100
+          ]
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width} // from react-native
+    height={220}
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+      backgroundColor: "#e26a00",
+      backgroundGradientFrom: "#fb8c00",
+      backgroundGradientTo: "#ffa726",
+      decimalPlaces: 2, // optional, defaults to 2dp
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      style: {
+        borderRadius: 16
+      },
+      propsForDots: {
+        r: "6",
+        strokeWidth: "2",
+        stroke: "#ffa726"
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
+          </View>
                 
             </View>
             
@@ -369,184 +429,166 @@ const Inventory = () => {
 }
 
 const FillRate = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (user) { 
+            let param = "";
+
+            if (user.role === "COMPANY" && user.subRole === "ADMIN") {
+              param = `buyerHierarchyType=GT`;
+            } else if (
+              user.role === "COMPANY" &&
+              (user.subRole === "RH" || user.subRole === "KAM")
+            ) {
+              param = `buyerHierarchyType=${user.assignedHierarchyType}&buyerSubRegion=${user.assignedGeolocation.toString()}`;
+            } else {
+              param = `buyerHierarchyType=${user.assignedHierarchyType}&sellerId=${user.employerUserId}`;
+            }          
+            dispatch(getdashboardFillRateData(param))
+        }
+
+    }, [dispatch])
+
+    const { user } = useSelector(state => state.auth)
+    const { fillRateStats } = useSelector(state => state?.fillRateStats)
+    console.log(fillRateStats)
+    let month =[]
+    if (fillRateStats != undefined) {
+        let tempAddr = fillRateStats.map(e => {
+            return {
+                ...e,
+                key: e.month,
+                value: e.month,
+            }
+        });
+    
+        month = tempAddr
+    }
+    const data = {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+          {
+            data: [20, 45, 28, 80, 99, 43]
+          }
+        ]
+      };
     return (
         <SafeAreaView>
+            <View >
+            <Pressable  >
+                                    <Checkbox
+                                        status={'checked'}
+                                    />
+                                </Pressable>
+            <Text style={{top:"-50%",left:"10%"}}>GT</Text>
+            </View>
+            <View style={{top:"-16%",left:"20%"}}>
+            <Pressable  >
+                                    <Checkbox
+                                        status={'checked'}
+                                    />
+                                </Pressable>
+            <Text style={{top:"-50%",left:"10%"}}>MT</Text>
+            </View>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                <LineChart
-                    data={data}
-                    width={screenWidth}
-                    height={250}
-                    chartConfig={chartConfig}
-                />
-            </View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+            <BarChart
+//   style={graphStyle}
+  data={data}
+  width={screenWidth}
+  height={220}
+  yAxisSuffix='%'
+  chartConfig={chartConfig}
+  verticalLabelRotation={30}
+/>
+            </View>       
         </SafeAreaView>
     )
 }
 
 const PurchaseValue = () => {
+    const data = [
+        {
+          name: "Seoul",
+          population: 21500000,
+          color: "rgba(131, 167, 234, 1)",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "Toronto",
+          population: 2800000,
+          color: "#F00",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "Beijing",
+          population: 527612,
+          color: "red",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "New York",
+          population: 8538000,
+          color: "#ffffff",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "Moscow",
+          population: 11920000,
+          color: "rgb(0, 0, 255)",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        }
+      ];
     return (
         <SafeAreaView>
+            <View>
+            <Pressable  >
+                                    <Checkbox
+                                        status={'checked'}
+                                    />
+                                </Pressable>
+                <Text style={{top:"-50%",left:"10%"}}>Year</Text>
+            </View>
+            <View style={{top:"-12%",left:"30%"}}>
+            <Pressable  >
+                                    <Checkbox
+                                        status={'checked'}
+                                    />
+                                </Pressable>
+                <Text style={{top:"-50%",left:"10%"}}>Month</Text>
+            </View>
+            <View style={{top:"-24%",left:"70%"}}>
+            <Pressable  >
+                                    <Checkbox
+                                        status={'checked'}
+                                    />
+                                </Pressable>
+                <Text style={{top:"-50%",left:"10%"}}>Day</Text>
+            </View>
+            <View style={{top:"-20%"}}>
+               <SelectList  data={""} setSelected={""}  />
+                </View>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                <LineChart
-                    data={data}
-                    width={screenWidth}
-                    height={250}
-                    chartConfig={chartConfig}
-                />
+                
+            <PieChart
+  data={data}
+  width={screenWidth}
+  height={250}
+  chartConfig={chartConfig}
+  accessor={"population"}
+  backgroundColor={"transparent"}
+  paddingLeft={"15"}
+  center={[10, 50]}
+  absolute
+/>
 
             </View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>100</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> 19 %</Text>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+         
         </SafeAreaView>
     )
 }
