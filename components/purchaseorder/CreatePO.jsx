@@ -157,17 +157,10 @@ const CreatePO = ({ navigation }) => {
         setSearch(Text)
     }
 
-    const handelIncreament = (name, productCode) => {
-        let tempArr = selectedProductList.map((product) => {
+    const handelIncreament = async (value, productCode) => {
+        let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
-                let updatedQuantity = 0
-                if (name == 'increase') {
-                    updatedQuantity = product.orderedQuantity + 1
-                } else {
-                    updatedQuantity = product.orderedQuantity - 1
-                }
-
-                let grossValue = updatedQuantity * product.prcsWithoutGst
+                let grossValue = value * product.prcsWithoutGst
                 let primaryDiscountValue = (grossValue * product.primaryDiscountPercent) / 100
                 let netValue = grossValue - primaryDiscountValue
                 let taxValue = (netValue * product.taxPercent) / 100
@@ -175,7 +168,7 @@ const CreatePO = ({ navigation }) => {
                 let discount = primaryDiscountValue
                 return {
                     ...product,
-                    orderedQuantity: updatedQuantity,
+                    orderedQuantity: value,
                     grossValue: grossValue,
                     primaryDiscountValue: primaryDiscountValue,
                     netValue: netValue,
@@ -648,7 +641,7 @@ const CreatePO = ({ navigation }) => {
 
         return (
             <View>
-               <FlatList
+                <FlatList
                     data={cookingPasteProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
@@ -749,7 +742,7 @@ const CreatePO = ({ navigation }) => {
         }
         return (
             <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
-                <Card style={{ marginVertical: 2 }}>
+                <Card style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                     <Card.Content>
                         <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
                         <View style={{ flexDirection: 'row' }}>
@@ -757,14 +750,19 @@ const CreatePO = ({ navigation }) => {
                                 <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
                                 <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
                                 <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
+                                <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
                             </View>
                             <View style={{ width: '50%' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Button color='#fff' title='-' onPress={() => { handelIncreament('decrease', list.productCode) }} />
-                                    <Text style={{ width: 45, textAlign: 'center', margin: 10 }}>{list.orderedQuantity}</Text>
-                                    <Button color='#fff' title='+' onPress={() => { handelIncreament('increase', list.productCode) }} />
+                                <View style={{ width: '70%', alignSelf: 'flex-end' }}>
+                                    <TextInput
+                                        label="Quantity (Pcs)"
+                                        variant='filled'
+                                        value={String(list.orderedQuantity)}
+                                        keyboardType='numeric'
+                                        onChangeText={(value) => { handelIncreament(value, list.productCode) }}
+                                    />
+                                    <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                                 </View>
-                                <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                             </View>
                         </View>
                     </Card.Content>
@@ -909,80 +907,78 @@ const CreatePO = ({ navigation }) => {
                     <Button onPress={() => openProductModal()} title="Add Items Detail" color='white' />
                 </View>
 
-                <View>
-                    <Modal
-                        animationType="fade"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible)
-                        }}
-                        head
-                    >
-                        <View style={styles.modal}>
+                {isLoading ? <Loader /> : <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible)
+                    }}
+                    head
+                >
+                    <View style={styles.modal}>
 
-                            <SafeAreaView style={{
-                                flex: 1,
-                                backgroundColor: COLORS.white,
-                            }}>
-                                {isLoading ? <Loader /> : <View style={{ width: '80%', alignSelf: 'center', padding: 20 }}>
-                                    <Button onPress={() => { addSelectedProducts() }} title="Add Selected Products" color='#00a7e5' />
-                                </View>}
-                                <Tab.Navigator
-                                    initialRouteName='sauces'
-                                    screenOptions={({ route }) => ({
-                                        tabBarActiveTintColor: "blue",
-                                        tabBarInactiveTintColor: "#555",
-                                        tabBarLabelStyle: {
-                                            fontSize: 15,
-                                        },
-                                        tabBarItemStyle: {
-                                            width: 'auto',
-                                            alignItems: 'center',
-                                        },
-                                        tabBarScrollEnabled: true
-                                    })}
-                                >
-                                    <Tab.Screen
-                                        name='sauces'
-                                        component={SaucesPrd}
-                                        options={{
-                                            title: "Sauces"
-                                        }}
-                                    />
-                                    <Tab.Screen
-                                        name='noodles'
-                                        component={NoodlesPrd}
-                                        options={{
-                                            title: "Noodles"
-                                        }}
-                                    />
-                                    <Tab.Screen
-                                        name='masala'
-                                        component={MasalaPrd}
-                                        options={{
-                                            title: "Masala"
-                                        }}
-                                    />
-                                    <Tab.Screen
-                                        name='cookingPaste'
-                                        component={CookingPastePrd}
-                                        options={{
-                                            title: "Cooking Paste"
-                                        }}
-                                    />
-                                    <Tab.Screen
-                                        name='soups'
-                                        component={SoupsPrd}
-                                        options={{
-                                            title: "Soups"
-                                        }}
-                                    />
-                                </Tab.Navigator>
-                            </SafeAreaView>
-                        </View>
-                    </Modal>
-                </View>
+                        <SafeAreaView style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                        }}>
+                            {isLoading ? <Loader /> : <View style={{ width: '80%', alignSelf: 'center', padding: 20 }}>
+                                <Button onPress={() => { addSelectedProducts() }} title="Add Selected Products" color='#00a7e5' />
+                            </View>}
+                            <Tab.Navigator
+                                initialRouteName='sauces'
+                                screenOptions={({ route }) => ({
+                                    tabBarActiveTintColor: "blue",
+                                    tabBarInactiveTintColor: "#555",
+                                    tabBarLabelStyle: {
+                                        fontSize: 15,
+                                    },
+                                    tabBarItemStyle: {
+                                        width: 'auto',
+                                        alignItems: 'center',
+                                    },
+                                    tabBarScrollEnabled: true
+                                })}
+                            >
+                                <Tab.Screen
+                                    name='sauces'
+                                    component={SaucesPrd}
+                                    options={{
+                                        title: "Sauces"
+                                    }}
+                                />
+                                <Tab.Screen
+                                    name='noodles'
+                                    component={NoodlesPrd}
+                                    options={{
+                                        title: "Noodles"
+                                    }}
+                                />
+                                <Tab.Screen
+                                    name='masala'
+                                    component={MasalaPrd}
+                                    options={{
+                                        title: "Masala"
+                                    }}
+                                />
+                                <Tab.Screen
+                                    name='cookingPaste'
+                                    component={CookingPastePrd}
+                                    options={{
+                                        title: "Cooking Paste"
+                                    }}
+                                />
+                                <Tab.Screen
+                                    name='soups'
+                                    component={SoupsPrd}
+                                    options={{
+                                        title: "Soups"
+                                    }}
+                                />
+                            </Tab.Navigator>
+                        </SafeAreaView>
+                    </View>
+                </Modal>}
                 <View style={{ flex: 1, paddingBottom: 80 }}>
                     <FlatList
                         data={selectedProductList}
@@ -1051,8 +1047,6 @@ const styles = StyleSheet.create({
         height: height * 1,
         backgroundColor: '#FFFFFF',
         width: '100%',
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
     },
     modalView: {
         margin: 20,

@@ -1,4 +1,4 @@
-import { StyleSheet, Button, Text, BackHandler, View } from 'react-native'
+import { StyleSheet, Button, Text, BackHandler, View, Alert } from 'react-native'
 import React, { useEffect } from 'react';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Divider } from 'react-native-paper';
@@ -9,21 +9,10 @@ import { createPO } from '../../redux/actions/purchaseAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from "react-native-toast-message";
 
-const cars = [
-    'Hyundai Venue',
-    'Tata Nexon',
-    'Hyundai Creta',
-    'Kia Carens',
-    'Renault Kiger',
-    'Maruti Suzuki Ertiga',
-];
-
 const PreviewPO = ({ route, navigation }) => {
     useEffect(() => {
         const backAction = () => {
-
             navigation.navigate("createPO")
-
             return true;
         };
 
@@ -34,8 +23,6 @@ const PreviewPO = ({ route, navigation }) => {
 
         return () => backHandler.remove();
     }, []);
-
-
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -53,10 +40,9 @@ const PreviewPO = ({ route, navigation }) => {
 
     const submitPO = async () => {
         let data = await dispatch(createPO(purchaseDetail))
-
         if (data.status == 'success') {
             Alert.alert(
-                "",
+                `Purchase Order Id: ${data.data.purchaseOrderId}`,
                 "Your Purchase Order Created Successfully",
                 [
                     { text: "OK", onPress: () => navigation.navigate("myPurchaseOrder") }
@@ -159,17 +145,13 @@ const PreviewPO = ({ route, navigation }) => {
             </View>
             <Toast />
         </SafeAreaView>
-
-
     );
 };
 
 export default PreviewPO
 
 const styles = StyleSheet.create({
-
     Container: {
-        // flex: 1,
         backgroundColor: "#e6eeff",
         padding: 10,
         margin: 5,
@@ -177,7 +159,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         top: 30
     },
-
     common: {
         fontSize: 15,
         textAlign: "center",
@@ -186,11 +167,8 @@ const styles = StyleSheet.create({
         margin: 3
     },
     contain: {
-
         marginLeft: 170,
         top: -25,
-
-
     },
     commonStyle: {
         fontWeight: "bold",
@@ -199,8 +177,5 @@ const styles = StyleSheet.create({
         top: -15,
         padding: 3,
         margin: 3
-
-
-
     }
 });
