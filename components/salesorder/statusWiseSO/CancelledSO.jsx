@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import { getSOList } from '../../../redux/actions/salesAction';
 import { inrFormat } from '../../../redux/constants';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const { height, width } = Dimensions.get('window')
 const wait = (timeout) => {
@@ -106,23 +108,30 @@ const CancelledSO = ({ navigation }) => {
         new Date(date).toLocaleString("en-IN");
 
     const Card = ({ list }) => {
+        const leftSwipe = () => {
+            return <View style={styles.deleteBox}>
+                    <Icon name="file-invoice" size={30} color="#900" />
+            </View>
+        }
         return (
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
-            >
-                <View style={styles.container}>
-                    <View style={styles.item}>
-                        <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                        <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
-                        <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+            <Swipeable renderLeftActions={leftSwipe} key={list.id}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
+                >
+                    <View style={styles.container}>
+                        <View style={styles.item}>
+                            <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
+                            <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
+                        </View>
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>
-                        <Text style={{ textAlign: 'center', color: 'green' }}>{inrFormat(list.totalValue)}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Swipeable>
         );
     };
 
@@ -189,5 +198,10 @@ const styles = StyleSheet.create({
     loader: {
         marginTop: 10,
         alignItems: 'center'
-    }
+    },
+    deleteBox: {
+        justifyContent: 'center',
+        margin: 20
+    },
+
 });
