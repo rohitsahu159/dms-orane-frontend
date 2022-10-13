@@ -482,18 +482,18 @@ const CreatePO = ({ navigation }) => {
             <View>
                 <FlatList
                     data={saucesProductList}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={item => `key-${item.productCode}`}
                     renderItem={({ item, index }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'sauceTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'sauceTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -526,16 +526,16 @@ const CreatePO = ({ navigation }) => {
                     data={noodelsProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'noodlesTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'noodlesTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -568,16 +568,16 @@ const CreatePO = ({ navigation }) => {
                     data={masalaProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'masalaTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'masalaTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -610,16 +610,16 @@ const CreatePO = ({ navigation }) => {
                     data={soupsProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'soupsTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'soupsTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
@@ -648,20 +648,20 @@ const CreatePO = ({ navigation }) => {
 
         return (
             <View>
-                <FlatList
+               <FlatList
                     data={cookingPasteProductList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <Card style={{ margin: 5 }} onLongPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
+                        <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
+                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
                                     <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
                                         <Checkbox
                                             status={item.isChecked ? 'checked' : 'unchecked'}
                                         />
                                     </Pressable>
-                                </View>
-                                <View style={{ width: '90%' }}>
+                                </View> */}
+                                <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
                                     </View>
