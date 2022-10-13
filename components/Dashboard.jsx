@@ -123,7 +123,7 @@ const KpiAnalysis = () => {
     const { user } = useSelector(state => state.auth)
     const { dashboardList } = useSelector(state => state.dashboardList)
 
-    console.log(user, dashboardList)
+    console.log(user)
 
     return (
         <SafeAreaView>
@@ -368,7 +368,6 @@ const Inventory = () => {
     }, [dispatch])
     const { user } = useSelector(state => state.auth)
     const { dashboardInventoryData } = useSelector(state => state?.dashboardInventoryData)
-    console.log(dashboardInventoryData)
     return (
         <SafeAreaView>
 

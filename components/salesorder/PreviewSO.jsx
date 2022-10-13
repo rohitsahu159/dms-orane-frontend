@@ -54,7 +54,6 @@ const PreviewSO = ({ route, navigation }) => {
 
     const submitSO = async () => {
         let data = await dispatch(createSO(salesDetail))
-        console.log(data)
 
         if (data.status == 'success') {
             Alert.alert(

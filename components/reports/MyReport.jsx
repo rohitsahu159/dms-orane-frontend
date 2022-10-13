@@ -2,6 +2,8 @@ import { ScrollView, StyleSheet, Text, View, Dimensions, Image } from 'react-nat
 import SelectList from 'react-native-dropdown-select-list';
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/Entypo';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 const { height, width } = Dimensions.get('window');
 
 const MyReport = () => {
@@ -18,16 +20,10 @@ const MyReport = () => {
     const [pricelistReport, setPricelistReport] = useState('')
     const [supplierinvoiceReport, setSupplierinvoiceReport] = useState('')
 
+    const { user } = useSelector(state => state.auth)
 
     return (
         <View style={styles.container}>
-            {/* <View style={{ flexDirection: 'row' }}>
-                <Text style={{ width: '30%', fontSize: 20, margin: 8, color: '#00A3E4' }}>My Reports</Text>
-                <Text style={{ width: '30%', fontSize: 20, margin: 8, }}>Flexi Reports</Text>
-                <View style={styles.contain}>
-                    <Text style={{ fontSize: 20, textAlign: 'center', top: 1 }}>Analytics</Text>
-                </View>
-            </View> */}
             <ScrollView>
                 <View style={styles.reportContainer}>
                     <Text style={{ fontSize: 20, margin: 10, padding: 5 }}>My Purchase Order</Text>
@@ -36,7 +32,8 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}>
+                                    <Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
 
                             </View>
@@ -53,7 +50,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -71,7 +68,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -88,7 +85,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -106,7 +103,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -123,7 +120,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -140,7 +137,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -157,7 +154,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -174,7 +171,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -191,7 +188,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -208,7 +205,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
@@ -225,7 +222,7 @@ const MyReport = () => {
                     <View style={{ backgroundColor: 'white', width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, }}>
                         <View style={[styles.containerD, { width: '99%' }]}>
                             <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
+                                <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
                                 <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
                                 </Text>
