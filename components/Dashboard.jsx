@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView , Pressable} from 'react-native';
+import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView ,Image, Pressable} from 'react-native';
 import React, { useEffect,useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -110,14 +110,14 @@ const KpiAnalysis = () => {
 
     useEffect(() => {
         if (user) {
-            let str = user.assignedGeolocation.toString();
+            let str = user?.assignedGeolocation.toString();
             let kpiBodyData = {
-                "role": user.role,
-                "subRole": user.subRole,
-                "userId": user.employerUserId,
-                "assignedHierarchyType": user.assignedHierarchyType,
+                "role": user?.role,
+                "subRole": user?.subRole,
+                "userId": user?.employerUserId,
+                "assignedHierarchyType": user?.assignedHierarchyType,
                 "assignedGeoLocation": str,
-              };
+            };
             dispatch(getDashboardList(kpiBodyData))
         }
 
@@ -126,18 +126,34 @@ const KpiAnalysis = () => {
     const { user } = useSelector(state => state.auth)
     const { dashboardList } = useSelector(state => state.dashboardList)
 
-    
+    console.log(user)
+
     return (
         <SafeAreaView>
-            <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                <ProgressChart
-                    data={progressData}
-                    width={screenWidth}
-                    height={250}
-                    chartConfig={chartConfig}
-                    hideLegend={false}
-                />
+               <View style={{ height: screenHeight }}>
+               <View style={{ width: '90%', maxHeight: 350, paddingTop: 20 }} >
+                <Image source={require("../assets/img/chart1.jpg")} />
+                <View >
+                    <Text style={{ width: '90%', top: "-800%", left: "63%" }}>All Sales Orders </Text><Text style={{ width: '90%', top: "-800%", left: "65%" }}>{dashboardList?.soCurrentMonthPerc}%</Text>
+                </View>
+                <View >
+                    <Text style={{ width: '90%', top: "-780%", left: "65%" }}>All Purchase Orders </Text><Text style={{ width: '90%', top: "-770%", left: "75%" }}>{dashboardList?.poCurrentMonthPerc}%</Text>
+                </View>
+                <View >
+                    <Text style={{ width: '90%', top: "-740%", left: "70%" }}>All Sales Invoices </Text><Text style={{ width: '90%', top: "-750%", left: "77%" }}>{dashboardList?.siCurrentMonthPerc}%</Text>
+                </View>
+                <View >
+                    <Text style={{ width: '90%', top: "-670%", left: "50%" }}>Pending Orders for Invoicing </Text><Text style={{ width: '90%', top: "-670%", left: "77%" }}>{dashboardList?.pendingOrdersPercDiff}%</Text>
+                </View>
+                <View >
+                    <Text style={{ width: '90%', top: "-630%", left: "70%" }}>Collected Amount </Text><Text style={{ width: '90%', top: "-640%", left: "77%" }}>{dashboardList?.collectionCurrentMonthPerc}%</Text>
+                </View>
+                <View >
+                    <Text style={{ width: '90%', top: "-610%", left: "61%" }}>Outstanding Amount </Text><Text style={{ width: '90%', top: "-600%", left: "77%" }}>{dashboardList?.outstandingPercDiff}%</Text>
+                </View>
+
             </View>
+            <View>
             <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
                 <ScrollView>
                     <View style={styles.chartView1}>
@@ -145,11 +161,16 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
                         </View>
+
+                    </View>
+                    <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}>{dashboardList?.soCurrentMonthPerc}%</Text>
+                            <Text style={{ width: '10%' }}>
+                                <Icon name="th-list" size={18} color="#900" />
+                            </Text>
+                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -157,11 +178,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}>{dashboardList?.poCurrentMonthPerc}%</Text>
+                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -169,11 +186,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}>{dashboardList?.siCurrentMonthPerc} %</Text>
+                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -181,24 +194,9 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
+                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}>{dashboardList?.pendingOrdersPercDiff} %</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}>{dashboardList?.collectionCurrentMonthPerc}%</Text>
-                        </View>
+
                     </View>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
@@ -207,13 +205,13 @@ const KpiAnalysis = () => {
                             </Text>
                             <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.outStandingTotalValueCurrentMonth}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}></Text>
-                            <Text style={{ width: '90%' }}> {dashboardList?.outstandingPercDiff}%</Text>
-                        </View>
+
                     </View>
                 </ScrollView>
             </View>
+            </View>
+            </View>
+            
         </SafeAreaView>
     )
 }
@@ -222,9 +220,9 @@ const OverView = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (user) { 
-            const URL = user.role == "COMPANY" ? 'company' : 'partner?userId='+ user.employerUserId;
-          
+        if (user) {
+            const URL = user.role == "COMPANY" ? 'company' : 'partner?userId=' + user.employerUserId;
+
             dispatch(getdashboardDetail(URL))
         }
 
@@ -234,85 +232,131 @@ const OverView = () => {
     const { dashboardDetails } = useSelector(state => state.dashboardDetails)
     return (
         <SafeAreaView>
-            <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                <ContributionGraph
-                    values={commitsData}
-                    endDate={new Date("2017-04-01")}
-                    numDays={105}
-                    width={screenWidth}
-                    height={250}
-                    chartConfig={chartConfig}
-                />
-            </View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
-                {(user.role == "COMPANY") && <>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
+            <View style={{ height: screenHeight }}>
+                <View style={{ width: '90%', maxHeight: 350, paddingTop: 20 }} >
+                    <Image
+                        style={{ marginLeft: 70 }}
+                        source={require("../assets/img/chart2.png")}
+                    />
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-650%" }}>TOTAL SUPER STOCKISTS </Text><Text style={{ top: "-650%", left: "10%" }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-650%" }}>TOTAL CUSTOMER </Text><Text style={{ top: "-650%", left: "20%" }}>{dashboardDetails?.numberOfBuyers}</Text>
+                        </View>}
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-450%" }}>TOTAL DISTRIBUTOR </Text><Text style={{ top: "-450%", left: "10%" }}>{dashboardDetails?.totalDistributorGT}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-460%" }}>TOTAL SKUs </Text><Text style={{ top: "-450%", left: "10%" }}>{dashboardDetails?.numberOfProducts}</Text>
+                        </View>}
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-250%", left: "10%" }}>TOTAL RETAILERS </Text><Text style={{ top: "-250%", left: "20%" }}>{dashboardDetails?.totalRetailerGT}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-250%", left: "10%" }}>TOTAL PO COUNT </Text><Text style={{ top: "-240%", left: "20%" }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
+                        </View>}
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-350%", left: "50%" }}>TOTAL SUPPLY POINTS (DC) </Text><Text style={{ top: "-340%", left: "70%" }}>{dashboardDetails?.toatalSupplyPoints}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-960%", left: "70%" }}>TOTAL PO VALUE </Text><Text style={{ top: "-950%", left: "75%" }}>{dashboardDetails?.poTotalValue}</Text>
+                        </View>}
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-1050%", left: "60%" }}>TOTAL DSDS </Text><Text style={{ top: "-1040%", left: "75%" }}>{dashboardDetails?.numberOfOutletMt}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-800%", left: "75%" }}>TOTAL SI COUNT</Text><Text style={{ top: "-800%", left: "85%" }}>{dashboardDetails?.numberOfSalesInvoice}</Text>
+                        </View>}
+                    {(user.role == "COMPANY") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-850%", left: "75%" }}>TOTAL SKUs</Text><Text style={{ top: "-850%", left: "85%" }}>{dashboardDetails?.totalProducts}</Text>
+                        </View>}
+                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
+                        <View>
+                            <Text style={{ width: '90%', top: "-550%", left: "70%" }}>TOTAL SI VALUE</Text><Text style={{ top: "-550%", left: "75%" }}>{dashboardDetails?.salesInvoiceTotalValue}</Text>
+                        </View>}
+                </View>
+                <View>
+                    <ScrollView>
+                        {(user.role == "COMPANY") && <>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
 
-                        </View>
-                    </View>
-                    </>}
-                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL CUSTOMER </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>100</Text>
-                          
-                        </View>
-                    </View>
-                    </>}
-                    {(user.role == "COMPANY") && <>
+                                </View>
+                            </View>
+                        </>}
+                        {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL CUSTOMER </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.numberOfBuyers}</Text>
 
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalDistributorGT}</Text>
-                        </View>
-                        
-                    </View>
-                    </>}
-                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails?.numberOfProducts}</Text>
-                        </View>
-                        
-                    </View>
-                    </>}
-                    {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0,  fontWeight: 'bold' }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
-                        </View>
-                    </View>
-                    </>}
-                    {(user.role == "COMPANY") && <>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalRetailerGT}</Text>
-                        </View>
-                    </View>
-                    </>}
-                    
-                </ScrollView>
+                                </View>
+                            </View>
+                        </>}
+                        {(user.role == "COMPANY") && <>
+
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalDistributorGT}</Text>
+                                </View>
+
+                            </View>
+                        </>}
+                        {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalProducts}</Text>
+                                </View>
+
+                            </View>
+                        </>}
+                        {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") && <>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
+                                </View>
+                            </View>
+                        </>}
+                        {(user.role == "COMPANY") && <>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalRetailerGT}</Text>
+                                </View>
+                            </View>
+                        </>}
+
+                    </ScrollView>
+                </View>
             </View>
         </SafeAreaView>
 
@@ -473,6 +517,8 @@ const FillRate = () => {
           }
         ]
       };
+
+
     return (
         <SafeAreaView>
             <View >

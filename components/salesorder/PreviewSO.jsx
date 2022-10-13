@@ -10,21 +10,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from "react-native-toast-message";
 import { createSO } from '../../redux/actions/salesAction';
 
-const cars = [
-    'Hyundai Venue',
-    'Tata Nexon',
-    'Hyundai Creta',
-    'Kia Carens',
-    'Renault Kiger',
-    'Maruti Suzuki Ertiga',
-];
-
 const PreviewSO = ({ route, navigation }) => {
     useEffect(() => {
         const backAction = () => {
-
             navigation.navigate("createSO")
-
             return true;
         };
 
@@ -35,8 +24,6 @@ const PreviewSO = ({ route, navigation }) => {
 
         return () => backHandler.remove();
     }, []);
-
-
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -54,8 +41,6 @@ const PreviewSO = ({ route, navigation }) => {
 
     const submitSO = async () => {
         let data = await dispatch(createSO(salesDetail))
-        console.log(data)
-
         if (data.status == 'success') {
             Alert.alert(
                 `Sales Order Id: ${data.data.salesOrderId}`,
@@ -168,17 +153,13 @@ const PreviewSO = ({ route, navigation }) => {
             </View>
             <Toast />
         </SafeAreaView>
-
-
     );
 };
 
 export default PreviewSO
 
 const styles = StyleSheet.create({
-
     Container: {
-        // flex: 1,
         backgroundColor: "#e6eeff",
         padding: 10,
         margin: 5,
@@ -186,7 +167,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         top: 30
     },
-
     common: {
         fontSize: 15,
         textAlign: 'center',
@@ -195,11 +175,8 @@ const styles = StyleSheet.create({
         margin: 3,
     },
     contain: {
-
         marginLeft: 170,
         top: -25,
-
-
     },
     commonStyle: {
         fontWeight: "bold",
@@ -208,8 +185,5 @@ const styles = StyleSheet.create({
         top: -15,
         padding: 3,
         margin: 3
-
-
-
     }
 });

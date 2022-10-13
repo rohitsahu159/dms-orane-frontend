@@ -100,18 +100,20 @@ export const ssDataReducer = createReducer(
         },
     }
 );
+
+
 export const dashboardFillRateReducer = createReducer(
     {},
     {
-        sSDataRequest: (state) => {
+        dashboardFillRateRequest: (state) => {
             state.loading = true;
-            state.fillRateStats = [];
+            state.dashboardFillRate = [];
         },
-        sSDataSuccess: (state, action) => {
+        dashboardFillRateSuccess: (state, action) => {
             state.loading = false;
-            state.fillRateStats = action.payload.data.salesOrderFillRateStats;
+            state.dashboardFillRate = action.payload.data;
         },
-        sSDataFailure: (state, action) => {
+        dashboardFillRateFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

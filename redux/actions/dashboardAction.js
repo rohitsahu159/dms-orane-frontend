@@ -12,7 +12,7 @@ export const getDashboardList = (bodyData) => async (dispatch) => {
         })
         dispatch({ type: "dashboardListSuccess", payload: data })
     } catch (error) {
-        dispatch({ type: "dashboardListFailure", payload: error.response.data.message })
+        dispatch({ type: "dashboardListFailure", payload: error?.response?.data?.message })
     }
 }
 export const getdashboardDetail = (URL) => async (dispatch) => {
@@ -53,6 +53,7 @@ export const getSSList = (bodyData) => async (dispatch) => {
         dispatch({ type: "sSDataFailure", payload: error.response.data.message })
     }
 }
+
 export const getdashboardFillRateData = (param) => async (dispatch) => {
     try {
         dispatch({ type: "dashboardFillRateRequest" });
@@ -62,5 +63,3 @@ export const getdashboardFillRateData = (param) => async (dispatch) => {
         dispatch({ type: "dashboardFillRateFailure", payload: error.response.data.message });
     }
 };
-
-

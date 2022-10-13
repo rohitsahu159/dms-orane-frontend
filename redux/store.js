@@ -22,6 +22,8 @@ const store = configureStore({
         fillRateStats:dashboardFillRateReducer,
         dashboardList: dashboardListReducer,
         dashboardDetails: dashboardDetailsReducer,
+        dashboardInventoryData:dashboardInventoryDataReducer,
+        dashboardFillRate:dashboardFillRateReducer,
         soDetail: soDetailReducer,
         allProducts:allProductReducer,
         productDetail:productDetailReducer,
