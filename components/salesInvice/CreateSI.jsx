@@ -11,8 +11,6 @@ import { Button, IconButton, TextInput } from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { height, width } = Dimensions.get('window')
-
-
 const CreateSI = ({ route, navigation }) => {
     useEffect(() => {
         const backAction = () => {
@@ -27,7 +25,6 @@ const CreateSI = ({ route, navigation }) => {
 
         return () => backHandler.remove();
     }, []);
-
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -46,6 +43,7 @@ const CreateSI = ({ route, navigation }) => {
     const [isExtraCashDiscount, setIsExtraCashDiscount] = useState(false);
     const [cashDiscount, setCashDiscount] = useState(0);
     const [extraCashDiscount, setExtraCashDiscount] = useState(0);
+    const [qty, setQty] = useState(0)
 
     const dispatch = useDispatch()
     const itemId = route.params;
@@ -67,30 +65,40 @@ const CreateSI = ({ route, navigation }) => {
 
     const Card = ({ list }) => {
         return (
-            <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+            <View style={[styles.productContainer, { borderBottomWidth: 1, borderBottomColor: '#ccc' }]}>
                 <Title style={{ color: '#00a7e5', fontSize: 17, marginHorizontal: 5 }}>{list.productCode} - {list.productName}</Title>
                 <View style={{ flexDirection: 'row', padding: 5 }}>
-                    <View style={{ width: '60%' }}>
+                    <View style={{ width: '50%' }}>
                         <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
                         <Text>GST : <Text style={{ fontWeight: '500' }}>{list.taxPercent} %</Text></Text>
                         <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.purchasePrice)} </Text></Text>
                         <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.pcsPerBox} </Text></Text>
                         <Text>Inventory : <Text style={{ fontWeight: '500' }}>0 </Text></Text>
                     </View>
-                    <View style={{ width: '40%' }}>
-                        <View style={{ width: '100%', alignSelf: 'flex-end' }}>
-                            <TextInput
-                                label="Quantity (Pcs)"
-                                variant='outlined'
-                                value={String(list.orderedQuantity)}
-                                keyboardType='numeric'
-                            // onChangeText={(value) => { handelIncreament(value, list.productCode) }}
-                            />
-                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
+                    <View style={{ width: '50%' }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ width: '50%', marginHorizontal: 2 }}>
+                                <TextInput
+                                    label="Cases"
+                                    variant='outlined'
+                                    value={0}
+                                // keyboardType='numeric'
+                                // onChangeText={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
+                                />
+                            </View>
+                            <View style={{ width: '50%' }}>
+                                <TextInput
+                                    label="Pcs"
+                                    variant='outlined'
+                                    value={0}
+                                // keyboardType='numeric'
+                                // onChangeText={(value) => { handelIncreament(value, list.productCode, 'pcsQty') }}
+                                />
+                            </View>
                         </View>
+                        <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                     </View>
                 </View>
-
             </View>
         );
     };
@@ -170,7 +178,7 @@ const CreateSI = ({ route, navigation }) => {
                 </View> : null}
             </View>
 
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                 <View style={{ width: '50%', flexDirection: 'row' }}>
                     <Text style={{ margin: 10, fontWeight: 'bold', fontSize: 15 }}>Ext. Sec. Discount</Text>
                     <Checkbox
@@ -193,7 +201,7 @@ const CreateSI = ({ route, navigation }) => {
                 </View> : null}
             </View>
 
-            <Text style={{paddingHorizontal:5, fontWeight: 'bold', fontSize: 18, borderTopWidth: 1, borderTopColor: '#ccc' }}>Products</Text>
+            <Text style={{ paddingHorizontal: 5, fontWeight: 'bold', fontSize: 18, padding: 10 }}>Products</Text>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={soLineItems || []}
@@ -207,43 +215,17 @@ const CreateSI = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-
         backgroundColor: "#fff",
         padding: 8,
         margin: 10,
         elevation: 8,
         borderRadius: 10,
-
     },
-    container2: {
-        // flex: 1,
-        marginBottom: 10,
-        top: -5,
+    productContainer: {
         backgroundColor: "#fff",
-        padding: 8,
-        margin: 10,
-        elevation: 8,
+        elevation: 5,
         borderRadius: 10,
-
     },
-
-    container1: {
-        ...Platform.select({
-            ios: {
-                paddingTop: 20
-            },
-            android: {}
-        }),
-    },
-    item: {
-        width: '50%' // is 50% of container width
-    },
-    lineStyle: {
-        borderWidth: 0.5,
-        borderColor: 'black',
-        marginVertical: 10,
-    }
 });
 
 export default CreateSI

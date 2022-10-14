@@ -164,10 +164,18 @@ const CreateSO = ({ navigation }) => {
         setSearch(Text)
     }
 
-    const handelIncreament = async (value, productCode) => {
+    const handelIncreament = async (value, productCode, label) => {
         let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
-                let grossValue = value * product.prcsWithoutGst
+                let caseBoxQty = product.caseBoxQty
+                let pcsQty = product.pcsQty
+                if (label == 'caseBoxQty') {
+                    caseBoxQty = Number(value)
+                } else {
+                    pcsQty = Number(value)
+                }
+                let orderedQuantity = (caseBoxQty * product.standardUnitConversionFactor) + pcsQty
+                let grossValue = orderedQuantity * product.prcsWithoutGst
                 let primaryDiscountValue = (grossValue * product.primaryDiscountPercent) / 100
                 let netValue = grossValue - primaryDiscountValue
                 let taxValue = (netValue * product.taxPercent) / 100
@@ -175,6 +183,8 @@ const CreateSO = ({ navigation }) => {
                 let discount = primaryDiscountValue
                 return {
                     ...product,
+                    caseBoxQty: caseBoxQty,
+                    pcsQty: pcsQty,
                     orderedQuantity: value,
                     grossValue: grossValue,
                     primaryDiscountValue: primaryDiscountValue,
@@ -502,13 +512,6 @@ const CreateSO = ({ navigation }) => {
                     renderItem={({ item, index }) => (
                         <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'sauceTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                        <Checkbox
-                                            status={item.isChecked ? 'checked' : 'unchecked'}
-                                        />
-                                    </Pressable>
-                                </View> */}
                                 <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
@@ -544,13 +547,6 @@ const CreateSO = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'noodlesTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                        <Checkbox
-                                            status={item.isChecked ? 'checked' : 'unchecked'}
-                                        />
-                                    </Pressable>
-                                </View> */}
                                 <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
@@ -586,13 +582,6 @@ const CreateSO = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'masalaTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                        <Checkbox
-                                            status={item.isChecked ? 'checked' : 'unchecked'}
-                                        />
-                                    </Pressable>
-                                </View> */}
                                 <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
@@ -628,13 +617,6 @@ const CreateSO = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'soupsTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                        <Checkbox
-                                            status={item.isChecked ? 'checked' : 'unchecked'}
-                                        />
-                                    </Pressable>
-                                </View> */}
                                 <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
@@ -670,13 +652,6 @@ const CreateSO = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <Card style={{ margin: 5, padding: 10, backgroundColor: item.isChecked ? '#E7E9E9' : 'white' }} onPress={() => handleChange(item.productCode, 'cookingpasteTab')}>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <View style={{ width: '10%', paddingVertical: 10, justifyContent: 'center' }}>
-                                    <Pressable onPress={() => handleChange(item.productCode, 'sauceTab')} >
-                                        <Checkbox
-                                            status={item.isChecked ? 'checked' : 'unchecked'}
-                                        />
-                                    </Pressable>
-                                </View> */}
                                 <View>
                                     <View>
                                         <Text style={{ color: '#00a7e5', marginTop: 5, fontSize: 16 }}>{`${item.productCode} - ${item.productName}`}</Text>
@@ -775,31 +750,42 @@ const CreateSO = ({ navigation }) => {
         }
         return (
             <Swipeable renderLeftActions={leftSwipe} key={list.productCode}>
-                <Card style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                    <Card.Content>
-                        <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ width: '50%' }}>
-                                <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
-                                <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
-                                <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
-                                <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
-                            </View>
-                            <View style={{ width: '50%' }}>
-                                <View style={{ width: '70%', alignSelf: 'flex-end' }}>
+                <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                    {/* <Card.Content> */}
+                    <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: '50%' }}>
+                            <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
+                            <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
+                            <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
+                            <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '50%', marginHorizontal: 2 }}>
                                     <TextInput
-                                        label="Quantity (Pcs)"
-                                        variant='filled'
-                                        value={String(list.orderedQuantity)}
+                                        label="Cases"
+                                        variant='outlined'
+                                        value={String(list.caseBoxQty)}
                                         keyboardType='numeric'
-                                        onChangeText={(value) => { handelIncreament(value, list.productCode) }}
+                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
                                     />
-                                    <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
+                                </View>
+                                <View style={{ width: '50%' }}>
+                                    <TextInput
+                                        label="Pcs"
+                                        variant='outlined'
+                                        value={String(list.pcsQty)}
+                                        keyboardType='numeric'
+                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'pcsQty') }}
+                                    />
                                 </View>
                             </View>
+                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                         </View>
-                    </Card.Content>
-                </Card>
+                    </View>
+                    {/* </Card.Content> */}
+                </View>
             </Swipeable>
         )
     }

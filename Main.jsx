@@ -34,6 +34,7 @@ import MyReport from './components/reports/MyReport';
 import CompanyProfile from './components/Company/CompanyProfile';
 import PreviewSO from './components/salesorder/PreviewSO';
 import CreateSI from './components/salesInvice/CreateSI';
+import MySalesInvoice from './components/salesInvice/MySalesInvoice';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
@@ -92,6 +93,14 @@ export default function Main() {
                         title: 'My Sales Order',
                         drawerIcon: ({ color }) => (
                             <Ionicons name="ios-list-sharp" size={22} color='blue' />
+                        )
+                    }} />
+                    <Drawer.Screen name="mySalesInvoice" component={MySalesInvoice} options={{
+                        swipeEnabled: true,
+                        drawerLabel: 'My Sales Invoice',
+                        title: 'My Sales Invoice',
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="ios-document-text-outline" size={22} color='blue' />
                         )
                     }} />
                     {/* <Drawer.Screen name="setting" component={Setting} options={{
@@ -187,11 +196,12 @@ export default function Main() {
                         drawerItemStyle: { display: 'none' },
                         title: "Preview SO"
                     }} />
-                     <Drawer.Screen name="createSI" component={CreateSI} options={{
+                    <Drawer.Screen name="createSI" component={CreateSI} options={{
                         swipeEnabled: true,
                         drawerItemStyle: { display: 'none' },
                         title: "Create Sales Invoice"
                     }} />
+
                 </Drawer.Navigator>
 
             }
