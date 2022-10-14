@@ -75,6 +75,33 @@ export const dashboardInventoryDataReducer = createReducer(
         },
     }
 );
+export const ssDataReducer = createReducer(
+    {},
+    {
+        sSDataRequest: (state) => {
+            state.loading = true;
+            state.ssData = [];
+        },
+        sSDataSuccess: (state, action) => {
+            state.loading = false;
+            state.ssData = action.payload.data;
+        },
+        sSDataFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        clearError: (state) => {
+            state.error = null;
+        },
+
+        clearMessage: (state) => {
+            state.message = null;
+        },
+    }
+);
+
+
 export const dashboardFillRateReducer = createReducer(
     {},
     {
