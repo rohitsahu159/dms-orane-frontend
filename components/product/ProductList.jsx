@@ -14,6 +14,9 @@ const width = Dimensions.get('window').width / 2 - 30;
 const SaucesPrd = ({ navigation }) => {
     const dispatch = useDispatch()
     const [saucesProduct, setSaucesProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [productList, setProductList] = useState([])
+
 
     useEffect(() => {
         let bodyData = {
@@ -36,6 +39,17 @@ const SaucesPrd = ({ navigation }) => {
     const getProducts = async (data) => {
         let products = await dispatch(getAllProducts(data))
         setSaucesProduct(products.data.product)
+        setProductList(products.data.product)
+    }
+
+    const searchFilterFunction = (text) => {
+        let searchResult = productList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setSaucesProduct(searchResult)
+        setSearch(Text)
     }
 
     const Card = ({ product }) => {
@@ -56,7 +70,7 @@ const SaucesPrd = ({ navigation }) => {
                     </View>
 
                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {product.productName}
+                        {product.productCode} - {product.productName}
                     </Text>
                     <View
                         style={{
@@ -76,7 +90,7 @@ const SaucesPrd = ({ navigation }) => {
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
             <View style={styles.searchContainer}>
-                <TextInput placeholder="Search Product..." style={styles.input} />
+                <TextInput onChangeText={(text) => { searchFilterFunction(text) }} value={search} placeholder="Search Product..." style={styles.input} />
             </View>
 
             <FlatList
@@ -529,7 +543,7 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: COLORS.light,
         borderRadius: 10,
-        margin:5,
+        margin: 5,
         // flexDirection: 'row',
         // alignItems: 'center',
     },
