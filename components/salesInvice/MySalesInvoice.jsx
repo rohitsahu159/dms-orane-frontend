@@ -22,9 +22,14 @@ const MySalesInvoice = ({ navigation }) => {
                 >
                     <View style={styles.container}>
                         <View style={styles.item}>
-                            <Text style={{ fontWeight: '500' }}>Sales Order No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
-                            <Text><Text style={{ fontWeight: '500' }}>Customer Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                            <Text style={{ fontWeight: '500' }}>Invoice No:<Text style={{ color: '#00a7e5' }}>{list.salesOrderId}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>Customers Name:</Text><Text>{list.buyerFirmName}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>SO Number:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
                             <Text><Text style={{ fontWeight: '500' }}>SO Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>SO Amount:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>Invoice Amount:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+                            <Text><Text style={{ fontWeight: '500' }}>Invoice Date:</Text><Text>{inrDateFormatNoTime(list.orderDateTime)}</Text></Text>
+
                         </View>
                         <View style={{ flex: 1, justifyContent: 'center' }}>
                             <Text style={{ textAlign: 'center', fontWeight: '500', color: 'green' }}>Total Value</Text>

@@ -113,6 +113,8 @@ const SaucesPrd = ({ navigation }) => {
 const NoodlesPrd = ({ navigation }) => {
     const dispatch = useDispatch()
     const [noodlesProduct, setNoodlesProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [noodlesList, setNoodlesList] = useState([])
 
     useEffect(() => {
         let bodyData = {
@@ -135,7 +137,20 @@ const NoodlesPrd = ({ navigation }) => {
     const getProducts = async (data) => {
         let products = await dispatch(getAllProducts(data))
         setNoodlesProduct(products.data.product)
+        setNoodlesList(products.data.product)
     }
+
+    
+    const searchFilterFunction = (text) => {
+        let searchResult = noodlesList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setNoodlesProduct(searchResult)
+        setSearch(Text)
+    }
+
 
     const Card = ({ product }) => {
         return (
@@ -155,7 +170,7 @@ const NoodlesPrd = ({ navigation }) => {
                     </View>
 
                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {product.productName}
+                      {product.productCode} - {product.productName}
                     </Text>
                     <View
                         style={{
@@ -174,6 +189,10 @@ const NoodlesPrd = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <View style={styles.searchContainer}>
+                <TextInput onChangeText={(text) => { searchFilterFunction(text) }} value={search} placeholder="Search Product..." style={styles.input} />
+            </View>
+
             <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}
@@ -194,6 +213,8 @@ const NoodlesPrd = ({ navigation }) => {
 const MasalaPrd = ({ navigation }) => {
     const dispatch = useDispatch()
     const [masalaProduct, setMasalaProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [masalaList, setMasalaList] = useState([])
 
     useEffect(() => {
         let bodyData = {
@@ -216,6 +237,16 @@ const MasalaPrd = ({ navigation }) => {
     const getProducts = async (data) => {
         let products = await dispatch(getAllProducts(data))
         setMasalaProduct(products.data.product)
+        setMasalaList(products.data.product)
+    }
+    const searchFilterFunction = (text) => {
+        let searchResult = masalaList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setMasalaProduct(searchResult)
+        setSearch(Text)
     }
 
     const Card = ({ product }) => {
@@ -236,7 +267,7 @@ const MasalaPrd = ({ navigation }) => {
                     </View>
 
                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {product.productName}
+                       {product.productCode} - {product.productName}
                     </Text>
                     <View
                         style={{
@@ -255,6 +286,9 @@ const MasalaPrd = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
+               <View style={styles.searchContainer}>
+                <TextInput onChangeText={(text) => { searchFilterFunction(text) }} value={search} placeholder="Search Product..." style={styles.input} />
+            </View>
             <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}
@@ -275,6 +309,8 @@ const MasalaPrd = ({ navigation }) => {
 const SoupsPrd = ({ navigation }) => {
     const dispatch = useDispatch()
     const [soupsProduct, setSoupsProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [soupsList, setSoupsList] = useState([])
 
     useEffect(() => {
         let bodyData = {
@@ -297,7 +333,20 @@ const SoupsPrd = ({ navigation }) => {
     const getProducts = async (data) => {
         let products = await dispatch(getAllProducts(data))
         setSoupsProduct(products.data.product)
+        setSoupsList(products.data.product)
+
     }
+
+    const searchFilterFunction = (text) => {
+        let searchResult = soupsList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setSoupsProduct(searchResult)
+        setSearch(Text)
+    }
+    
 
     const Card = ({ product }) => {
         return (
@@ -317,7 +366,7 @@ const SoupsPrd = ({ navigation }) => {
                     </View>
 
                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {product.productName}
+                      {product.productCode} - {product.productName}
                     </Text>
                     <View
                         style={{
@@ -336,6 +385,9 @@ const SoupsPrd = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
+                    <View style={styles.searchContainer}>
+                <TextInput onChangeText={(text) => { searchFilterFunction(text) }} value={search} placeholder="Search Product..." style={styles.input} />
+            </View>
             <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}
@@ -356,6 +408,9 @@ const SoupsPrd = ({ navigation }) => {
 const CookingPastePrd = ({ navigation }) => {
     const dispatch = useDispatch()
     const [cookingPasteProduct, setCookingPasteProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [cookingpastaList, setCookingPastaList] = useState([])
+
 
     useEffect(() => {
         let bodyData = {
@@ -378,6 +433,17 @@ const CookingPastePrd = ({ navigation }) => {
     const getProducts = async (data) => {
         let products = await dispatch(getAllProducts(data))
         setCookingPasteProduct(products.data.product)
+        setCookingPastaList(products.data.product)
+    }
+
+    const searchFilterFunction = (text) => {
+        let searchResult = cookingpastaList.filter(item =>
+            Object.keys(item).some(key =>
+                String(item[key]).toLowerCase().includes(text.toLowerCase())
+            )
+        );
+        setCookingPasteProduct(searchResult)
+        setSearch(Text)
     }
 
     const Card = ({ product }) => {
@@ -398,7 +464,7 @@ const CookingPastePrd = ({ navigation }) => {
                     </View>
 
                     <Text style={{ fontWeight: 'bold', fontSize: 15, marginTop: 10, color: COLORS.oraneBlue }}>
-                        {product.productName}
+                    {product.productCode} - {product.productName}
                     </Text>
                     <View
                         style={{
@@ -417,6 +483,11 @@ const CookingPastePrd = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
+
+                <View style={styles.searchContainer}>
+                <TextInput onChangeText={(text) => { searchFilterFunction(text) }} value={search} placeholder="Search Product..." style={styles.input} />
+            </View>
+          
             <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}

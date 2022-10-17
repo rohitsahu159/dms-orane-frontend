@@ -108,13 +108,13 @@ const ClosedSO = ({ navigation }) => {
         new Date(date).toLocaleString("en-IN");
 
     const Card = ({ list }) => {
-        const leftSwipe = () => {
-            return <View style={styles.deleteBox}>
-                <Icon name="file-invoice" size={30} color="#900" />
-            </View>
-        }
+        // const leftSwipe = () => {
+        //     return <View style={styles.deleteBox}>
+        //         <Icon name="file-invoice" size={30} color="#900" />
+        //     </View>
+        // }
         return (
-            <Swipeable renderLeftActions={leftSwipe} key={list.id}>
+            // <Swipeable renderLeftActions={leftSwipe} key={list.id}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate("salesOrderDetail", { itemId: list.id })}
@@ -131,7 +131,7 @@ const ClosedSO = ({ navigation }) => {
                     </View>
                 </View>
             </TouchableOpacity>
-            </Swipeable>
+            // </Swipeable>
         );
     };
 
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         alignItems: 'center'
     },
-    deleteBox: {
-        justifyContent:'center',
-        margin:20
-    }
+    // deleteBox: {
+    //     justifyContent:'center',
+    //     margin:20
+    // }
 });
