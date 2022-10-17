@@ -34,7 +34,6 @@ export const getdashboardInventoryData = (bodyData) => async (dispatch) => {
             }
         })
         dispatch({ type: "dashboardInventoryDataSuccess", payload: data })
-        console.log(data)
     } catch (error) {
         dispatch({ type: "dashboardInventoryDataFailure", payload: error.response.data.message })
     }

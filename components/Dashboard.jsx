@@ -126,8 +126,6 @@ const KpiAnalysis = () => {
     const { user } = useSelector(state => state.auth)
     const { dashboardList } = useSelector(state => state.dashboardList)
 
-    console.log(user)
-
     return (
         <SafeAreaView>
                <View style={{ height: screenHeight }}>
@@ -496,7 +494,6 @@ const FillRate = () => {
 
     const { user } = useSelector(state => state.auth)
     const { fillRateStats } = useSelector(state => state?.fillRateStats)
-    console.log(fillRateStats)
     let month =[]
     if (fillRateStats != undefined) {
         let tempAddr = fillRateStats.map(e => {

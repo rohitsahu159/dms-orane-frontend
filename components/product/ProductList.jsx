@@ -9,8 +9,6 @@ import Loader from '../Loader';
 import { getAllProducts } from '../../redux/actions/productAction';
 
 const Tab = createMaterialTopTabNavigator();
-
-
 const width = Dimensions.get('window').width / 2 - 30;
 
 const SaucesPrd = ({ navigation }) => {
@@ -77,6 +75,10 @@ const SaucesPrd = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <View style={styles.searchContainer}>
+                <TextInput placeholder="Search Product..." style={styles.input} />
+            </View>
+
             <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 showsVerticalScrollIndicator={false}
@@ -431,12 +433,12 @@ const ProductList = () => {
                     style={{ flex: 1, resizeMode: 'contain', height: 170, width: '100%' }}
                 />
             </View>
-            <View style={{ marginTop: 5, flexDirection: 'row' }}>
+            {/* <View style={{ marginTop: 5, flexDirection: 'row' }}>
                 <View style={styles.searchContainer}>
                     <Icon name="search" size={25} style={{ marginLeft: 20 }} />
                     <TextInput placeholder="Search" style={styles.input} />
                 </View>
-            </View>
+            </View> */}
             <Tab.Navigator
                 initialRouteName='sauces'
                 screenOptions={({ route }) => ({
@@ -524,12 +526,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     searchContainer: {
-        height: 50,
+        height: 40,
         backgroundColor: COLORS.light,
         borderRadius: 10,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
+        margin:5,
+        // flexDirection: 'row',
+        // alignItems: 'center',
     },
     input: {
         fontSize: 18,
