@@ -12,7 +12,8 @@ import {
     Dimensions,
     FlatList,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    KeyboardAvoidingView
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
@@ -154,17 +155,8 @@ const CreateSO = ({ navigation }) => {
         showMode('date');
     };
 
-    const searchFilterFunction = (text) => {
-        let searchResult = productList.filter(item =>
-            Object.keys(item).some(key =>
-                String(item[key]).toLowerCase().includes(text.toLowerCase())
-            )
-        );
-        setProducts(searchResult)
-        setSearch(Text)
-    }
-
     const handelIncreament = async (value, productCode, label) => {
+        console.log(value)
         let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
                 let caseBoxQty = product.caseBoxQty
@@ -741,6 +733,12 @@ const CreateSO = ({ navigation }) => {
         navigation.navigate('previewSO', { params: { data: bodyData } })
     }
 
+    const leftSwipe = (item) => {
+        return <View style={styles.deleteBox}>
+            <Icon onPress={() => { deleteItem(item) }} name="trash" size={30} color="#900" />
+        </View>
+    }
+
     const ItemBox = (props) => {
         let list = props.data.item
         const leftSwipe = () => {
@@ -767,11 +765,11 @@ const CreateSO = ({ navigation }) => {
                                         label="Cases"
                                         variant='outlined'
                                         value={String(list.caseBoxQty)}
-                                        keyboardType='numeric'
+                                        keyboardType='decimal-pad'
                                         onChangeText={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
                                     />
                                 </View>
-                                <View style={{ width: '50%' }}>
+                                {/* <View style={{ width: '50%' }}>
                                     <TextInput
                                         label="Pcs"
                                         variant='outlined'
@@ -779,7 +777,7 @@ const CreateSO = ({ navigation }) => {
                                         keyboardType='numeric'
                                         onChangeText={(value) => { handelIncreament(value, list.productCode, 'pcsQty') }}
                                     />
-                                </View>
+                                </View> */}
                             </View>
                             <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
                         </View>
@@ -791,10 +789,11 @@ const CreateSO = ({ navigation }) => {
     }
 
     const deleteItem = async (lineItem) => {
-        let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.item.productCode })
+        console.log(lineItem)
+        let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.productCode })
 
         let productsTempArr1 = await saucesProductList.map((product) => {
-            if (lineItem.item.productCode == product.productCode) {
+            if (lineItem.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -802,7 +801,7 @@ const CreateSO = ({ navigation }) => {
         setSaucesProductList(productsTempArr1);
 
         let productsTempArr2 = await noodelsProductList.map((product) => {
-            if (lineItem.item.productCode == product.productCode) {
+            if (lineItem.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -810,7 +809,7 @@ const CreateSO = ({ navigation }) => {
         setNoodelsProductList(productsTempArr2);
 
         let productsTempArr3 = await masalaProductList.map((product) => {
-            if (lineItem.item.productCode == product.productCode) {
+            if (lineItem.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -818,7 +817,7 @@ const CreateSO = ({ navigation }) => {
         setMasalaProductList(productsTempArr3);
 
         let productsTempArr4 = await cookingPasteProductList.map((product) => {
-            if (lineItem.item.productCode == product.productCode) {
+            if (lineItem.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -826,7 +825,7 @@ const CreateSO = ({ navigation }) => {
         setCookingPasteProductList(productsTempArr4);
 
         let productsTempArr5 = await soupsProductList.map((product) => {
-            if (lineItem.item.productCode == product.productCode) {
+            if (lineItem.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -975,17 +974,63 @@ const CreateSO = ({ navigation }) => {
                         </View>
                     </Modal>
                 </View>}
+
                 <View style={{ flex: 1, paddingBottom: 80 }}>
-                    <FlatList
-                        data={selectedProductList}
-                        renderItem={(item) => {
-                            return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
-                        }}
-                    />
+                    <ScrollView>
+                        {selectedProductList.map((list) => (
+                            <Swipeable renderLeftActions={() => leftSwipe(list)} key={list.productCode}>
+                                <View style={[styles.container, {padding:10,marginBottom:10 }]}>
+                                    <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ width: '50%' }}>
+                                            <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
+                                            <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
+                                            <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
+                                            <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
+                                        </View>
+                                        <View style={{ width: '50%' }}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <View style={{ width: '50%', marginHorizontal: 2 }}>
+                                                    <TextInput
+                                                        label="Cases"
+                                                        variant='outlined'
+                                                        value={String(list.caseBoxQty)}
+                                                        keyboardType='decimal-pad'
+                                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
+                                                    />
+                                                </View>
+                                                <View style={{ width: '50%' }}>
+                                                    <TextInput
+                                                        label="Pcs"
+                                                        variant='outlined'
+                                                        value={String(list.pcsQty)}
+                                                        keyboardType='decimal-pad'
+                                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'pcsQty') }}
+                                                    />
+                                                </View>
+                                            </View>
+                                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </Swipeable>
+                        ))}
+                    </ScrollView>
+                    {/* <KeyboardAvoidingView>
+                        <FlatList
+                            data={selectedProductList}
+                            renderItem={(item) => {
+                                return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
+                            }}
+                            keyboardShouldPersistTaps='always'
+                            keyboardDismissMode='on-drag'
+                        />
+                    </KeyboardAvoidingView> */}
                     {selectedProductList.length != 0 && <View style={{ position: 'absolute', bottom: 60, width: '100%' }}>
                         <Button onPress={() => { previewSO() }} title="Preview Sales Order" color='#00a7e5' />
                     </View>}
                 </View>
+
                 <Toast />
             </View>
         </SafeAreaView>
