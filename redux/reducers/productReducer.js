@@ -69,3 +69,21 @@ export const productDetailReducer = createReducer(
         },
     }
 );
+
+export const productInventoryReducer = createReducer(
+    {},
+    {
+        productInventoryRequest: (state) => {
+            state.loading = true;
+            state.productInventory = [];
+        },
+        productInventorySuccess: (state, action) => {
+            state.loading = false;
+            state.productInventory = action.payload.data;
+        },
+        productInventoryFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+    }
+);

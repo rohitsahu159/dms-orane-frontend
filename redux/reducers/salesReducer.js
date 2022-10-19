@@ -17,6 +17,7 @@ export const soReducer = createReducer(
         },
     }
 );
+
 export const soDetailReducer = createReducer(
     {},
     {
@@ -47,6 +48,42 @@ export const soCreateReducer = createReducer(
             state.createSo = action.payload.data;
         },
         createSOFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+    }
+);
+
+export const salesInvoiveListReducer = createReducer(
+    {},
+    {
+        salesInvoiceRequest: (state) => {
+            state.loading = true;
+            state.salesInvoiveList = [];
+        },
+        salesInvoiceSuccess: (state, action) => {
+            state.loading = false;
+            state.salesInvoiveList = action.payload.data;
+        },
+        salesInvoiceFailure: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+    }
+);
+
+export const siDetailReducer = createReducer(
+    {},
+    {
+        siDetailRequest: (state) => {
+            state.loading = true;
+            state.siDetail = null;
+        },
+        siDetailSuccess: (state, action) => {
+            state.loading = false;
+            state.siDetail = action.payload.data;
+        },
+        siDetailFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

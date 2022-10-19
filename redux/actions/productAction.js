@@ -1,6 +1,7 @@
 import axios from "axios"
 import { urlConstants } from "../constants"
 
+
 export const getProducts = (bodyData) => async (dispatch) => {
     try {
         dispatch({ type: "productRequest" })
@@ -45,3 +46,20 @@ export const getProuctDetail = (id) => async (dispatch) => {
         dispatch({ type: "productDetailFailure", payload: error.response.data.message });
     }
 };
+
+export const getProductInventory = (bodyData) => async (dispatch) => {
+    try {
+        dispatch({ type: "productInventoryRequest" })
+
+        const { data } = await axios.post(`${urlConstants.BASE_URI_DEV}/inventory/availableQuantity`, JSON.stringify(bodyData), {
+            headers: {
+                'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        dispatch({ type: "productInventorySuccess", payload: data })
+        return data
+    } catch (error) {
+        dispatch({ type: "productInventoryFailure", payload: error.response.data.message })
+    }
+}

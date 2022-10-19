@@ -156,7 +156,6 @@ const CreateSO = ({ navigation }) => {
     };
 
     const handelIncreament = async (value, productCode, label) => {
-        console.log(value)
         let tempArr = await selectedProductList.map((product) => {
             if (productCode == product.productCode) {
                 let caseBoxQty = product.caseBoxQty
@@ -789,7 +788,6 @@ const CreateSO = ({ navigation }) => {
     }
 
     const deleteItem = async (lineItem) => {
-        console.log(lineItem)
         let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.productCode })
 
         let productsTempArr1 = await saucesProductList.map((product) => {

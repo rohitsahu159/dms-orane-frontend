@@ -168,7 +168,6 @@ const CreatePO = ({ navigation }) => {
                     pcsQty = Number(value)
                 }
                 let orderedQuantity = (caseBoxQty * product.standardUnitConversionFactor) + pcsQty
-                console.log(orderedQuantity)
                 let grossValue = orderedQuantity * product.prcsWithoutGst
                 let primaryDiscountValue = (grossValue * product.primaryDiscountPercent) / 100
                 let netValue = grossValue - primaryDiscountValue
@@ -765,7 +764,6 @@ const CreatePO = ({ navigation }) => {
     }
 
     const deleteItem = async (lineItem) => {
-        console.log(lineItem)
         let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.productCode })
 
         let productsTempArr1 = await saucesProductList.map((product) => {
