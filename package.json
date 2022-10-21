@@ -46,6 +46,7 @@
     "react-native-date-picker": "^4.2.5",
     "react-native-dropdown-select-list": "^1.0.21",
     "react-native-element-dropdown": "^2.3.0",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-localize": "^2.2.3",
     "react-native-paper": "^4.12.4",
@@ -61,7 +62,8 @@
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.17.7",
-    "react-redux": "^8.0.2"
+    "react-redux": "^8.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

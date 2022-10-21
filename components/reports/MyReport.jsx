@@ -1,9 +1,10 @@
-import { ScrollView, StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Dimensions, Image, } from 'react-native';
 import SelectList from 'react-native-dropdown-select-list';
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/Entypo';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { Linking } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
 const MyReport = () => {
@@ -22,6 +23,24 @@ const MyReport = () => {
 
     const { user } = useSelector(state => state.auth)
 
+    const downloadExcel = () => {
+        console.log("https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing")
+
+        // .then(resp => resp.blob())
+        //           .then(blob => {
+        //             dispatch(showSuccessSnackbar("Report download successfully", "success"));
+        //             const url = window.URL.createObjectURL(blob);
+        //             const a = document.createElement('a');
+        //             a.style.display = 'none';
+        //             a.href = url;
+        //             a.download = `Report.xlsx`;
+        //             document.body.appendChild(a);
+        //             a.click();
+        //             window.URL.revokeObjectURL(url);
+        //           
+
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -32,8 +51,10 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}>
-                                    <Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150, }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+
+                                />
                                 </Text>
 
                             </View>
@@ -52,7 +73,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150, }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
 
@@ -70,7 +93,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -87,7 +112,8 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')} />
                                 </Text>
 
                             </View>
@@ -105,7 +131,8 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')} />
                                 </Text>
                             </View>
                             <SelectList
@@ -122,7 +149,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -139,7 +168,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -156,7 +187,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -173,7 +206,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -190,7 +225,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -207,7 +244,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
@@ -224,7 +263,9 @@ const MyReport = () => {
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 20, margin: 2 }}>Report </Text>
                                 <Icon style={{ margin: 18, alignItems: 'flex-end', marginTop: 7, right: 60, justifyContent: 'flex-end', right: 0, marginLeft: 280 }} name="eye" size={20} />
-                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20} />
+                                <Text style={{ marginTop: 7, right: 60, }}><Icon style={{ margin: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginLeft: 150 }} name="download" size={20}
+                                    onPress={() => Linking.openURL('https://docs.google.com/spreadsheets/d/1LFIwtLQ4gPzhOWbmXWvQuOtw6laC41IMeeDtAC5Hqww/edit?usp=sharing')}
+                                />
                                 </Text>
                             </View>
                             <SelectList
