@@ -1,14 +1,30 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Dimensions, StyleSheet, RefreshControl, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { TextInput, Button, IconButton, Stack } from '@react-native-material/core';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Swipeable } from 'react-native-gesture-handler';
 import { inrDateFormatNoTime, inrFormat } from '../../redux/constants';
+import PendingSO from '../salesorder/statusWiseSO/PendingSO';
+import DeliveredSO from '../salesorder/statusWiseSO/DeliveredSO';
+import PartialSO from '../salesorder/statusWiseSO/PartialSO';
+import CancelledSO from '../salesorder/statusWiseSO/CancelledSO';
+import ClosedSO from '../salesorder/statusWiseSO/ClosedSO';
 
 const { height, width } = Dimensions.get('window')
+const Tab = createMaterialTopTabNavigator();
 
 const MySalesInvoice = ({ navigation }) => {
-
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    {/* <Button title="Create SI" color='#00a7e5' onPress={() => navigation.navigate("createSI")} /> */}
+                </View>
+            ),
+        });
+    }, [navigation]);
     const Card = ({ list }) => {
         const leftSwipe = () => {
             return <View style={styles.deleteBox}>
@@ -40,6 +56,62 @@ const MySalesInvoice = ({ navigation }) => {
             </Swipeable>
         );
     };
+
+    return (
+        <Tab.Navigator
+            initialRouteName='pendingSO'
+            screenOptions={({ route }) => ({
+                tabBarActiveTintColor: "blue",
+                tabBarInactiveTintColor: "#555",
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+                tabBarItemStyle: {
+                    width: 100,
+                    alignItems: 'center',
+                },
+                tabBarScrollEnabled: true
+            })}
+        >
+            <Tab.Screen
+                name='pendingSO'
+                component={PendingSO}
+                options={{
+                    title: "Pending"
+                }}
+            />
+            <Tab.Screen
+                name='deliveredSO'
+                component={DeliveredSO}
+                options={{
+                    title: "Delivered"
+                }}
+            />
+            <Tab.Screen
+                name='partialSO'
+                component={PartialSO}
+                options={{
+                    title: "Partial"
+                }}
+            />
+            <Tab.Screen
+                name='cancelledSO'
+                component={CancelledSO}
+                options={{
+                    title: "Cancelled"
+                }}
+            />
+            <Tab.Screen
+                name='closedSO'
+                component={ClosedSO}
+                options={{
+                    title: "Closed"
+                }}
+            />
+        </Tab.Navigator>
+    );
+
+  
 
     const invoiceList = [
         { id: 1, value: '1' },

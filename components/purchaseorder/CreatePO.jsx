@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, BackHandler, ScrollView, TouchableOpacity, Pressable, Modal, Dimensions, FlatList, KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable, Searchbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
@@ -688,7 +688,7 @@ const CreatePO = ({ navigation }) => {
             buyerContactName: buyerData.employee.contactPerson,
             buyerCity: buyerData.address[0].city,
             buyerPincode: buyerData.address[0].pincode,
-            buyerState: buyerData.address[0].state,
+            buyerState: buyerData.address[0].state, 
             buyerRole: buyerData.userRole,
             buyerShippingAddress: shippingAddress,
             buyerBillingAddress: billingAddress,
@@ -707,12 +707,6 @@ const CreatePO = ({ navigation }) => {
         };
 
         navigation.navigate('previewPO', { params: { data: bodyData } })
-    }
-
-    const leftSwipe = (item) => {
-        return <View style={styles.deleteBox}>
-            <Icon onPress={() => { deleteItem(item) }} name="trash" size={30} color="#900" />
-        </View>
     }
 
     const ItemBox = (props) => {
@@ -737,13 +731,16 @@ const CreatePO = ({ navigation }) => {
                             <View style={{ width: '50%' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ width: '50%', marginHorizontal: 2 }}>
+                                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                                         <TextInput
                                             label="Cases"
                                             variant='outlined'
                                             value={String(list.caseBoxQty)}
                                             keyboardType='numeric'
                                             onChange={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
-                                        />
+                                            />
+
+                                        </TouchableWithoutFeedback>
                                     </View>
                                     <View style={{ width: '50%' }}>
                                         <TextInput
@@ -765,11 +762,10 @@ const CreatePO = ({ navigation }) => {
     }
 
     const deleteItem = async (lineItem) => {
-        console.log(lineItem)
-        let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.productCode })
+        let selectedTempArr = await _.reject(selectedProductList, { productCode: lineItem.item.productCode })
 
         let productsTempArr1 = await saucesProductList.map((product) => {
-            if (lineItem.productCode == product.productCode) {
+            if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -777,7 +773,7 @@ const CreatePO = ({ navigation }) => {
         setSaucesProductList(productsTempArr1);
 
         let productsTempArr2 = await noodelsProductList.map((product) => {
-            if (lineItem.productCode == product.productCode) {
+            if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -785,7 +781,7 @@ const CreatePO = ({ navigation }) => {
         setNoodelsProductList(productsTempArr2);
 
         let productsTempArr3 = await masalaProductList.map((product) => {
-            if (lineItem.productCode == product.productCode) {
+            if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -793,7 +789,7 @@ const CreatePO = ({ navigation }) => {
         setMasalaProductList(productsTempArr3);
 
         let productsTempArr4 = await cookingPasteProductList.map((product) => {
-            if (lineItem.productCode == product.productCode) {
+            if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -801,7 +797,7 @@ const CreatePO = ({ navigation }) => {
         setCookingPasteProductList(productsTempArr4);
 
         let productsTempArr5 = await soupsProductList.map((product) => {
-            if (lineItem.productCode == product.productCode) {
+            if (lineItem.item.productCode == product.productCode) {
                 return { ...product, isChecked: !product.isChecked };
             }
             return product;
@@ -935,46 +931,12 @@ const CreatePO = ({ navigation }) => {
                     </View>
                 </Modal>}
                 <View style={{ flex: 1, paddingBottom: 80 }}>
-                <ScrollView>
-                        {selectedProductList.map((list) => (
-                            <Swipeable renderLeftActions={() => leftSwipe(list)} key={list.productCode}>
-                                <View style={[styles.container, {padding:10,marginBottom:10 }]}>
-                                    <Title style={{ color: '#00a7e5', fontSize: 17, marginTop: -15 }}>{list.productName}</Title>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ width: '50%' }}>
-                                            <Text>MRP : <Text style={{ fontWeight: '500' }}>{inrFormat(list.mrp)}</Text></Text>
-                                            <Text>GST : <Text style={{ fontWeight: '500' }}>{list.gst} %</Text></Text>
-                                            <Text>Price/Pcs (Excl GST) : <Text style={{ fontWeight: '500' }}>{inrFormat(list.prcsWithoutGst)} </Text></Text>
-                                            <Text>Pcs/Box : <Text style={{ fontWeight: '500' }}>{list.standardUnitConversionFactor} </Text></Text>
-                                        </View>
-                                        <View style={{ width: '50%' }}>
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <View style={{ width: '50%', marginHorizontal: 2 }}>
-                                                    <TextInput
-                                                        label="Cases"
-                                                        variant='outlined'
-                                                        value={String(list.caseBoxQty)}
-                                                        keyboardType='decimal-pad'
-                                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'caseBoxQty') }}
-                                                    />
-                                                </View>
-                                                <View style={{ width: '50%' }}>
-                                                    <TextInput
-                                                        label="Pcs"
-                                                        variant='outlined'
-                                                        value={String(list.pcsQty)}
-                                                        keyboardType='decimal-pad'
-                                                        onChangeText={(value) => { handelIncreament(value, list.productCode, 'pcsQty') }}
-                                                    />
-                                                </View>
-                                            </View>
-                                            <Text style={{ textAlign: 'center', color: 'green' }}>Total value : <Text style={{ fontWeight: '500' }}>{inrFormat(list.totalValue)}</Text></Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </Swipeable>
-                        ))}
-                    </ScrollView>
+                    <FlatList
+                        data={selectedProductList}
+                        renderItem={(item) => {
+                            return <ItemBox data={item} handelDelete={() => { deleteItem(item) }} />
+                        }}
+                    />
                     {selectedProductList.length != 0 && <View style={{ position: 'absolute', bottom: 60, width: '100%' }}>
                         <Button onPress={() => { previewPO() }} title="Preview Purchase Order" color='#00a7e5' />
                     </View>}
