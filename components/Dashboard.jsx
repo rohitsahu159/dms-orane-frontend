@@ -152,14 +152,14 @@ const KpiAnalysis = () => {
 
             </View>
             <View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
+            { <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
+                <ScrollView horizontal>
                     <View style={styles.chartView1}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%',height:50, marginLeft:10 }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', marginTop:30,color:'#21D4DF' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
                         </View>
 
                     </View>
@@ -168,7 +168,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%', height:50, marginLeft:10}}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', marginTop:30,color:'#21D4DF'  }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -176,7 +176,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%',height:50, marginLeft:10 }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', marginTop:30, color: '#21D4DF' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -184,7 +184,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
+                            <Text style={{ width: '90%',height:50, marginLeft:10 }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',marginTop:30, color: '#21D4DF'}}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
                         </View>
                     </View>
                     <View style={styles.chartView1}>
@@ -192,7 +192,7 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%' , height:50, marginLeft:10 }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',marginTop:30, color: '#21D4DF' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
                         </View>
 
                     </View>
@@ -201,12 +201,13 @@ const KpiAnalysis = () => {
                             <Text style={{ width: '10%' }}>
                                 <Icon name="th-list" size={18} color="#900" />
                             </Text>
-                            <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.outStandingTotalValueCurrentMonth}</Text>
+                            <Text style={{ width: '90%', height:50, marginLeft:10  }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold',marginTop:30, color: '#21D4DF' }}>{dashboardList?.outStandingTotalValueCurrentMonth}</Text>
                         </View>
 
                     </View>
-                </ScrollView>
-            </View>
+                </ScrollView >
+            </View> }
+      
             </View>
             </View>
             
@@ -238,7 +239,7 @@ const OverView = () => {
                     />
                     {(user.role == "COMPANY") &&
                         <View>
-                            <Text style={{ width: '90%', top: "-650%" }}>TOTAL SUPER STOCKISTS </Text><Text style={{ top: "-650%", left: "10%" }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
+                            <Text style={{ width: '90%', top: "-650%," }}>TOTAL SUPER STOCKISTS </Text><Text style={{ top: "-650%", left: "10%" }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
                         </View>}
                     {(user.role == "DISTRIBUTOR" || user.role == "SUPER_DISTRIBUTOR") &&
                         <View>
@@ -286,14 +287,14 @@ const OverView = () => {
                         </View>}
                 </View>
                 <View>
-                    <ScrollView>
+                    <ScrollView horizontal>
                         {(user.role == "COMPANY") && <>
                             <View style={styles.chartView1}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL SUPER STOCKISTS </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',  }}>{dashboardDetails?.totalSuperDistributorGT}</Text>
 
                                 </View>
                             </View>
@@ -304,7 +305,7 @@ const OverView = () => {
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL CUSTOMER </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.numberOfBuyers}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL CUSTOMER </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', marginTop:30, color:'#21D4DF'}}>{dashboardDetails?.numberOfBuyers}</Text>
 
                                 </View>
                             </View>
@@ -316,7 +317,7 @@ const OverView = () => {
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalDistributorGT}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL DISTRIBUTOR </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold', marginTop:30, color:'#21D4DF' }}>{dashboardDetails?.totalDistributorGT}</Text>
                                 </View>
 
                             </View>
@@ -327,7 +328,7 @@ const OverView = () => {
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalProducts}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL SKUs  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',  marginTop:30, color:'#21D4DF' }}>{dashboardDetails?.totalProducts}</Text>
                                 </View>
 
                             </View>
@@ -338,7 +339,7 @@ const OverView = () => {
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL PO COUNT </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',  marginTop:30, color:'#21D4DF' }}>{dashboardDetails?.nubmerOfPurchaseOrders}</Text>
                                 </View>
                             </View>
                         </>}
@@ -348,7 +349,7 @@ const OverView = () => {
                                     <Text style={{ width: '10%' }}>
                                         <Icon name="th-list" size={18} color="#900" />
                                     </Text>
-                                    <Text style={{ width: '90%' }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardDetails?.totalRetailerGT}</Text>
+                                    <Text style={{ width: '90%', height:50 , marginLeft:10 }}>TOTAL RETAILERS</Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold',  marginTop:30, color:'#21D4DF' }}>{dashboardDetails?.totalRetailerGT}</Text>
                                 </View>
                             </View>
                         </>}
@@ -520,18 +521,18 @@ const FillRate = () => {
         <SafeAreaView>
             <View >
             <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
+             <Checkbox
+            status={'checked'}
                                     />
-                                </Pressable>
+             </Pressable>
             <Text style={{top:"-50%",left:"10%"}}>GT</Text>
             </View>
             <View style={{top:"-16%",left:"20%"}}>
             <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
+             <Checkbox
+            status={'checked'}
+             />
+            </Pressable>
             <Text style={{top:"-50%",left:"10%"}}>MT</Text>
             </View>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
@@ -591,23 +592,23 @@ const PurchaseValue = () => {
         <SafeAreaView>
             <View>
             <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-                <Text style={{top:"-50%",left:"10%"}}>Year</Text>
+    <Checkbox
+   status={'checked'}
+       />
+        </Pressable>
+         <Text style={{top:"-50%",left:"10%"}}>Year</Text>
             </View>
             <View style={{top:"-12%",left:"30%"}}>
             <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-                <Text style={{top:"-50%",left:"10%"}}>Month</Text>
+             <Checkbox
+             status={'checked'}
+           />
+            </Pressable>
+            <Text style={{top:"-50%",left:"10%"}}>Month</Text>
             </View>
             <View style={{top:"-24%",left:"70%"}}>
             <Pressable  >
-                                    <Checkbox
+             <Checkbox
                                         status={'checked'}
                                     />
                                 </Pressable>
