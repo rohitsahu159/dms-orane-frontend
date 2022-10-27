@@ -1,5 +1,5 @@
-import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView ,Image, Pressable} from 'react-native';
-import React, { useEffect,useState } from 'react';
+import { View, Text, Dimensions, StyleSheet, ScrollView, SafeAreaView, Image, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -10,8 +10,8 @@ import {
     ContributionGraph,
     StackedBarChart
 } from 'react-native-chart-kit';
-import { Card, Button, Title, Paragraph,Checkbox } from 'react-native-paper';
-import { getDashboardList,getdashboardDetail,getdashboardInventoryData,getSSList,getdashboardFillRateData } from '../redux/actions/dashboardAction'
+import { Card, Button, Title, Paragraph, Checkbox } from 'react-native-paper';
+import { getDashboardList, getdashboardDetail, getdashboardInventoryData, getSSList, getdashboardFillRateData } from '../redux/actions/dashboardAction'
 import { } from '@react-navigation/native';
 import SelectList from 'react-native-dropdown-select-list';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -60,43 +60,7 @@ const commitsData = [
     { date: "2017-02-30", count: 4 }
 ];
 
-const pieChartData = [
-    {
-        name: "Seoul",
-        population: 21500000,
-        color: "rgba(131, 167, 234, 1)",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15
-    },
-    {
-        name: "Toronto",
-        population: 2800000,
-        color: "#F00",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15
-    },
-    {
-        name: "Beijing",
-        population: 527612,
-        color: "red",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15
-    },
-    {
-        name: "New York",
-        population: 8538000,
-        color: "#228B22",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15
-    },
-    {
-        name: "Moscow",
-        population: 11920000,
-        color: "rgb(0, 0, 255)",
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15
-    }
-];
+
 
 const progressData = {
     // labels: ["Sales Order", "Purchase Orders", "Sales Invoices", "Collected Amount"], // optional
@@ -106,7 +70,7 @@ const progressData = {
 
 
 const KpiAnalysis = () => {
-    const dispatch = useDispatch()
+const dispatch = useDispatch()
 
     useEffect(() => {
         if (user) {
@@ -128,94 +92,93 @@ const KpiAnalysis = () => {
 
     return (
         <SafeAreaView>
-               <View style={{ height: screenHeight }}>
-               <View style={{ width: '90%', maxHeight: 350, paddingTop: 20 }} >
-                <Image source={require("../assets/img/chart1.jpg")} />
-                <View >
-                    <Text style={{ width: '90%', top: "-800%", left: "63%" }}>All Sales Orders </Text><Text style={{ width: '90%', top: "-800%", left: "65%" }}>{dashboardList?.soCurrentMonthPerc}%</Text>
-                </View>
-                <View >
-                    <Text style={{ width: '90%', top: "-780%", left: "65%" }}>All Purchase Orders </Text><Text style={{ width: '90%', top: "-770%", left: "75%" }}>{dashboardList?.poCurrentMonthPerc}%</Text>
-                </View>
-                <View >
-                    <Text style={{ width: '90%', top: "-740%", left: "70%" }}>All Sales Invoices </Text><Text style={{ width: '90%', top: "-750%", left: "77%" }}>{dashboardList?.siCurrentMonthPerc}%</Text>
-                </View>
-                <View >
-                    <Text style={{ width: '90%', top: "-670%", left: "50%" }}>Pending Orders for Invoicing </Text><Text style={{ width: '90%', top: "-670%", left: "77%" }}>{dashboardList?.pendingOrdersPercDiff}%</Text>
-                </View>
-                <View >
-                    <Text style={{ width: '90%', top: "-630%", left: "70%" }}>Collected Amount </Text><Text style={{ width: '90%', top: "-640%", left: "77%" }}>{dashboardList?.collectionCurrentMonthPerc}%</Text>
-                </View>
-                <View >
-                    <Text style={{ width: '90%', top: "-610%", left: "61%" }}>Outstanding Amount </Text><Text style={{ width: '90%', top: "-600%", left: "77%" }}>{dashboardList?.outstandingPercDiff}%</Text>
-                </View>
+            <View style={{ height: screenHeight }}>
+                <View style={{ width: '90%', maxHeight: 350, paddingTop: 20 }} >
+                    <Image source={require("../assets/img/chart1.jpg")} />
+                    <View >
+                        <Text style={{ width: '90%', top: "-800%", left: "63%" }}>All Sales Orders </Text><Text style={{ width: '90%', top: "-800%", left: "65%" }}>{dashboardList?.soCurrentMonthPerc}%</Text>
+                    </View>
+                    <View >
+                        <Text style={{ width: '90%', top: "-780%", left: "65%" }}>All Purchase Orders </Text><Text style={{ width: '90%', top: "-770%", left: "75%" }}>{dashboardList?.poCurrentMonthPerc}%</Text>
+                    </View>
+                    <View >
+                        <Text style={{ width: '90%', top: "-740%", left: "70%" }}>All Sales Invoices </Text><Text style={{ width: '90%', top: "-750%", left: "77%" }}>{dashboardList?.siCurrentMonthPerc}%</Text>
+                    </View>
+                    <View >
+                        <Text style={{ width: '90%', top: "-670%", left: "50%" }}>Pending Orders for Invoicing </Text><Text style={{ width: '90%', top: "-670%", left: "77%" }}>{dashboardList?.pendingOrdersPercDiff}%</Text>
+                    </View>
+                    <View >
+                        <Text style={{ width: '90%', top: "-630%", left: "70%" }}>Collected Amount </Text><Text style={{ width: '90%', top: "-640%", left: "77%" }}>{dashboardList?.collectionCurrentMonthPerc}%</Text>
+                    </View>
+                    <View >
+                        <Text style={{ width: '90%', top: "-610%", left: "61%" }}>Outstanding Amount </Text><Text style={{ width: '90%', top: "-600%", left: "77%" }}>{dashboardList?.outstandingPercDiff}%</Text>
+                    </View>
 
-            </View>
-            <View>
-            <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
-                <ScrollView>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
-                        </View>
+                </View>
+                <View>
+                    <View style={{ maxHeight: screenHeight - 250, paddingBottom: 30, }}>
+                        <ScrollView>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>All Sales Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.soTotalValueCurrentMonth}</Text>
+                                </View>
 
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
-                        </View>
+                            </View>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>All Purchase Orders </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.poTotalValueCurrentMonth}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>All Sales Invoices </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.siTotalValueCurrentMonth}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>Pending Orders for Invoicing  </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.pendingOrdersCurrentMonth}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>Collected Amount </Text><Text style={{ position: 'absolute', right: 0, fontWeight: 'bold' }}>{dashboardList?.collectionTotalValueCurrentMonth}</Text>
+                                </View>
 
-                    </View>
-                    <View style={styles.chartView1}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ width: '10%' }}>
-                                <Icon name="th-list" size={18} color="#900" />
-                            </Text>
-                            <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.outStandingTotalValueCurrentMonth}</Text>
-                        </View>
+                            </View>
+                            <View style={styles.chartView1}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ width: '10%' }}>
+                                        <Icon name="th-list" size={18} color="#900" />
+                                    </Text>
+                                    <Text style={{ width: '90%' }}>Outstanding Amount </Text><Text style={{ position: 'absolute', right: 0, margin: 10, fontWeight: 'bold' }}>{dashboardList?.outStandingTotalValueCurrentMonth}</Text>
+                                </View>
 
+                            </View>
+                        </ScrollView>
                     </View>
-                </ScrollView>
+                </View>
             </View>
-            </View>
-            </View>
-            
         </SafeAreaView>
     )
 }
 
 const OverView = () => {
-    const dispatch = useDispatch()
+const dispatch = useDispatch()
 
     useEffect(() => {
         if (user) {
@@ -362,26 +325,26 @@ const OverView = () => {
 }
 
 const Inventory = () => {
-    const dispatch = useDispatch()
+const dispatch = useDispatch()
 
     useEffect(() => {
-        if (user) { 
+        if (user) {
             const param = {
-                "role": user?.role ,
+                "role": user?.role,
                 "subRole": user?.subRole,
-                "assignedHierarchyType": user?.assignedHierarchyType ,
-                "userId": user?.employerUserId 
-              };
-              const requestPayload={
+                "assignedHierarchyType": user?.assignedHierarchyType,
+                "userId": user?.employerUserId
+            };
+            const requestPayload = {
                 pageNumber: 0,
                 pageSize: 1000,
                 sortArray: [],
                 searchCriteria: [],
-              };
+            };
 
             dispatch(getdashboardInventoryData(param))
             dispatch(getSSList(requestPayload))
- 
+
         }
 
     }, [dispatch])
@@ -389,104 +352,82 @@ const Inventory = () => {
     const { user } = useSelector(state => state?.auth)
     const { ssData } = useSelector(state => state?.ssData)
     const { dashboardInventoryData } = useSelector(state => state?.dashboardInventoryData)
+    const data = [
+        {
+            name: "Current Stock",
+            population: 21500000,
+            color: "rgba(131, 167, 234, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "Delivery Pending",
+            population: 2800000,
+            color: "#F00",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "Damaged Stock",
+            population: 527612,
+            color: "red",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "Expired Stock",
+            population: 8538000,
+            color: "#ffffff",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
 
-    const [sellerFirmName, setSellerData] = useState(null);
-const [selectedSellerData, setSelectedSellerData] = useState({});
-let billingAddressList = []
-if (ssData?.sellerFirmName != undefined) {
-    let tempAddr = ssData.businessPartners.rhInfo.sellerFirmName.map(e => {
-        return {
-            ...e,
-            key: e.sellerFirmName,
-            value: e.sellerFirmName,
-        }
-    });
-
-    billingAddressList = tempAddr
-}
-const onSelectSS = (sellerFirmName) => {
-    let obj = ssData.find(o => o.id === sellerFirmName);
-    setSelectedSellerData(obj)
-    setSellerData(sellerFirmName)
-}
-
-
-
+    ];
     return (
         <SafeAreaView>
 
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-            <View>
-                    <Text style={{ paddingLeft: 5, color: 'black' }}>Select</Text>
-                    <SelectList  data={billingAddressList || []} setSelected={setSellerData} onSelect={() => onSelectSS(sellerFirmName)} />
-                </View>
                 <View>
-                <LineChart
-    data={{
-      labels: ["Current Stock", "Delivery Pending", "Damaged Stock", "Expired Stock"],
-      datasets: [
-        {
-          data: [
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100
-          ]
-        }
-      ]
-    }}
-    width={Dimensions.get("window").width} // from react-native
-    height={220}
-    yAxisInterval={1} // optional, defaults to 1
-    chartConfig={{
-      backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
-      decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 16
-      },
-      propsForDots: {
-        r: "6",
-        strokeWidth: "2",
-        stroke: "#ffa726"
-      }
-    }}
-    bezier
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  />
-          </View>
-                
+                    <PieChart
+                        data={data}
+                        width={350}
+                        height={250}
+                        chartConfig={chartConfig}
+                        accessor={"population"}
+                        backgroundColor={"transparent"}
+                        paddingLeft={"15"}
+                        center={[10, 50]}
+                        absolute
+                        style={{
+                            marginTop: "50%"
+                        }}
+                    />
+
+                </View>
+
             </View>
-            
+
         </SafeAreaView>
     )
 }
 
 const FillRate = () => {
-    const dispatch = useDispatch()
+const dispatch = useDispatch()
 
     useEffect(() => {
-        if (user) { 
+        if (user) {
             let param = "";
 
             if (user.role === "COMPANY" && user.subRole === "ADMIN") {
-              param = `buyerHierarchyType=GT`;
+                param = `buyerHierarchyType=GT`;
             } else if (
-              user.role === "COMPANY" &&
-              (user.subRole === "RH" || user.subRole === "KAM")
+                user.role === "COMPANY" &&
+                (user.subRole === "RH" || user.subRole === "KAM")
             ) {
-              param = `buyerHierarchyType=${user.assignedHierarchyType}&buyerSubRegion=${user.assignedGeolocation.toString()}`;
+                param = `buyerHierarchyType=${user.assignedHierarchyType}&buyerSubRegion=${user.assignedGeolocation.toString()}`;
             } else {
-              param = `buyerHierarchyType=${user.assignedHierarchyType}&sellerId=${user.employerUserId}`;
-            }          
+                param = `buyerHierarchyType=${user.assignedHierarchyType}&sellerId=${user.employerUserId}`;
+            }
             dispatch(getdashboardFillRateData(param))
         }
 
@@ -494,7 +435,7 @@ const FillRate = () => {
 
     const { user } = useSelector(state => state.auth)
     const { fillRateStats } = useSelector(state => state?.fillRateStats)
-    let month =[]
+    let month = []
     if (fillRateStats != undefined) {
         let tempAddr = fillRateStats.map(e => {
             return {
@@ -503,135 +444,92 @@ const FillRate = () => {
                 value: e.month,
             }
         });
-    
+
         month = tempAddr
     }
     const data = {
         labels: ["January", "February", "March", "April", "May", "June"],
         datasets: [
-          {
-            data: [20, 45, 28, 80, 99, 43]
-          }
+            {
+                data: [20, 45, 28, 80, 99, 43]
+            }
         ]
-      };
+    };
 
 
     return (
         <SafeAreaView>
-            <View >
-            <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-            <Text style={{top:"-50%",left:"10%"}}>GT</Text>
-            </View>
-            <View style={{top:"-16%",left:"20%"}}>
-            <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-            <Text style={{top:"-50%",left:"10%"}}>MT</Text>
-            </View>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-            <BarChart
-//   style={graphStyle}
-  data={data}
-  width={screenWidth}
-  height={220}
-  yAxisSuffix='%'
-  chartConfig={chartConfig}
-  verticalLabelRotation={30}
-/>
-            </View>       
+                <BarChart
+                    //   style={graphStyle}
+                    data={data}
+                    width={screenWidth}
+                    height={220}
+                    yAxisSuffix='%'
+                    chartConfig={chartConfig}
+                    verticalLabelRotation={30}
+                    style={{
+                        marginTop: "50%"
+                    }}
+                />
+            </View>
         </SafeAreaView>
     )
 }
 
 const PurchaseValue = () => {
-    const data = [
-        {
-          name: "Seoul",
-          population: 21500000,
-          color: "rgba(131, 167, 234, 1)",
-          legendFontColor: "#7F7F7F",
-          legendFontSize: 15
-        },
-        {
-          name: "Toronto",
-          population: 2800000,
-          color: "#F00",
-          legendFontColor: "#7F7F7F",
-          legendFontSize: 15
-        },
-        {
-          name: "Beijing",
-          population: 527612,
-          color: "red",
-          legendFontColor: "#7F7F7F",
-          legendFontSize: 15
-        },
-        {
-          name: "New York",
-          population: 8538000,
-          color: "#ffffff",
-          legendFontColor: "#7F7F7F",
-          legendFontSize: 15
-        },
-        {
-          name: "Moscow",
-          population: 11920000,
-          color: "rgb(0, 0, 255)",
-          legendFontColor: "#7F7F7F",
-          legendFontSize: 15
-        }
-      ];
+
     return (
         <SafeAreaView>
-            <View>
-            <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-                <Text style={{top:"-50%",left:"10%"}}>Year</Text>
-            </View>
-            <View style={{top:"-12%",left:"30%"}}>
-            <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-                <Text style={{top:"-50%",left:"10%"}}>Month</Text>
-            </View>
-            <View style={{top:"-24%",left:"70%"}}>
-            <Pressable  >
-                                    <Checkbox
-                                        status={'checked'}
-                                    />
-                                </Pressable>
-                <Text style={{top:"-50%",left:"10%"}}>Day</Text>
-            </View>
-            <View style={{top:"-20%"}}>
-               <SelectList  data={""} setSelected={""}  />
-                </View>
             <View style={{ flex: 0, width: '100%', marginBottom: 20 }} >
-                
-            <PieChart
-  data={data}
-  width={screenWidth}
-  height={250}
-  chartConfig={chartConfig}
-  accessor={"population"}
-  backgroundColor={"transparent"}
-  paddingLeft={"15"}
-  center={[10, 50]}
-  absolute
-/>
+
+                <LineChart
+                    data={{
+                        labels: ["January", "February", "March", "April", "May", "June"],
+                        datasets: [
+                            {
+                                data: [
+                                    0,
+                                    10000,
+                                    15000,
+                                    20000,
+                                    25000,
+                                    30000
+                                ]
+                            }
+                        ]
+                    }}
+                    width={Dimensions.get("window").width} // from react-native
+                    height={220}
+                    yAxisInterval={1} // optional, defaults to 1
+                    yAxisLabel="₹"
+                    chartConfig={{
+                        backgroundColor: "#e26a00",
+                        backgroundGradientFrom: "#fb8c00",
+                        backgroundGradientTo: "#ffa726",
+                        decimalPlaces: 2, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                            borderRadius: 16,
+
+                        },
+                        propsForDots: {
+                            r: "6",
+                            strokeWidth: "2",
+                            stroke: "#ffa726"
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16,
+                        marginTop: "50%"
+                    }}
+                />
 
             </View>
-         
+
         </SafeAreaView>
     )
 }
